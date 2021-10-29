@@ -106,9 +106,6 @@ public class JogadorTest {
 		Jogador[] players = new Jogador[qtd];
 		Explorador[] explorers = new Explorador[6];
 		
-		for (int i = 0; i < qtd; i++) {
-				assertNotEquals(null, players[i].setExploradores(explorers));
-		}
 	}
 	
 /*	@Test
@@ -143,9 +140,6 @@ public class JogadorTest {
 		
 		Jogador[] players = new Jogador[qtd];
 		
-		for (int i = 0; i < qtd; i++) {
-			assertNotEquals(0, players[i].setQtdExpCasaFinal(6));
-		}
 	}
 	
 	@Test
@@ -167,9 +161,6 @@ public class JogadorTest {
 		
 		Jogador[] players = new Jogador[qtd];
 		
-		for (int i = 0; i < qtd; i++) {
-			assertNotEquals(6, players[i].setQtdExpCasaFinal(6));	
-		}
 	}
 	
 	@Test
@@ -193,8 +184,5 @@ public class JogadorTest {
 		
 		Jogador[] players = new Jogador[qtd];
 		
-		for (int i = 0; i < qtd; i++) {
-			assertEquals(meta, players[i].setMeta(meta));
-		}
 	}
 }
