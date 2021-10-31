@@ -5,18 +5,21 @@ import view.ViewFacade;
 
 public class ControllerFacade {
 
-	private static ControllerFacade c = null;
-	
+	private static ControllerFacade controller = null;
 	
 	public ControllerFacade() {
-		//ModelFacade.startModel();
 		ViewFacade.startView();
+		
+		if (ViewFacade.getCanStartGame())
+			ModelFacade.startModel(ViewFacade.getGameMode(),ViewFacade.getNomeJogadores());
+		else
+			System.out.print("Não foi possível iniciar o jogo.\n");
 	}
 	
 	public static ControllerFacade getController() {
-		if(c == null) {
-			c = new ControllerFacade();
+		if(controller == null) {
+			controller = new ControllerFacade();
 		}
-		return c;
+		return controller;
 	} 
 }

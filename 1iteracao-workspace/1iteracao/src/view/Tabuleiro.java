@@ -19,23 +19,20 @@ import java.util.stream.Collectors;
 
 
 public class Tabuleiro extends JPanel{
-	Image imgTabuleiro = null;
-	Tabuleiro p = this;
-	Map<String, Image> imgPecas = new HashMap<String, Image>();
-	Map<Integer, Image> imgDados = new HashMap<Integer, Image>();
-	private List<Image> dados = new ArrayList();
-	private ArrayList<Integer> valoresDados = new ArrayList<Integer>();
-	public static final String[] CORES = {"Verde", "Laranja", "Azul", "Preto", "Vermelho", "Branco"};
-	public static final int[] DADINHOS = {1, 2, 3, 4, 5, 6};
-	int xOffSet = 647;
-	int yOffSet = 650;
-	int xIni = 0, yIni = 0, imgHeight = yOffSet, imgWidth = xOffSet;
+	private Image imgTabuleiro = null;
+	private Tabuleiro tabuleiro = this;
+	private Map<String, Image> imgPecas = new HashMap<String, Image>();
+	private Map<Integer, Image> imgDados = new HashMap<Integer, Image>();
+	private static final String[] CORES = {"Verde", "Laranja", "Azul", "Preto", "Vermelho", "Branco"};
+	private static final int[] DADINHOS = {1, 2, 3, 4, 5, 6};
+	private int xOffSet = 647;
+	private int yOffSet = 650;
+	private int xIni = 0, yIni = 0, imgHeight = yOffSet, imgWidth = xOffSet;
 	
 	public Tabuleiro() {
 		try {
 			imgTabuleiro = ImageIO.read(new File("src/view/assets/Latitude90-Tabuleiro.jpg"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		loadImagesPecas();
@@ -71,7 +68,7 @@ public class Tabuleiro extends JPanel{
 
 		System.out.println("cheguei");
 		super.paintComponent(g);
-		p.setLayout(null);
+		tabuleiro.setLayout(null);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.drawImage(imgTabuleiro, 0, 0, imgWidth, imgHeight,this);
 		

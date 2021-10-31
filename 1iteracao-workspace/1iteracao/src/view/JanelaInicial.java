@@ -7,88 +7,71 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import model.ModelFacade;
-
 class JanelaInicial extends JFrame{
 	
-	private JPanel menuInicial;
-	private JPanel menuJogadores;
-	private JPanel tabuleiro;
-    private JanelaInicial p = this;
-	
-	private int QTD_JOGADORES = 0;
-	private int GAME_MODE = 1;
-	private boolean GAME_MODE_STATUS = false;
-	private boolean CAN_START = true;
+    private JanelaInicial janelaInicial = this;
 	private static final int TWO_PLAYERS = 2;
 	private static final int FOUR_PLAYERS = 4;
-	public int DEFAULT_WIDTH = 1200;
-    public int DEFAULT_HEIGHT = 700;
-	public int BUTTON_WIDTH = 150;
-    public int BUTTON_HEIGHT = 30;
-    public int BUTTON_SPACE = 60;
-    public int BUTTON_START_X = 525;
-    public int BUTTON_START_Y = 280;
-	public int TEXT_WIDTH = 80;
-    public int TEXT_START_X = 520;
-    public int TEXT_START_Y = 150;
-    JPanel f1 = new JPanel();    
-    JPanel f2 = new JPanel();
-    JPanel f3 = new JPanel();
-    String jogadores[] = null;
+	private final int DEFAULT_WIDTH = 1200;
+	private final int DEFAULT_HEIGHT = 700;
+	private final int BUTTON_WIDTH = 150;
+	private final int BUTTON_HEIGHT = 30;
+	private final int BUTTON_SPACE = 60;
+	private final int BUTTON_START_X = 525;
+	private final int BUTTON_START_Y = 280;
+	private final int TEXT_WIDTH = 80;
+	private final int TEXT_START_X = 520;
+	private final int TEXT_START_Y = 150;
+	
+	private int qtdeJogadores = 0;
+	private int gameMode = 0;
+	private String nomesJogadores[] = null;
+	private static boolean GAME_MODE_STATUS = false;
+	private boolean canStartGame = false;
+	private boolean gameModeSelected = true;
+	
+    private JPanel menuInicial = new JPanel();    
+    private JPanel menuJogadores = new JPanel();
+    private JPanel tabuleiro = null;
 
     public JanelaInicial(Tabuleiro tabuleiro) {
-
+    	this.tabuleiro=tabuleiro;
         Toolkit tk = Toolkit.getDefaultToolkit();
         Dimension screenSize=tk.getScreenSize();
         int screenWidth = screenSize.width;
         int screenHeight = screenSize.height;
         setBounds(screenWidth/2 - DEFAULT_WIDTH/2, screenHeight/2 - DEFAULT_HEIGHT/2, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        f1.setSize(screenSize);
+        menuInicial.setSize(screenSize);
         novoOuCarregar();
     }    
       
-    public boolean isCAN_START() {
-		return CAN_START;
+    public boolean getCanStartGame() {
+		return canStartGame;
 	}
 
-	public void setCAN_START(boolean cAN_START) {
-		CAN_START = cAN_START;
-	}
-
-	public int getGAME_MODE() {
-		return GAME_MODE;
-	}
-
-	public void setGAME_MODE(int GAME_MODE) {
-		this.GAME_MODE = GAME_MODE;
+	public int getGameMode() {
+		return gameMode;
 	}
 	
-	public String[] getJogadores() {
-		return jogadores;
+	public String[] getNomesJogadores() {
+		return nomesJogadores;
 	}
-
-
-	public void setJogadores(String[] jogadores) {
-		this.jogadores = jogadores;
-	}
-
 
 	// aparecendo as opcoes de novo jogo ou carregar 
-    public void novoOuCarregar () {
+    private void novoOuCarregar () {
         JButton novoJogo = new JButton("Novo Jogo");
         JButton carregarJogo = new JButton("Carregar Jogo"); 
         
         //botao de novo jogo
         novoJogo.setBounds(BUTTON_START_X, BUTTON_START_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        f1.add(novoJogo);  
+        menuInicial.add(novoJogo);  
         
         //botao de carregar jogo
         carregarJogo.setBounds(BUTTON_START_X, BUTTON_START_Y + BUTTON_SPACE, BUTTON_WIDTH, BUTTON_HEIGHT);  
-        f1.add(carregarJogo);
+        menuInicial.add(carregarJogo);
 
-        menuInicial = f1;
+        //menuInicial = f1;
         novoJogo.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){ 
         		System.out.println("novo jogo");
@@ -100,9 +83,9 @@ class JanelaInicial extends JFrame{
     				numJogadores = quantidadeJogadores();
     			}
 
-                getContentPane().remove(f1);
+                getContentPane().remove(menuInicial);
                 repaint();
-                getContentPane().add(f2);
+                getContentPane().add(menuJogadores);
                 setVisible(true);
     			registraJogadores();
             	
@@ -117,48 +100,44 @@ class JanelaInicial extends JFrame{
         		System.out.println("Carregar jogo");
             }  
         }); 
-        f1.setLayout(null);
-        f1.setVisible(true);
-        add(f1);
+        menuInicial.setLayout(null);
+        menuInicial.setVisible(true);
+        add(menuInicial);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        menuInicial = f1;
-        this.tabuleiro = tabuleiro;
     }
     
     // janela de perguntar a quantidade de jogadores
-    public int quantidadeJogadores() {
+    private int quantidadeJogadores() {
 		while (!GAME_MODE_STATUS) {			
 			try {
 				String msg = "Quantos jogadores? 2 ou 4";
-				QTD_JOGADORES = Integer.parseInt( JOptionPane.showInputDialog(p, msg) );
+				qtdeJogadores = Integer.parseInt( JOptionPane.showInputDialog(janelaInicial, msg) );
 			} 
 			catch (NumberFormatException e) {
-				QTD_JOGADORES = 0;
+				qtdeJogadores = 0;
 			}
 			
-			if ((QTD_JOGADORES == TWO_PLAYERS) || (QTD_JOGADORES == FOUR_PLAYERS)) {
+			if ((qtdeJogadores == TWO_PLAYERS) || (qtdeJogadores == FOUR_PLAYERS)) {
 				GAME_MODE_STATUS = true;
 			}
 			else {
-    			JOptionPane.showMessageDialog(f1,"Número de jogadores inválido");
+    			JOptionPane.showMessageDialog(menuInicial,"Número de jogadores inválido");
 			}
 		}
 
-		return QTD_JOGADORES;
+		return qtdeJogadores;
     }
 
     // janela de perguntar o nome dos jogadores
-    public void registraJogadores() {
-		jogadores = new String[QTD_JOGADORES];
-		Point pos = new Point((TEXT_START_X + (2 - QTD_JOGADORES) * 60), TEXT_START_Y);
+    private void registraJogadores() {
+		nomesJogadores = new String[qtdeJogadores];
+		Point pos = new Point((TEXT_START_X + (2 - qtdeJogadores) * 60), TEXT_START_Y);
 		
-		JTextField[] texts = new JTextField[QTD_JOGADORES];
+		JTextField[] texts = new JTextField[qtdeJogadores];
 		
-		for(int i = 0; i < QTD_JOGADORES; i++)
+		for(int i = 0; i < qtdeJogadores; i++)
 		{
 			JLabel label = new JLabel("Jogador " + (i + 1));
-			DefaultListModel<String> m = new DefaultListModel<String>();
 			
 			texts[i] = new JTextField("Jogador " + (i + 1), 16);
 			
@@ -167,7 +146,7 @@ class JanelaInicial extends JFrame{
 			
 			texts[i].setBounds(pos.x, pos.y, TEXT_WIDTH, TEXT_WIDTH/2);
 			
-			if (QTD_JOGADORES == TWO_PLAYERS)
+			if (qtdeJogadores == TWO_PLAYERS)
 				pos.translate(- TEXT_WIDTH, TEXT_WIDTH);
 			
 			else {
@@ -177,8 +156,8 @@ class JanelaInicial extends JFrame{
 					pos.translate(2 * TEXT_WIDTH, 0);
 			}
 			
-			f2.add(label);
-			f2.add(texts[i]);
+			menuJogadores.add(label);
+			menuJogadores.add(texts[i]);
 		}
 		
 
@@ -186,58 +165,55 @@ class JanelaInicial extends JFrame{
         JButton modo2x2 = new JButton(" Modo 2 VS 2");
         JButton iniciarJogo = new JButton("Iniciar Jogo");
         
-    	modo1x1.setBounds(TEXT_START_X + (2 - QTD_JOGADORES) * 60, pos.y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        modo2x2.setBounds(TEXT_START_X - (2 - QTD_JOGADORES) * 60, pos.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+    	modo1x1.setBounds(TEXT_START_X + (2 - qtdeJogadores) * 60, pos.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        modo2x2.setBounds(TEXT_START_X - (2 - qtdeJogadores) * 60, pos.y, BUTTON_WIDTH, BUTTON_HEIGHT);
         
         pos.translate(TEXT_WIDTH, TEXT_WIDTH);
         iniciarJogo.setBounds(BUTTON_START_X, pos.y , BUTTON_WIDTH, BUTTON_HEIGHT);
         
-        if (QTD_JOGADORES == FOUR_PLAYERS) {
-        	CAN_START = false;
-            f2.add(modo1x1); 
-            f2.add(modo2x2); 
+        if (qtdeJogadores == FOUR_PLAYERS) {
+        	gameModeSelected = false;
+            menuJogadores.add(modo1x1); 
+            menuJogadores.add(modo2x2); 
             
             modo1x1.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent e){ 
-                	GAME_MODE = 1;
+                	gameMode = 1;
     				System.out.printf("\nModo de Jogo Escolhido: 1 VS 1!\n");
-    				CAN_START = true;
+    				gameModeSelected = true;
                 }  
             }); 
             
             modo2x2.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent e){ 
-                	GAME_MODE = 2;
+                	gameMode = 2;
     				System.out.printf("\nModo de Jogo Escolhido: 2 VS 2!\n");
-    				CAN_START = true;
+    				gameModeSelected = true;
                 }  
             }); 
         }
 
 
-        f2.add(iniciarJogo);  
+        menuJogadores.add(iniciarJogo);  
         iniciarJogo.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){
-            	if (QTD_JOGADORES == FOUR_PLAYERS && GAME_MODE == 1) {
-            		for(int i = 0; i < (QTD_JOGADORES / 2); i++)
-    					jogadores[i] = texts[i].getText() + " e " + texts[i + 2].getText();
+            	if (qtdeJogadores == FOUR_PLAYERS && gameMode == 1) {
+            		for(int i = 0; i < (qtdeJogadores / 2); i++)
+    					nomesJogadores[i] = texts[i].getText() + " e " + texts[i + 2].getText();
             	}
             	else
-	            	for(int i = 0; i < QTD_JOGADORES; i++)
-						jogadores[i] = texts[i].getText();
+	            	for(int i = 0; i < qtdeJogadores; i++)
+						nomesJogadores[i] = texts[i].getText();
 				
 				System.out.printf("\nJogo Iniciado\n");
 				
-				if (!CAN_START)
-					JOptionPane.showMessageDialog(f1,"Escolha o modo de jogo antes");
+				if (!gameModeSelected)
+					JOptionPane.showMessageDialog(menuInicial,"Escolha o modo de jogo antes!");
 				else {
-					//TODO: mudar isso criando a ViewFacade
-	                getContentPane().remove(f2);
+	                getContentPane().remove(menuJogadores);
 					getContentPane().add(new Tabuleiro());
 					setVisible(true);
-					ModelFacade.modelStart(GAME_MODE, jogadores);
-					
-
+					canStartGame = true;
 				}
             }  
         }); 
