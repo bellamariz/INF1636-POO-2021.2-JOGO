@@ -19,19 +19,21 @@ import java.util.stream.Collectors;
 
 
 public class Tabuleiro extends JPanel{
-	Image img = null;
+	Image imgTabuleiro = null;
 	Tabuleiro p = this;
 	Map<String, Image> imgPecas = new HashMap<String, Image>();
+	Map<Integer, Image> imgDados = new HashMap<Integer, Image>();
 	private List<Image> dados = new ArrayList();
 	private ArrayList<Integer> valoresDados = new ArrayList<Integer>();
 	public static final String[] CORES = {"Verde", "Laranja", "Azul", "Preto", "Vermelho", "Branco"};
+	public static final int[] DADINHOS = {1, 2, 3, 4, 5, 6};
 	int xOffSet = 647;
 	int yOffSet = 650;
 	int xIni = 0, yIni = 0, imgHeight = yOffSet, imgWidth = xOffSet;
 	
 	public Tabuleiro() {
 		try {
-			img = ImageIO.read(new File("src/view/assets/Latitude90-Tabuleiro.jpg"));
+			imgTabuleiro = ImageIO.read(new File("src/view/assets/Latitude90-Tabuleiro.jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,11 +56,14 @@ public class Tabuleiro extends JPanel{
 	}
 	
 	private void loadImagesDados() {
-		List<File> dadoFolder = Files.walk(Paths.get("dados")).filter(Files::isRegularFile)
-				.map(Path::toFile)
-				.collect(Collectors.toList());
-		for( File file : dadoFolder ){
-			dados.add( ImageIO.read(file) );
+		for(int i = 0; i <= 5; i++) {
+			try {
+				 Image img = ImageIO.read(new File("src/view/assets/dado" + (i + 1) + ".png"));
+				 img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH);
+				 imgDados.put(Integer.valueOf(DADINHOS[i]), img);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -68,9 +73,13 @@ public class Tabuleiro extends JPanel{
 		super.paintComponent(g);
 		p.setLayout(null);
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.drawImage(img, 0, 0, imgWidth, imgHeight,this);
+		g2d.drawImage(imgTabuleiro, 0, 0, imgWidth, imgHeight,this);
+		
+		for (int i = 0; i < 4; i ++)
+			for (int j = 0; j < 6; j++)
+				g2d.drawImage(imgPecas.get(CORES[i]), 700 + 30*j, 50 + 30*i, 30, 30,this);
+		
+		for (int j = 0; j < 2; j++)
+			g2d.drawImage(imgDados.get(DADINHOS[j]), 700 + j * 100, 180, 100, 100,this);
 	}
-
-	
-
 }

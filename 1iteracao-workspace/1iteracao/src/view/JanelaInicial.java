@@ -47,10 +47,17 @@ class JanelaInicial extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         f1.setSize(screenSize);
         novoOuCarregar();
-    }
-        
+    }    
       
-    public int getGAME_MODE() {
+    public boolean isCAN_START() {
+		return CAN_START;
+	}
+
+	public void setCAN_START(boolean cAN_START) {
+		CAN_START = cAN_START;
+	}
+
+	public int getGAME_MODE() {
 		return GAME_MODE;
 	}
 
@@ -226,10 +233,9 @@ class JanelaInicial extends JFrame{
 				else {
 					//TODO: mudar isso criando a ViewFacade
 	                getContentPane().remove(f2);
-					getContentPane().add(tabuleiro);
+					getContentPane().add(new Tabuleiro());
 					setVisible(true);
-					
-					//ModelFacade.modelStart(GAME_MODE, jogadores);
+					ModelFacade.modelStart(GAME_MODE, jogadores);
 					
 
 				}

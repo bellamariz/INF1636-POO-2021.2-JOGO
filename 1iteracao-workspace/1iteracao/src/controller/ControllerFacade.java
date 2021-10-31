@@ -19,8 +19,4 @@ public class ControllerFacade {
 		}
 		return c;
 	} 
-	
-	public void startController() {
-		ModelFacade.modelStart(ViewFacade.GAME_MODE, ViewFacade.jogadores);
-	}
 }
