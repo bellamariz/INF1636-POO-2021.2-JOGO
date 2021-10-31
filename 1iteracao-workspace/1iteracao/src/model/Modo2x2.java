@@ -2,7 +2,7 @@ package model;
 
 class Modo2x2{
 	private Jogador playerA1, playerA2, playerB1, playerB2;
-	private MovePecas jogo = null;
+	private ModelFacade jogo = null;
 	private Jogador[] jogadores = null;
 	
 	public Modo2x2(String names[], int modoJogo) {
@@ -11,7 +11,7 @@ class Modo2x2{
 		this.playerB1 = new Jogador(names[2], ModoJogo.CORES[2], 3);
         this.playerB2 = new Jogador(names[3], ModoJogo.CORES[3], 4);
         this.jogadores = montaJogadores();
-        this.jogo = new MovePecas(jogadores, modoJogo);
+        this.jogo = new ModelFacade(jogadores, modoJogo);
 	}
 	
     public Jogador getPlayerA1() {

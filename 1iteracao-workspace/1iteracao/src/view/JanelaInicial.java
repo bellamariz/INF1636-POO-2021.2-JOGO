@@ -7,12 +7,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import model.RodaModel;
+import model.ModelFacade;
 
-public class JanelaInicial extends JFrame{
+class JanelaInicial extends JFrame{
 	
 	private JPanel menuInicial;
-	private JPanel tv;
+	private JPanel menuJogadores;
+	private JPanel tabuleiro;
     private JanelaInicial p = this;
 	
 	private int QTD_JOGADORES = 0;
@@ -31,10 +32,12 @@ public class JanelaInicial extends JFrame{
 	public int TEXT_WIDTH = 80;
     public int TEXT_START_X = 520;
     public int TEXT_START_Y = 150;
-    JPanel f1 = new JPanel();  
-    JPanel f2 = new JPanel();  
+    JPanel f1 = new JPanel();    
+    JPanel f2 = new JPanel();
+    JPanel f3 = new JPanel();
+    String jogadores[] = null;
 
-    public JanelaInicial() {
+    public JanelaInicial(Tabuleiro tabuleiro) {
 
         Toolkit tk = Toolkit.getDefaultToolkit();
         Dimension screenSize=tk.getScreenSize();
@@ -42,15 +45,30 @@ public class JanelaInicial extends JFrame{
         int screenHeight = screenSize.height;
         setBounds(screenWidth/2 - DEFAULT_WIDTH/2, screenHeight/2 - DEFAULT_HEIGHT/2, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
-        
         f1.setSize(screenSize);
-    	f2.setSize(screenSize);
         novoOuCarregar();
     }
         
       
-    // aparecendo as opcoes de novo jogo ou carregar 
+    public int getGAME_MODE() {
+		return GAME_MODE;
+	}
+
+	public void setGAME_MODE(int GAME_MODE) {
+		this.GAME_MODE = GAME_MODE;
+	}
+	
+	public String[] getJogadores() {
+		return jogadores;
+	}
+
+
+	public void setJogadores(String[] jogadores) {
+		this.jogadores = jogadores;
+	}
+
+
+	// aparecendo as opcoes de novo jogo ou carregar 
     public void novoOuCarregar () {
         JButton novoJogo = new JButton("Novo Jogo");
         JButton carregarJogo = new JButton("Carregar Jogo"); 
@@ -62,18 +80,23 @@ public class JanelaInicial extends JFrame{
         //botao de carregar jogo
         carregarJogo.setBounds(BUTTON_START_X, BUTTON_START_Y + BUTTON_SPACE, BUTTON_WIDTH, BUTTON_HEIGHT);  
         f1.add(carregarJogo);
-        
+
+        menuInicial = f1;
         novoJogo.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){ 
         		System.out.println("novo jogo");
+        		
+				//repaint();
                 int numJogadores = 0;
 
     			while ( numJogadores < 2 || numJogadores > 6 ) {
     				numJogadores = quantidadeJogadores();
     			}
 
-                repaint();
                 getContentPane().remove(f1);
+                repaint();
+                getContentPane().add(f2);
+                setVisible(true);
     			registraJogadores();
             	
             }  
@@ -87,13 +110,13 @@ public class JanelaInicial extends JFrame{
         		System.out.println("Carregar jogo");
             }  
         }); 
-        f1.setSize(400,400);  
         f1.setLayout(null);
         f1.setVisible(true);
         add(f1);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         menuInicial = f1;
-        this.tv = tv;
+        this.tabuleiro = tabuleiro;
     }
     
     // janela de perguntar a quantidade de jogadores
@@ -120,7 +143,7 @@ public class JanelaInicial extends JFrame{
 
     // janela de perguntar o nome dos jogadores
     public void registraJogadores() {
-		String jogadores[] = new String[QTD_JOGADORES];
+		jogadores = new String[QTD_JOGADORES];
 		Point pos = new Point((TEXT_START_X + (2 - QTD_JOGADORES) * 60), TEXT_START_Y);
 		
 		JTextField[] texts = new JTextField[QTD_JOGADORES];
@@ -147,8 +170,8 @@ public class JanelaInicial extends JFrame{
 					pos.translate(2 * TEXT_WIDTH, 0);
 			}
 			
-			getContentPane().add(label);
-			getContentPane().add(texts[i]);
+			f2.add(label);
+			f2.add(texts[i]);
 		}
 		
 
@@ -164,8 +187,8 @@ public class JanelaInicial extends JFrame{
         
         if (QTD_JOGADORES == FOUR_PLAYERS) {
         	CAN_START = false;
-            getContentPane().add(modo1x1); 
-            getContentPane().add(modo2x2); 
+            f2.add(modo1x1); 
+            f2.add(modo2x2); 
             
             modo1x1.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent e){ 
@@ -185,7 +208,7 @@ public class JanelaInicial extends JFrame{
         }
 
 
-        getContentPane().add(iniciarJogo);  
+        f2.add(iniciarJogo);  
         iniciarJogo.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){
             	if (QTD_JOGADORES == FOUR_PLAYERS && GAME_MODE == 1) {
@@ -201,7 +224,14 @@ public class JanelaInicial extends JFrame{
 				if (!CAN_START)
 					JOptionPane.showMessageDialog(f1,"Escolha o modo de jogo antes");
 				else {
-					RodaModel jogo = new RodaModel(GAME_MODE, jogadores);
+					//TODO: mudar isso criando a ViewFacade
+	                getContentPane().remove(f2);
+					getContentPane().add(tabuleiro);
+					setVisible(true);
+					
+					//ModelFacade.modelStart(GAME_MODE, jogadores);
+					
+
 				}
             }  
         }); 

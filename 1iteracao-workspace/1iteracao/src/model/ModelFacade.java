@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Scanner;
 import java.util.Set;
 
-class MovePecas {
+public class ModelFacade {
 	private int exploradorParaMover, longitudeInicial, opcaoDeMovimento; //Variaveis de input
 	private boolean fimDeJogo = false, jogadaTabuleiroPossivel = false, moverExploradorPossivel = false, casaLiberada = false, metaCumprida = false;
 	private Jogador jogadorDaVez = null, jogadorAux = null;
@@ -20,8 +20,9 @@ class MovePecas {
     private ArrayList<CartaDinamica> deckCartaDinamica = new ArrayList<CartaDinamica>(18);
     private CartaDinamica cartaEscolhida = null;
     private ArrayList<Jogador> jogadoresOrdenados;
+    private ArrayList<Integer> valoresDados = null;
     
-    public MovePecas(Jogador[] listaDeJogadores, int gameMode) {
+    public ModelFacade(Jogador[] listaDeJogadores, int gameMode) {
     	this.tabuleiroPoloSul = new Tabuleiro(gameMode);
     	this.tabuleiroPoloNorte = new Tabuleiro(gameMode);
     	this.jogadoresOrdenados = new ArrayList<Jogador>(gameMode);
@@ -30,7 +31,15 @@ class MovePecas {
         inicializaTabuleiro(listaDeJogadores);
     }
     
-  //Inicializa o deck de cartas dinamicas
+    public static void modelStart(int gameMode, String[] jogadores) {
+    	ModoJogo modo = new ModoJogo(gameMode,jogadores);
+    }
+    
+    public ArrayList<Integer> getDados() {
+		return valoresDados;
+	}
+
+	//Inicializa o deck de cartas dinamicas
   	private void initializeCards() {
   		CartaDinamica carta;
   		String cartaAcao = "Acao: ";
@@ -75,7 +84,9 @@ class MovePecas {
         for (Integer num:uniqueDados) {
         	dados.add(num);
         }
-    	
+        
+        this.valoresDados = dados;
+        
     	//Cria o array de jogadores e ordenada por lançamento de dado mais alto
     	for (int j=0; j<tam; j++) {
     		listaDeJogadores[j].setDado(dados.get(j).intValue());
@@ -112,7 +123,7 @@ class MovePecas {
         }
         
     	if (jogadoresOrdenados != null) {
-    		jogo();
+    		//jogo();
     	}
     	
     }
