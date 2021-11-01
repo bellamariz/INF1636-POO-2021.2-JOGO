@@ -11,7 +11,7 @@ class MovePecas {
 	private int exploradorParaMover, longitudeInicial, opcaoDeMovimento; //Variaveis de input
 	private boolean fimDeJogo = false, jogadaTabuleiroPossivel = false, moverExploradorPossivel = false, casaLiberada = false, metaCumprida = false;
 	private Jogador jogadorDaVez = null, jogadorAux = null;
-	private Dado dado = new Dado();
+	private Dado dado = null;
 	private CartaDinamica cartaEscolhida = null;
     private Tabuleiro tabuleiroPoloSul = null;
     private Tabuleiro tabuleiroPoloNorte = null;
@@ -23,7 +23,8 @@ class MovePecas {
     private static ModoJogo jogo = null;
     private Scanner s = new Scanner(System.in);
     
-    public MovePecas(int mode, String[] nomes) {
+    public MovePecas(int mode, String[] nomes, Dado dado) {
+    	this.dado = dado;
     	jogo = ModoJogo.getInstance(mode, nomes);
     	initGame();
     }

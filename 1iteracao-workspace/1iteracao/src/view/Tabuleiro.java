@@ -2,7 +2,14 @@ package view;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import model.ModelFacade;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -18,7 +25,7 @@ import java.io.File;
 import java.util.stream.Collectors;
 
 
-public class Tabuleiro extends JPanel{
+class Tabuleiro extends JPanel{
 	private Image imgTabuleiro = null;
 	private Tabuleiro tabuleiro = this;
 	private Map<String, Image> imgPecas = new HashMap<String, Image>();
@@ -28,6 +35,14 @@ public class Tabuleiro extends JPanel{
 	private int xOffSet = 647;
 	private int yOffSet = 650;
 	private int xIni = 0, yIni = 0, imgHeight = yOffSet, imgWidth = xOffSet;
+	private final int BUTTON_WIDTH = 150;
+	private final int BUTTON_HEIGHT = 30;
+	private final int BUTTON_SPACE = 60;
+	private final int BUTTON_START_X = 725;
+	private final int BUTTON_START_Y = 300;
+	private JButton btLancaDado = null;
+	private int dado1 = 0;
+	private int dado2 = 0;
 	
 	public Tabuleiro() {
 		try {
@@ -37,6 +52,10 @@ public class Tabuleiro extends JPanel{
 		}
 		loadImagesPecas();
 		loadImagesDados();
+	}
+	
+	private void lancaDado() {
+		
 	}
 	
 	private void loadImagesPecas() {
@@ -68,13 +87,29 @@ public class Tabuleiro extends JPanel{
 		super.paintComponent(g);
 		tabuleiro.setLayout(null);
 		Graphics2D g2d = (Graphics2D) g;
+		
+		btLancaDado = new JButton("Lançar Dados");
+		btLancaDado.setBounds(BUTTON_START_X, BUTTON_START_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        add(btLancaDado);
+		
+		dado1 = ModelFacade.getValorDado();
+		dado2 = ModelFacade.getValorDado();
+		
 		g2d.drawImage(imgTabuleiro, 0, 0, imgWidth, imgHeight,this);
 		
 		for (int i = 0; i < 4; i ++)
 			for (int j = 0; j < 6; j++)
-				g2d.drawImage(imgPecas.get(CORES[i]), 700 + 30*j, 50 + 30*i, 30, 30,this);
+				g2d.drawImage(imgPecas.get(CORES[i]), 700 + 30*j, 50 + 30*i, 50, 50,this);
+        
+        g2d.drawImage(imgDados.get(Integer.valueOf(dado1)), 700, 200, 100, 100,this);
+		g2d.drawImage(imgDados.get(Integer.valueOf(dado2)), 800, 200, 100, 100,this);
 		
-		for (int j = 0; j < 2; j++)
-			g2d.drawImage(imgDados.get(DADINHOS[j]), 700 + j * 100, 180, 100, 100,this);
-	}
+		btLancaDado.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){ 
+        		tabuleiro.repaint();
+            }  
+        });
+        
+    }
+
 }
