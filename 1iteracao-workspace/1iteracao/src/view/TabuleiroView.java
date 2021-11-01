@@ -25,9 +25,9 @@ import java.io.File;
 import java.util.stream.Collectors;
 
 
-class Tabuleiro extends JPanel{
+class TabuleiroView extends JPanel{
 	private Image imgTabuleiro = null;
-	private Tabuleiro tabuleiro = this;
+	private TabuleiroView tabuleiro = this;
 	private Map<String, Image> imgPecas = new HashMap<String, Image>();
 	private Map<Integer, Image> imgDados = new HashMap<Integer, Image>();
 	private static final String[] CORES = {"Verde", "Laranja", "Azul", "Preto", "Vermelho", "Branco"};
@@ -44,7 +44,7 @@ class Tabuleiro extends JPanel{
 	private int dado1 = 0;
 	private int dado2 = 0;
 	
-	public Tabuleiro() {
+	public TabuleiroView() {
 		try {
 			imgTabuleiro = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/Latitude90-Tabuleiro.jpg"));
 		} catch (IOException e) {

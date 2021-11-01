@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-class JanelaInicial extends JFrame{
+class JanelaInicialView extends JFrame{
 	
-    private JanelaInicial janelaInicial = this;
+    private JanelaInicialView janelaInicialView = this;
 	private static final int TWO_PLAYERS = 2;
 	private static final int FOUR_PLAYERS = 4;
 	private final int DEFAULT_WIDTH = 1200;
@@ -34,7 +34,7 @@ class JanelaInicial extends JFrame{
     private JPanel menuJogadores = new JPanel();
     private JPanel tabuleiro = null;
 
-    public JanelaInicial(Tabuleiro tabuleiro) {
+    public JanelaInicialView(TabuleiroView tabuleiro) {
     	this.tabuleiro=tabuleiro;
         Toolkit tk = Toolkit.getDefaultToolkit();
         Dimension screenSize=tk.getScreenSize();
@@ -111,7 +111,7 @@ class JanelaInicial extends JFrame{
 		while (!GAME_MODE_STATUS) {			
 			try {
 				String msg = "Quantos jogadores? 2 ou 4";
-				qtdeJogadores = Integer.parseInt( JOptionPane.showInputDialog(janelaInicial, msg) );
+				qtdeJogadores = Integer.parseInt( JOptionPane.showInputDialog(janelaInicialView, msg) );
 			} 
 			catch (NumberFormatException e) {
 				qtdeJogadores = 0;

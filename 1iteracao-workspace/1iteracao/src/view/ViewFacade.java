@@ -1,25 +1,25 @@
 package view;
 
 public class ViewFacade {
-	public static JanelaInicial janelaInicial;
-	public static Tabuleiro tabuleiro;
+	public static JanelaInicialView janelaInicialView;
+	public static TabuleiroView tabuleiroView;
 
 	public static void startView () {
-		tabuleiro = new Tabuleiro();
-		janelaInicial = new JanelaInicial(tabuleiro);
-		janelaInicial.setTitle("Latitude 90");
-		janelaInicial.setVisible(true);
+		tabuleiroView = new TabuleiroView();
+		janelaInicialView = new JanelaInicialView(tabuleiroView);
+		janelaInicialView.setTitle("Latitude 90");
+		janelaInicialView.setVisible(true);
 	}
 	
 	public static String[] getNomeJogadores() {
-		return janelaInicial.getNomesJogadores();
+		return janelaInicialView.getNomesJogadores();
 	}
 	
 	public static int getGameMode() {
-		return janelaInicial.getGameMode();
+		return janelaInicialView.getGameMode();
 	}
 	
 	public static boolean getCanStartGame() {
-		return janelaInicial.getCanStartGame();
+		return janelaInicialView.getCanStartGame();
 	}
 }
