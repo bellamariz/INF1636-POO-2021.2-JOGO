@@ -5,8 +5,8 @@ public class ViewFacade {
 	public static Tabuleiro tabuleiro;
 
 	public static void startView () {
-//		tabuleiro = new Tabuleiro();
-		janelaInicial = new JanelaInicial();
+		tabuleiro = new Tabuleiro();
+		janelaInicial = new JanelaInicial(tabuleiro);
 		janelaInicial.setTitle("Latitude 90");
 		janelaInicial.setVisible(true);
 	}
