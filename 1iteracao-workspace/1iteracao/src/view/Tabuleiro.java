@@ -31,7 +31,7 @@ public class Tabuleiro extends JPanel{
 	
 	public Tabuleiro() {
 		try {
-			imgTabuleiro = ImageIO.read(new File("src/view/assets/Latitude90-Tabuleiro.jpg"));
+			imgTabuleiro = ImageIO.read(new File("/src/view.assets/Latitude90-Tabuleiro.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +43,7 @@ public class Tabuleiro extends JPanel{
 		
 		for(int i = 0; i <= 3; i++) {
 			try {
-				 Image img = ImageIO.read(new File("src/view/assets/jogador" + (i + 1) + ".png"));
+				 Image img = ImageIO.read(new File("/src/view/assets/jogador" + (i + 1) + ".png"));
 				 img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH);
 				 imgPecas.put(CORES[i], img);
 			} catch (IOException e) {
@@ -55,7 +55,7 @@ public class Tabuleiro extends JPanel{
 	private void loadImagesDados() {
 		for(int i = 0; i <= 5; i++) {
 			try {
-				 Image img = ImageIO.read(new File("src/view/assets/dado" + (i + 1) + ".png"));
+				 Image img = ImageIO.read(new File("/src/view/assets/dado" + (i + 1) + ".png"));
 				 img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH);
 				 imgDados.put(Integer.valueOf(DADINHOS[i]), img);
 			} catch (IOException e) {

@@ -6,14 +6,15 @@ import view.ViewFacade;
 public class ControllerFacade {
 
 	private static ControllerFacade controller = null;
+	private boolean canStartGame = false;
 	
 	public ControllerFacade() {
 		ViewFacade.startView();
 		
-		if (ViewFacade.getCanStartGame())
-			ModelFacade.startModel(ViewFacade.getGameMode(),ViewFacade.getNomeJogadores());
-		else
-			System.out.print("Não foi possível iniciar o jogo.\n");
+		while (!canStartGame)
+			if (ViewFacade.getCanStartGame())
+				ModelFacade.startModel(ViewFacade.getGameMode(),ViewFacade.getNomeJogadores());
+				canStartGame = true;
 	}
 	
 	public static ControllerFacade getController() {

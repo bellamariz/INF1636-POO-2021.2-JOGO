@@ -32,10 +32,9 @@ class JanelaInicial extends JFrame{
 	
     private JPanel menuInicial = new JPanel();    
     private JPanel menuJogadores = new JPanel();
-    private JPanel tabuleiro = null;
+//    private JPanel tabuleiro = null;
 
-    public JanelaInicial(Tabuleiro tabuleiro) {
-    	this.tabuleiro=tabuleiro;
+    public JanelaInicial() {
         Toolkit tk = Toolkit.getDefaultToolkit();
         Dimension screenSize=tk.getScreenSize();
         int screenWidth = screenSize.width;
