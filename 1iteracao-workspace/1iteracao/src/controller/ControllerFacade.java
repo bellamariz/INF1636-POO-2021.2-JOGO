@@ -4,16 +4,19 @@ import model.ModelFacade;
 import view.ViewFacade;
 
 public class ControllerFacade {
-
 	private static ControllerFacade controller = null;
 	private boolean canStartGame = false;
+	private static ViewFacade view = null;
+	private static ModelFacade model = null;
 	
-	public ControllerFacade() {
-		ViewFacade.startView();
+	private ControllerFacade() {
+		view = ViewFacade.getInstance();
+		model = ModelFacade.getInstance();
 		
+		view.startView();
 		while (!canStartGame)
-			if (ViewFacade.getCanStartGame())
-				ModelFacade.startModel(ViewFacade.getGameMode(),ViewFacade.getNomeJogadores());
+			if (view.getCanStartGame())
+				model.startModel(view.getGameMode(),view.getNomeJogadores());
 				canStartGame = true;
 	}
 	
@@ -22,5 +25,13 @@ public class ControllerFacade {
 			controller = new ControllerFacade();
 		}
 		return controller;
-	} 
+	}
+	
+	public static ViewFacade getView() {
+		return view;
+	}
+	
+	public static ModelFacade getModel() {
+		return model;
+	}
 }

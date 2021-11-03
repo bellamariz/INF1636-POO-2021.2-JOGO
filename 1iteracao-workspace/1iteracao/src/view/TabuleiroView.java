@@ -3,6 +3,7 @@ package view;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import controller.ControllerFacade;
 import model.ModelFacade;
 
 import java.awt.*;
@@ -40,7 +41,7 @@ class TabuleiroView extends JPanel{
 	private final int BUTTON_SPACE = 60;
 	private final int BUTTON_START_X = 725;
 	private final int BUTTON_START_Y = 300;
-	private JButton btLancaDado = null;
+	private JButton btLancaDado = new JButton("Lançar Dados");
 	private int dado1 = 0;
 	private int dado2 = 0;
 	
@@ -50,12 +51,10 @@ class TabuleiroView extends JPanel{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		btLancaDado.setBounds(BUTTON_START_X, BUTTON_START_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		loadImagesPecas();
 		loadImagesDados();
-	}
-	
-	private void lancaDado() {
-		
+		lancaDados();
 	}
 	
 	private void loadImagesPecas() {
@@ -83,17 +82,24 @@ class TabuleiroView extends JPanel{
 		}
 	}
 	
+	private void lancaDados() {
+		btLancaDado.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado1 = ControllerFacade.getModel().getValorDado();
+				dado2 = ControllerFacade.getModel().getValorDado();
+				tabuleiro.repaint();
+			}
+			
+		});
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		tabuleiro.setLayout(null);
 		Graphics2D g2d = (Graphics2D) g;
 		
-		btLancaDado = new JButton("Lançar Dados");
-		btLancaDado.setBounds(BUTTON_START_X, BUTTON_START_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        add(btLancaDado);
 		
-		dado1 = ModelFacade.getValorDado();
-		dado2 = ModelFacade.getValorDado();
+        add(btLancaDado);
 		
 		g2d.drawImage(imgTabuleiro, 0, 0, imgWidth, imgHeight,this);
 		
@@ -103,12 +109,6 @@ class TabuleiroView extends JPanel{
         
         g2d.drawImage(imgDados.get(Integer.valueOf(dado1)), 700, 200, 100, 100,this);
 		g2d.drawImage(imgDados.get(Integer.valueOf(dado2)), 800, 200, 100, 100,this);
-		
-		btLancaDado.addActionListener(new ActionListener(){  
-            public void actionPerformed(ActionEvent e){ 
-        		tabuleiro.repaint();
-            }  
-        });
         
     }
 

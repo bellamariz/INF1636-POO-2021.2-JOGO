@@ -1,18 +1,28 @@
 package model;
 
 public class ModelFacade {
-	public static MovePecas movePecas;
-	public static Dado dado = new Dado();
+	private static ModelFacade model = null;
+	private MovePecas movePecas = null;
+	private Dado dado = new Dado();
+	
+	private ModelFacade() {}
+	
+	public static ModelFacade getInstance() {
+		if(model == null) {
+			model = new ModelFacade();
+		}
+		return model;
+	}
 
-	public static void startModel (int gameMode, String[] nomesJogadores) {
+	public void startModel (int gameMode, String[] nomesJogadores) {
 		movePecas = new MovePecas(gameMode,nomesJogadores,dado);
 	}
 	
-	public static int getValorDado() {
+	public int getValorDado() {
 		return dado.lanca();
 	}
 	
-	public static String getDadoColorido(int dado1, int dado2) {
+	public String getDadoColorido(int dado1, int dado2) {
 		return dado.getDadoColorido(dado1, dado2);
 	}
 
