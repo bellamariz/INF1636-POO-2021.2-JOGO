@@ -44,6 +44,8 @@ class TabuleiroView extends JPanel{
 	private JButton btLancaDado = new JButton("Lançar Dados");
 	private int dado1 = 0;
 	private int dado2 = 0;
+	private int mouse_x = 0;
+	private int mouse_y = 0;
 	
 	public TabuleiroView() {
 		try {
@@ -96,8 +98,7 @@ class TabuleiroView extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		tabuleiro.setLayout(null);
-		Graphics2D g2d = (Graphics2D) g;
-		
+		Graphics2D g2d = (Graphics2D) g;		
 		
         add(btLancaDado);
 		
