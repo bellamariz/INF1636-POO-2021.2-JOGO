@@ -217,7 +217,6 @@ class JanelaInicialView extends JFrame{
 					JOptionPane.showMessageDialog(menuInicial,"Escolha o modo de jogo antes!");
 				else {
 	                getContentPane().remove(menuJogadores);
-	                System.out.printf("a"+gameMode);
 	                tabuleiroView.setGameMode(gameMode);
 	                tabuleiro = tabuleiroView;
 					getContentPane().add(tabuleiro);

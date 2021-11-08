@@ -7,23 +7,13 @@ import controller.ControllerFacade;
 import model.ModelFacade;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.io.File;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.nio.*;
+import java.awt.geom.*;
+import java.lang.Math.*;
 
 
 class TabuleiroView extends JPanel implements MouseListener{
@@ -107,15 +97,58 @@ class TabuleiroView extends JPanel implements MouseListener{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		tabuleiro.setLayout(null);
-		Graphics2D g2d = (Graphics2D) g;		
+		Graphics2D g2d = (Graphics2D) g;	
+		Rectangle2D rt;
 		
         add(btLancaDado);
 		
 		g2d.drawImage(imgTabuleiro, 0, 0, imgWidth, imgHeight,this);
 		
+		//TODO: apagar isso
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(130, 315, 20, 15);
+		g2d.fill(rt);
+		g2d.setColor(Color.orange);
+        rt=new Rectangle2D.Double(138, 291, 18, 15);
+		g2d.fill(rt);
+		g2d.setColor(Color.magenta);
+        rt=new Rectangle2D.Double(158, 281, 18, 16);
+		g2d.fill(rt);
+		g2d.setColor(Color.cyan);
+        rt=new Rectangle2D.Double(178, 281, 18, 16);
+		g2d.fill(rt);
+		g2d.setColor(Color.lightGray);
+        rt=new Rectangle2D.Double(198, 291, 18, 15);
+		g2d.fill(rt);
+		g2d.setColor(Color.red);
+        rt=new Rectangle2D.Double(204, 315, 20, 15);
+		g2d.fill(rt);
+		g2d.setColor(Color.yellow);
+        rt=new Rectangle2D.Double(204, 333, 20, 15);
+		g2d.fill(rt);
+		g2d.setColor(Color.green);
+        rt=new Rectangle2D.Double(200, 355, 18, 15);
+		g2d.fill(rt);
+		g2d.setColor(Color.darkGray);
+        rt=new Rectangle2D.Double(178, 365, 18, 16);
+		g2d.fill(rt);
+		g2d.setColor(Color.white);
+        rt=new Rectangle2D.Double(158, 365, 18, 16);
+		g2d.fill(rt);
+		g2d.setColor(Color.black);
+        rt=new Rectangle2D.Double(138, 356, 18, 15);
+		g2d.fill(rt);
+        g2d.setColor(Color.blue);
+        rt=new Rectangle2D.Double(130, 333, 20, 15);
+		g2d.fill(rt);
+		
 		for (int i = 0; i < (2*gameMode); i ++)
-			for (int j = 0; j < 6; j++)
-				g2d.drawImage(imgPecas.get(CORES[i]), 700 + 30*j, 50 + 30*i, 50, 50,this);
+			for (int j = 0; j < 6; j++) {
+				if (i % 2 == 0)
+					g2d.drawImage(imgPecas.get(CORES[i]), 153 + 10*i, 295 + 7*j, 30, 30,this); //polo sul: x = 178, y = 330
+				else
+					g2d.drawImage(imgPecas.get(CORES[i]), 452 + 10*(i-1), 295 + 7*j, 30, 30,this); //polo norte: x = 477, y = 330
+			}
         
         g2d.drawImage(imgDados.get(Integer.valueOf(dado1)), 700, 200, 100, 100,this);
 		g2d.drawImage(imgDados.get(Integer.valueOf(dado2)), 800, 200, 100, 100,this);
@@ -124,7 +157,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 
 	public void mousePressed(MouseEvent e) {
 		int x=e.getX(),y=e.getY();
-		System.out.println(x+":"+y); //polo sul: x = 178, y = 330 e polo norte: x = 477, y = 330
+		System.out.println("x:"+x+",y:"+y); //polo sul: x = 178, y = 330 e polo norte: x = 477, y = 330
 	}
 	
 	public void mouseClicked(MouseEvent e) {}
