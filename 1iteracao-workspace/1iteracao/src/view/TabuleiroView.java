@@ -46,6 +46,8 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private int dado2 = 0;
 	private int mouse_x = 0;
 	private int mouse_y = 0;
+
+	private int gameMode = 0;
 	
 	public TabuleiroView() {
 		try {
@@ -58,9 +60,14 @@ class TabuleiroView extends JPanel implements MouseListener{
 		loadImagesDados();
 		lancaDados();
 		
+		
 		addMouseListener(this);
 	}
-	
+
+	public void setGameMode(int gameMode) {
+		this.gameMode = gameMode;
+	}
+
 	private void loadImagesPecas() {
 		
 		for(int i = 0; i <= 3; i++) {
@@ -106,7 +113,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 		
 		g2d.drawImage(imgTabuleiro, 0, 0, imgWidth, imgHeight,this);
 		
-		for (int i = 0; i < 4; i ++)
+		for (int i = 0; i < (2*gameMode); i ++)
 			for (int j = 0; j < 6; j++)
 				g2d.drawImage(imgPecas.get(CORES[i]), 700 + 30*j, 50 + 30*i, 50, 50,this);
         

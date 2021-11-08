@@ -33,9 +33,10 @@ class JanelaInicialView extends JFrame{
     private JPanel menuInicial = new JPanel();    
     private JPanel menuJogadores = new JPanel();
     private JPanel tabuleiro = null;
+    private TabuleiroView tabuleiroView;
 
     public JanelaInicialView(TabuleiroView tabuleiro) {
-    	this.tabuleiro=tabuleiro;
+    	this.tabuleiroView = tabuleiro;
         Toolkit tk = Toolkit.getDefaultToolkit();
         Dimension screenSize=tk.getScreenSize();
         int screenWidth = screenSize.width;
@@ -192,6 +193,11 @@ class JanelaInicialView extends JFrame{
                 }  
             }); 
         }
+        
+        else {
+        	gameModeSelected = true;
+        	gameMode = 1;
+        }
 
 
         menuJogadores.add(iniciarJogo);  
@@ -211,6 +217,9 @@ class JanelaInicialView extends JFrame{
 					JOptionPane.showMessageDialog(menuInicial,"Escolha o modo de jogo antes!");
 				else {
 	                getContentPane().remove(menuJogadores);
+	                System.out.printf("a"+gameMode);
+	                tabuleiroView.setGameMode(gameMode);
+	                tabuleiro = tabuleiroView;
 					getContentPane().add(tabuleiro);
 					setVisible(true);
 					canStartGame = true;
