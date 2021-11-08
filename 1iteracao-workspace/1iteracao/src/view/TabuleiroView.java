@@ -31,7 +31,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private TabuleiroView tabuleiro = this;
 	private Map<String, Image> imgPecas = new HashMap<String, Image>();
 	private Map<Integer, Image> imgDados = new HashMap<Integer, Image>();
-	private static final String[] CORES = {"Verde", "Laranja", "Azul", "Preto", "Vermelho", "Branco"};
+	private static final String[] CORES = {"Preto", "Azul", "Verde", "Laranja", "Vermelho", "Branco"};
 	private static final int[] DADINHOS = {1, 2, 3, 4, 5, 6};
 	private int xOffSet = 647;
 	private int yOffSet = 650;

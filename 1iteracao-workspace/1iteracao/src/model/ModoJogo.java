@@ -7,7 +7,7 @@ import java.util.Set;
 
 class ModoJogo {
 	private static ModoJogo modoJogoInstance;
-	public static final String[] CORES = {"Verde", "Laranja", "Azul", "Preto", "Vermelho", "Branco"};
+	public static final String[] CORES = {"Preto", "Azul", "Verde", "Laranja", "Vermelho", "Branco"};
 	public static int NUM_JOGADORES;
 	private int gameMode = 0;
 	private String nomes[] = new String[4];
