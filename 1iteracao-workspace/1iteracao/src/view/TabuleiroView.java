@@ -115,11 +115,12 @@ class TabuleiroView extends JPanel implements MouseListener{
         
     }
 
-	public void mouseClicked(MouseEvent e) {}
 	public void mousePressed(MouseEvent e) {
 		int x=e.getX(),y=e.getY();
-		System.out.println(x+":"+y);
+		System.out.println(x+":"+y); //polo sul: x = 178, y = 330 e polo norte: x = 477, y = 330
 	}
+	
+	public void mouseClicked(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
