@@ -26,7 +26,7 @@ import java.io.File;
 import java.util.stream.Collectors;
 
 
-class TabuleiroView extends JPanel{
+class TabuleiroView extends JPanel implements MouseListener{
 	private Image imgTabuleiro = null;
 	private TabuleiroView tabuleiro = this;
 	private Map<String, Image> imgPecas = new HashMap<String, Image>();
@@ -49,7 +49,7 @@ class TabuleiroView extends JPanel{
 	
 	public TabuleiroView() {
 		try {
-			imgTabuleiro = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/Latitude90-Tabuleiro.jpg"));
+			imgTabuleiro = ImageIO.read(new File("src/view/assets/Latitude90-Tabuleiro.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -57,13 +57,15 @@ class TabuleiroView extends JPanel{
 		loadImagesPecas();
 		loadImagesDados();
 		lancaDados();
+		
+		addMouseListener(this);
 	}
 	
 	private void loadImagesPecas() {
 		
 		for(int i = 0; i <= 3; i++) {
 			try {
-				 Image img = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/jogador" + (i + 1) + ".png"));
+				 Image img = ImageIO.read(new File("src/view/assets/jogador" + (i + 1) + ".png"));
 				 img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH);
 				 imgPecas.put(CORES[i], img);
 			} catch (IOException e) {
@@ -75,7 +77,7 @@ class TabuleiroView extends JPanel{
 	private void loadImagesDados() {
 		for(int i = 0; i <= 5; i++) {
 			try {
-				 Image img = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/dado" + (i + 1) + ".png"));
+				 Image img = ImageIO.read(new File("src/view/assets/dado" + (i + 1) + ".png"));
 				 img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH);
 				 imgDados.put(Integer.valueOf(DADINHOS[i]), img);
 			} catch (IOException e) {
@@ -112,5 +114,14 @@ class TabuleiroView extends JPanel{
 		g2d.drawImage(imgDados.get(Integer.valueOf(dado2)), 800, 200, 100, 100,this);
         
     }
+
+	public void mouseClicked(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {
+		int x=e.getX(),y=e.getY();
+		System.out.println(x+":"+y);
+	}
+	public void mouseReleased(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
 
 }
