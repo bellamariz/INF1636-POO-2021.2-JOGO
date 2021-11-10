@@ -104,44 +104,6 @@ class TabuleiroView extends JPanel implements MouseListener{
 		
 		g2d.drawImage(imgTabuleiro, 0, 0, imgWidth, imgHeight,this);
 		
-		//TODO: apagar isso
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(130, 315, 20, 15);
-		g2d.fill(rt);
-		g2d.setColor(Color.orange);
-        rt=new Rectangle2D.Double(138, 291, 18, 15);
-		g2d.fill(rt);
-		g2d.setColor(Color.magenta);
-        rt=new Rectangle2D.Double(158, 281, 18, 16);
-		g2d.fill(rt);
-		g2d.setColor(Color.cyan);
-        rt=new Rectangle2D.Double(178, 281, 18, 16);
-		g2d.fill(rt);
-		g2d.setColor(Color.lightGray);
-        rt=new Rectangle2D.Double(198, 291, 18, 15);
-		g2d.fill(rt);
-		g2d.setColor(Color.red);
-        rt=new Rectangle2D.Double(204, 315, 20, 15);
-		g2d.fill(rt);
-		g2d.setColor(Color.yellow);
-        rt=new Rectangle2D.Double(204, 333, 20, 15);
-		g2d.fill(rt);
-		g2d.setColor(Color.green);
-        rt=new Rectangle2D.Double(200, 355, 18, 15);
-		g2d.fill(rt);
-		g2d.setColor(Color.darkGray);
-        rt=new Rectangle2D.Double(178, 365, 18, 16);
-		g2d.fill(rt);
-		g2d.setColor(Color.white);
-        rt=new Rectangle2D.Double(158, 365, 18, 16);
-		g2d.fill(rt);
-		g2d.setColor(Color.black);
-        rt=new Rectangle2D.Double(138, 356, 18, 15);
-		g2d.fill(rt);
-        g2d.setColor(Color.blue);
-        rt=new Rectangle2D.Double(130, 333, 20, 15);
-		g2d.fill(rt);
-		
 		for (int i = 0; i < (2*gameMode); i ++)
 			for (int j = 0; j < 6; j++) {
 				if (i % 2 == 0)
