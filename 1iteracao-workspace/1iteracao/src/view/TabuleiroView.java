@@ -23,8 +23,8 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private Map<Integer, Image> imgDados = new HashMap<Integer, Image>();
 	private static final String[] CORES = {"Preto", "Azul", "Verde", "Laranja", "Vermelho", "Branco"};
 	private static final int[] DADINHOS = {1, 2, 3, 4, 5, 6};
-	private int xOffSet = 647;
-	private int yOffSet = 650;
+	private int xOffSet = 677;
+	private int yOffSet = 680;
 	private int xIni = 0, yIni = 0, imgHeight = yOffSet, imgWidth = xOffSet;
 	private final int BUTTON_WIDTH = 150;
 	private final int BUTTON_HEIGHT = 30;
@@ -41,7 +41,8 @@ class TabuleiroView extends JPanel implements MouseListener{
 	
 	public TabuleiroView() {
 		try {
-			imgTabuleiro = ImageIO.read(new File("1iteracao-workspace\\1iteracao\\src\\view\\assets\\Latitude90-Tabuleiro.jpg"));
+			imgTabuleiro = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/Latitude90-Tabuleiro2.jpg"));
+			//imgTabuleiro = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/Latitude90-Tabuleiro.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,8 +63,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 		
 		for(int i = 0; i <= 3; i++) {
 			try {
-				 Image img = ImageIO.read(new File("1iteracao-workspace\\1iteracao\\src\\view\\assets\\jogador" + (i + 1) + ".png"));
-				 img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH);
+				 Image img = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/jogador" + (i + 1) + ".png"));
 				 imgPecas.put(CORES[i], img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -74,8 +74,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private void loadImagesDados() {
 		for(int i = 0; i <= 5; i++) {
 			try {
-				 Image img = ImageIO.read(new File("1iteracao-workspace\\1iteracao\\src\\view\\assets\\dado" + (i + 1) + ".png"));
-				 img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH);
+				 Image img = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/dado" + (i + 1) + ".png"));
 				 imgDados.put(Integer.valueOf(DADINHOS[i]), img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -102,18 +101,19 @@ class TabuleiroView extends JPanel implements MouseListener{
 		
         add(btLancaDado);
 		
-		g2d.drawImage(imgTabuleiro, 0, 0, null);
+		g2d.drawImage(imgTabuleiro.getScaledInstance(-1, 670,Image.SCALE_SMOOTH), 0, 0, this);
+        //g2d.drawImage(imgTabuleiro, 0, 0, this);
 		
 		for (int i = 0; i < (2*gameMode); i ++)
 			for (int j = 0; j < 6; j++) {
 				if (i % 2 == 0)
-					g2d.drawImage(imgPecas.get(CORES[i]), 153 + 10*i, 295 + 7*j, 30, 30,null); //polo sul: x = 178, y = 330
+					g2d.drawImage(imgPecas.get(CORES[i]), 153 + 10*i, 295 + 7*j, 30, 30, this); //polo sul: x = 178, y = 330
 				else
-					g2d.drawImage(imgPecas.get(CORES[i]), 452 + 10*(i-1), 295 + 7*j, 30, 30,null); //polo norte: x = 477, y = 330
+					g2d.drawImage(imgPecas.get(CORES[i]), 452 + 10*(i-1), 295 + 7*j, 30, 30,this); //polo norte: x = 477, y = 330
 			}
         
-        g2d.drawImage(imgDados.get(Integer.valueOf(dado1)), 700, 200, 100, 100,null);
-		g2d.drawImage(imgDados.get(Integer.valueOf(dado2)), 800, 200, 100, 100,null);
+        g2d.drawImage(imgDados.get(Integer.valueOf(dado1)), 700, 200, 100, 100,this);
+		g2d.drawImage(imgDados.get(Integer.valueOf(dado2)), 800, 200, 100, 100,this);
         
     }
 
