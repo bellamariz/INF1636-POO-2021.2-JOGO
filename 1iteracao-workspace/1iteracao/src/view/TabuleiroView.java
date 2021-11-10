@@ -41,7 +41,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 	
 	public TabuleiroView() {
 		try {
-			imgTabuleiro = ImageIO.read(new File("src/view/assets/Latitude90-Tabuleiro.jpg"));
+			imgTabuleiro = ImageIO.read(new File("1iteracao-workspace\\1iteracao\\src\\view\\assets\\Latitude90-Tabuleiro.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,7 +62,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 		
 		for(int i = 0; i <= 3; i++) {
 			try {
-				 Image img = ImageIO.read(new File("src/view/assets/jogador" + (i + 1) + ".png"));
+				 Image img = ImageIO.read(new File("1iteracao-workspace\\1iteracao\\src\\view\\assets\\jogador" + (i + 1) + ".png"));
 				 img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH);
 				 imgPecas.put(CORES[i], img);
 			} catch (IOException e) {
@@ -74,7 +74,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private void loadImagesDados() {
 		for(int i = 0; i <= 5; i++) {
 			try {
-				 Image img = ImageIO.read(new File("src/view/assets/dado" + (i + 1) + ".png"));
+				 Image img = ImageIO.read(new File("1iteracao-workspace\\1iteracao\\src\\view\\assets\\dado" + (i + 1) + ".png"));
 				 img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH);
 				 imgDados.put(Integer.valueOf(DADINHOS[i]), img);
 			} catch (IOException e) {
@@ -102,18 +102,18 @@ class TabuleiroView extends JPanel implements MouseListener{
 		
         add(btLancaDado);
 		
-		g2d.drawImage(imgTabuleiro, 0, 0, imgWidth, imgHeight,this);
+		g2d.drawImage(imgTabuleiro, 0, 0, null);
 		
 		for (int i = 0; i < (2*gameMode); i ++)
 			for (int j = 0; j < 6; j++) {
 				if (i % 2 == 0)
-					g2d.drawImage(imgPecas.get(CORES[i]), 153 + 10*i, 295 + 7*j, 30, 30,this); //polo sul: x = 178, y = 330
+					g2d.drawImage(imgPecas.get(CORES[i]), 153 + 10*i, 295 + 7*j, 30, 30,null); //polo sul: x = 178, y = 330
 				else
-					g2d.drawImage(imgPecas.get(CORES[i]), 452 + 10*(i-1), 295 + 7*j, 30, 30,this); //polo norte: x = 477, y = 330
+					g2d.drawImage(imgPecas.get(CORES[i]), 452 + 10*(i-1), 295 + 7*j, 30, 30,null); //polo norte: x = 477, y = 330
 			}
         
-        g2d.drawImage(imgDados.get(Integer.valueOf(dado1)), 700, 200, 100, 100,this);
-		g2d.drawImage(imgDados.get(Integer.valueOf(dado2)), 800, 200, 100, 100,this);
+        g2d.drawImage(imgDados.get(Integer.valueOf(dado1)), 700, 200, 100, 100,null);
+		g2d.drawImage(imgDados.get(Integer.valueOf(dado2)), 800, 200, 100, 100,null);
         
     }
 

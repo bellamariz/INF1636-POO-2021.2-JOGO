@@ -32,7 +32,7 @@ class JanelaInicialView extends JFrame{
 	
     private JPanel menuInicial = new JPanel();    
     private JPanel menuJogadores = new JPanel();
-    private JPanel tabuleiro = null;
+    private JPanel tabuleiro = new JPanel();
     private TabuleiroView tabuleiroView;
 
     public JanelaInicialView(TabuleiroView tabuleiro) {

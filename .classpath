@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry excluding="view/assets/" kind="src" path="1iteracao-workspace/1iteracao/src"/>
 	<classpathentry kind="src" path="1iteracao-workspace/1iteracao/src_tests"/>
-	<classpathentry kind="src" path="1iteracao-workspace/1iteracao/src/view/assets"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
