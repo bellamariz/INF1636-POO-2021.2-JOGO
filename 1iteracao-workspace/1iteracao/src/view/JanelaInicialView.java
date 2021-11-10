@@ -13,7 +13,7 @@ class JanelaInicialView extends JFrame{
 	private static final int TWO_PLAYERS = 2;
 	private static final int FOUR_PLAYERS = 4;
 	private final int DEFAULT_WIDTH = 1200;
-	private final int DEFAULT_HEIGHT = 700;
+	private final int DEFAULT_HEIGHT = 750;
 	private final int BUTTON_WIDTH = 150;
 	private final int BUTTON_HEIGHT = 30;
 	private final int BUTTON_SPACE = 60;

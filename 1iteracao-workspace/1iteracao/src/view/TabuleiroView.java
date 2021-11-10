@@ -29,7 +29,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private final int BUTTON_WIDTH = 150;
 	private final int BUTTON_HEIGHT = 30;
 	private final int BUTTON_SPACE = 60;
-	private final int BUTTON_START_X = 725;
+	private final int BUTTON_START_X = 755;
 	private final int BUTTON_START_Y = 310;
 	private JButton btLancaDado = new JButton("Lançar Dados");
 	private int dado1 = 0;
@@ -115,7 +115,7 @@ class TabuleiroView extends JPanel implements MouseListener{
         add(btLancaDado);
 		
         //Imagem do tabuleiro
-		g2d.drawImage(imgTabuleiro.getScaledInstance(-1, 670,Image.SCALE_SMOOTH), 0, 0, this);
+		g2d.drawImage(imgTabuleiro, 0, 0, this);
 		
 		//Imagens dos exploradores
 		for (int i = 0; i < (2*gameMode); i ++)
@@ -125,14 +125,14 @@ class TabuleiroView extends JPanel implements MouseListener{
 				else
 					g2d.drawImage((imgPecas.get(CORES[i]).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), 477 + 10*(i-1), 310 + 7*j, 15, 30,this); //polo norte: x = 477, y = 330
 			}
-        
+		
 		//Imagens dos dados
-        g2d.drawImage(imgDados.get(Integer.valueOf(dado1)), 700, 200, 100, 100,this);
-		g2d.drawImage(imgDados.get(Integer.valueOf(dado2)), 800, 200, 100, 100,this);
+        g2d.drawImage(imgDados.get(Integer.valueOf(dado1)), 730, 200, 100, 100,this);
+		g2d.drawImage(imgDados.get(Integer.valueOf(dado2)), 830, 200, 100, 100,this);
 		
 		//TODO: exibir mensagem pros casos do dado colorido
 		if (dadoCol != null) {
-			Rectangle2D dadoColorido = new Rectangle2D.Double(910, 200, 100, 100);
+			Rectangle2D dadoColorido = new Rectangle2D.Double(940, 200, 100, 100);
 			g2d.setColor(Color.getColor(dadoCol));
 			g2d.fill(dadoColorido);
 		}
@@ -150,7 +150,9 @@ class TabuleiroView extends JPanel implements MouseListener{
 		System.out.println("x:"+mouseX+",y:"+mouseY); //polo sul: x = 184, y = 340 e polo norte: x = 492, y = 340
 	}
 	
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+		
+	}
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
