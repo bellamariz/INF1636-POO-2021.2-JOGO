@@ -43,7 +43,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 	
 	public TabuleiroView() {
 		try {
-			imgTabuleiro = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/Latitude90-Tabuleiro2.jpg"));
+			imgTabuleiro = ImageIO.read(new File("src/view/assets/Latitude90-Tabuleiro2.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -74,7 +74,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 		
 		for(int i = 0; i <= 3; i++) {
 			try {
-				 Image img = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/jogador" + (i + 1) + ".png"));
+				 Image img = ImageIO.read(new File("src/view/assets/jogador" + (i + 1) + ".png"));
 				 imgPecas.put(CORES[i], img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -85,7 +85,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private void loadImagesDados() {
 		for(int i = 0; i <= 5; i++) {
 			try {
-				 Image img = ImageIO.read(new File("1iteracao-workspace/1iteracao/src/view/assets/dado" + (i + 1) + ".png"));
+				 Image img = ImageIO.read(new File("src/view/assets/dado" + (i + 1) + ".png"));
 				 imgDados.put(Integer.valueOf(DADINHOS[i]), img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -110,6 +110,8 @@ class TabuleiroView extends JPanel implements MouseListener{
 		super.paintComponent(g);
 		tabuleiro.setLayout(null);
 		Graphics2D g2d = (Graphics2D) g;
+		Rectangle2D rt;
+
 		
 		//Botao de lancamento dos dados
         add(btLancaDado);
@@ -117,13 +119,339 @@ class TabuleiroView extends JPanel implements MouseListener{
         //Imagem do tabuleiro
 		g2d.drawImage(imgTabuleiro, 0, 0, this);
 		
+		//TODO: apagar
+		//primeiro circulo do polo sul(mais interno)
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(148, 350, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(155, 323, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(177, 310, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(199, 310, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(222, 323, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(231, 350, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(231, 371, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(222, 392, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(199, 405, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(177, 405, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(155, 392, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(148, 371, 18, 18);
+		g2d.fill(rt);
+		
+		//segundo circulo do polo sul
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(125, 342, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(137, 303, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(170, 286, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(208, 286, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(241, 303, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(254, 342, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(254, 377, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(241, 412, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(208, 429, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(170, 429, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(138, 412, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(125, 377, 18, 18);
+		g2d.fill(rt);
+		
+		//terceiro circulo do polo sul
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(102, 334, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(120, 284, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(161, 261, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(216, 261, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(260, 284, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(277, 334, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(277, 383, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(260, 431, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(216, 456, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(161, 456, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(120, 431, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(102, 383, 18, 18);
+		g2d.fill(rt);
+		
+		//quarto circulo do polo sul
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(80, 328, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(101, 266, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(154, 236, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(223, 236, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(278, 266, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(299, 328, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(299, 385, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(278, 449, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(223, 479, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(154, 479, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(101, 449, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(80, 385, 18, 18);
+		g2d.fill(rt);
+		
+		//quinto circulo do polo sul
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(57, 320, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(84, 245, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(146, 211, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(227, 211, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(293, 245, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(321, 320, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(321, 391, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(293, 469, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(227, 507, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(146, 507, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(84, 469, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(57, 391, 18, 18);
+		g2d.fill(rt);
+		
+		//sexto circulo do polo sul
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(33, 313, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(67, 226, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(141, 185, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(232, 185, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(312, 226, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(344, 313, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(344, 393, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(312, 487, 18, 18); 
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(232, 529, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(141, 529, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(67, 487, 18, 18); 
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(33, 393, 18, 18);
+		g2d.fill(rt);
+		
+		//primeiro circulo do polo norte(mais interno)
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(148 + 332, 350, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(155 + 332, 323, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(177 + 332, 310, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(199 + 332, 310, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(222 + 332, 323, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(231 + 332, 350, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(231 + 332, 371, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(222 + 332, 392, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(199 + 332, 405, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(177 + 332, 405, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(155 + 332, 392, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(148 + 332, 371, 18, 18);
+		g2d.fill(rt);
+		
+		//segundo circulo do polo norte
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(125 + 332, 342, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(137 + 332, 303, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(170 + 332, 286, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(208 + 332, 286, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(241 + 332, 303, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(254 + 332, 342, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(254 + 332, 377, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(241 + 332, 412, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(208 + 332, 429, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(170 + 332, 429, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(138 + 332, 412, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(125 + 332, 377, 18, 18);
+		g2d.fill(rt);
+		
+		//terceiro circulo do polo norte
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(102 + 332, 334, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(120 + 332, 284, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(161 + 332, 261, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(216 + 332, 261, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(260 + 332, 284, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(277 + 332, 334, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(277 + 332, 383, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(260 + 332, 431, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(216 + 332, 456, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(161 + 332, 456, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(120 + 332, 431, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(102 + 332, 383, 18, 18);
+		g2d.fill(rt);
+		
+		//quarto circulo do polo norte
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(80 + 332, 328, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(101 + 332, 266, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(154 + 332, 236, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(223 + 332, 236, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(278 + 332, 266, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(299 + 332, 328, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(299 + 332, 385, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(278 + 332, 449, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(223 + 332, 479, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(154 + 332, 479, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(101 + 332, 449, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(80 + 332, 385, 18, 18);
+		g2d.fill(rt);
+		
+		//quinto circulo do polo norte
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(57 + 332, 320, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(84 + 332, 245, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(146 + 332, 211, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(227 + 332, 211, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(293 + 332, 245, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(321 + 332, 320, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(321 + 332, 391, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(293 + 332, 469, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(227 + 332, 507, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(146 + 332, 507, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(84 + 332, 469, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(57 + 332, 391, 18, 18);
+		g2d.fill(rt);
+		
+		//sexto circulo do polo norte
+		g2d.setColor(Color.pink);
+        rt=new Rectangle2D.Double(33 + 332, 313, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(67 + 332, 226, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(141 + 332, 185, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(232 + 332, 185, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(312 + 332, 226, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(344 + 332, 313, 18, 18);
+		g2d.fill(rt);
+		rt=new Rectangle2D.Double(344 + 332, 393, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(312 + 332, 487, 18, 18); 
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(232 + 332, 529, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(141 + 332, 529, 18, 18);
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(67 + 332, 487, 18, 18); 
+		g2d.fill(rt);
+        rt=new Rectangle2D.Double(33 + 332, 393, 18, 18);
+		g2d.fill(rt);
+
+		
 		//Imagens dos exploradores
 		for (int i = 0; i < (2*gameMode); i ++)
 			for (int j = 0; j < 6; j++) {
 				if (i % 2 == 0)
-					g2d.drawImage((imgPecas.get(CORES[i]).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), 169 + 10*i, 310 + 7*j, 15, 30, this); //polo sul: x = 178, y = 330
+					g2d.drawImage((imgPecas.get(CORES[i]).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), 179 + 10*i, 332 + 7*j, 15, 30, this); //polo sul: x = 189, y = 358
 				else
-					g2d.drawImage((imgPecas.get(CORES[i]).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), 477 + 10*(i-1), 310 + 7*j, 15, 30,this); //polo norte: x = 477, y = 330
+					g2d.drawImage((imgPecas.get(CORES[i]).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), 511 + 10*(i-1), 332 + 7*j, 15, 30,this); //polo norte: x = 521, y = 358
 			}
 		
 		//Imagens dos dados
@@ -138,16 +466,16 @@ class TabuleiroView extends JPanel implements MouseListener{
 		}
 		
 		//Circulos das casas
-		Ellipse2D circ = new Ellipse2D.Double(mouseX,mouseY,20,20);
+		Ellipse2D circ = new Ellipse2D.Double(mouseX - 10, mouseY - 10,20,20);
 		g2d.setPaint(Color.BLUE);
 		g2d.draw(circ);
     }
 
 	public void mousePressed(MouseEvent e) {
-		mouseX=e.getX()-10;
-		mouseY=e.getY()-10;
+		mouseX=e.getX();
+		mouseY=e.getY();
 		tabuleiro.repaint();
-		System.out.println("x:"+mouseX+",y:"+mouseY); //polo sul: x = 184, y = 340 e polo norte: x = 492, y = 340
+		System.out.println("x:"+mouseX+",y:"+mouseY); //polo sul: x = 189, y = 358 e polo norte: x = 521, y = 358
 	}
 	
 	public void mouseClicked(MouseEvent e) {
