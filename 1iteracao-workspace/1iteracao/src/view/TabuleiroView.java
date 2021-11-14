@@ -24,9 +24,11 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private TabuleiroView tabuleiro = this;
 	private Map<String, Image> imgPecas = new HashMap<String, Image>();
 	private Map<Integer, Image> imgDados = new HashMap<Integer, Image>();
+	private Map<Integer, Image> imgCartas = new HashMap<Integer, Image>();
 	private Image imgSelecionado = null;
 	private static final String[] CORES = {"Preto", "Azul", "Verde", "Laranja", "Vermelho", "Branco"};
 	private static final int[] DADINHOS = {1, 2, 3, 4, 5, 6};
+	private static final int[] CARTINHAS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
 	private int xOffSet = 677;
 	private int yOffSet = 680;
 	private int xIni = 0, yIni = 0, imgHeight = yOffSet, imgWidth = xOffSet;
@@ -82,6 +84,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 		setColors();
 		loadImagesPecas();
 		loadImagesDados();
+		loadImagesCartas();
 		lancaDados();
 		montaMatrizCoordenadacasas();
 		
@@ -104,7 +107,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 
 	private void loadImagesPecas() {
 		
-		for(int i = 0; i <= 3; i++) {
+		for(int i = 0; i < 4; i++) {
 			try {
 				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Bella
 				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Rachel
@@ -116,11 +119,23 @@ class TabuleiroView extends JPanel implements MouseListener{
 	}
 	
 	private void loadImagesDados() {
-		for(int i = 0; i <= 5; i++) {
+		for(int i = 0; i < 6; i++) {
 			try {
 				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Bella
 				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Rachel
 				imgDados.put(Integer.valueOf(DADINHOS[i]), img);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void loadImagesCartas() {
+		for(int i = 0; i < 18; i++) {
+			try {
+				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Bella
+				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Rachel
+				imgCartas.put(Integer.valueOf(CARTINHAS[i]), img);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
