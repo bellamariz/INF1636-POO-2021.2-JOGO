@@ -45,6 +45,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private int gameMode = 0;
 	private boolean initBoard = true;
 	private boolean exploradorSelected = false;
+	private boolean exploradorProntoParaMover = false;
 	private HashMap<String, ArrayList<String>> exploradoresPorCoordenada = new HashMap<String, ArrayList<String>>();
 	private final static int LINHAS = 6, COLUNAS = 12;
 	private String[][] matrizCasas = new String[LINHAS][COLUNAS];
@@ -491,20 +492,30 @@ class TabuleiroView extends JPanel implements MouseListener{
 			initBoard=false;
 		}
 		
-		for (String str : exploradoresPorCoordenada.keySet()) {
-			for (int i=0; i<6; i++) {
-				if (!str.equals(CORES[0]) || !(i == numExploradorSelecionado)) {
-					int x = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
-					int y = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"y");
-					g2d.drawImage((imgPecas.get(str).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), x, y, EXP_WIDTH, EXP_HEIGHT,this);
-					System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
+		if (!initBoard)
+			for (String str : exploradoresPorCoordenada.keySet()) {
+				for (int i=0; i<6; i++) {
+					if (!str.equals(CORES[0]) || !(i == numExploradorSelecionado)) {
+						int x = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
+						int y = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"y");
+						g2d.drawImage((imgPecas.get(str).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), x, y, EXP_WIDTH, EXP_HEIGHT,this);
+					}
 				}
 			}
-		}
+		
 		if (exploradorSelected) {
 			g2d.drawImage((pecaSelecionada.getScaledInstance(15, 25, Image.SCALE_SMOOTH)), expCoordX, expCoordY, EXP_WIDTH, EXP_HEIGHT,this);
+			exploradorProntoParaMover = true;
+			exploradorSelected = false;
 		}
 		
+		else if (exploradorProntoParaMover) {
+			int expX = montaCoordenada(exploradoresPorCoordenada.get(CORES[0]).get(numExploradorSelecionado),"x");
+		    int expY = montaCoordenada(exploradoresPorCoordenada.get(CORES[0]).get(numExploradorSelecionado),"y");
+			g2d.drawImage((imgPecas.get(CORES[0]).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), expX, expY, EXP_WIDTH, EXP_HEIGHT,this);
+			exploradorProntoParaMover = false;
+			System.out.println("para colocar o explorador: mouseX:"+expCoordX+",MouseY:"+expCoordY);
+		}		
 	
 		//Printa coordenadas dos exploradores
 		for (String str : exploradoresPorCoordenada.keySet()) {
@@ -552,27 +563,32 @@ class TabuleiroView extends JPanel implements MouseListener{
 		mouseY=e.getY();
 		
 		//Printa coordenadas dos exploradores
-		for (String str : exploradoresPorCoordenada.keySet()) {
-			if (str == CORES[0])
-				for (int i=0; i<6; i++) {
-				      System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
-				      expCoordX = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
-				      expCoordY = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"y");
-				      if (((mouseX>=expCoordX-EXP_WIDTH) && (mouseX<=expCoordX+EXP_WIDTH)) || ((mouseY>=expCoordY-EXP_HEIGHT) && (mouseX<=expCoordX+EXP_HEIGHT))) {
-				    	  exploradorSelected = true;
-				    	  numExploradorSelecionado = i;
-				    	  System.out.println("Explorador selecionado.\n");
-				    	  break;
-				      }
-				}
-		}
+		if (!exploradorSelected && !exploradorProntoParaMover)
+			for (String str : exploradoresPorCoordenada.keySet()) {
+				if (str == CORES[0])
+					for (int i=0; i<6; i++) {
+					      System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
+					      expCoordX = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
+					      expCoordY = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"y");
+	
+				    	  System.out.println("ExpX:"+expCoordX+"ExpY:"+expCoordY+"\n");
+					      if (((mouseX>=expCoordX-EXP_WIDTH) && (mouseX<=expCoordX+EXP_WIDTH)) && ((mouseY>=expCoordY-EXP_HEIGHT) && (mouseY<=expCoordY+EXP_HEIGHT))) {
+					    	  exploradorSelected = true;
+					    	  numExploradorSelecionado = i;
+					    	  System.out.println("Explorador selecionado.\n");
+					    	  break;
+					      }
+					}
+			}
 
-		if (exploradorSelected) {
+		if (exploradorProntoParaMover) {
 			newCoordenada=mouseX+","+mouseY;
 			exploradoresPorCoordenada.get(CORES[0]).set(numExploradorSelecionado, newCoordenada);
 		}
 		
-		atualiza();
+		if (exploradorSelected || exploradorProntoParaMover)
+			atualiza();
+		
 		System.out.println("mouseX:"+mouseX+",MouseY:"+mouseY); //polo sul: x = 189, y = 358 e polo norte: x = 521, y = 358
 	}
 	
