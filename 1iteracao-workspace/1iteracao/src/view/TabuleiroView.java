@@ -18,6 +18,7 @@ import java.lang.Math.*;
 
 class TabuleiroView extends JPanel implements MouseListener{
 	private Image imgTabuleiro = null;
+	private Image pecaSelecionada = null;
 	private TabuleiroView tabuleiro = this;
 	private Map<String, Image> imgPecas = new HashMap<String, Image>();
 	private Map<Integer, Image> imgDados = new HashMap<Integer, Image>();
@@ -50,10 +51,19 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private final static int EXP_HEIGHT = 30;
 	private final static int EXP_WIDTH = 15;
 	private String newCoordenada = null;
+	private int numExploradorSelecionado;
 	
 	public TabuleiroView() {
 		try {
-			imgTabuleiro = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg"));
+			//imgTabuleiro = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Bella
+			imgTabuleiro = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Rachel
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			//pecaSelecionada = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Bella
+			pecaSelecionada = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Rachel
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -85,8 +95,9 @@ class TabuleiroView extends JPanel implements MouseListener{
 		
 		for(int i = 0; i <= 3; i++) {
 			try {
-				 Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png"));
-				 imgPecas.put(CORES[i], img);
+				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Bella
+				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Rachel
+				imgPecas.put(CORES[i], img);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -96,8 +107,9 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private void loadImagesDados() {
 		for(int i = 0; i <= 5; i++) {
 			try {
-				 Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png"));
-				 imgDados.put(Integer.valueOf(DADINHOS[i]), img);
+				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Bella
+				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Rachel
+				imgDados.put(Integer.valueOf(DADINHOS[i]), img);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -479,31 +491,27 @@ class TabuleiroView extends JPanel implements MouseListener{
 			initBoard=false;
 		}
 		
-		//Atualiza exploradores
 		for (String str : exploradoresPorCoordenada.keySet()) {
 			for (int i=0; i<6; i++) {
-				
-				if (exploradorSelected) {
-					exploradoresPorCoordenada.get(str).set(i, newCoordenada);
+				if (!str.equals(CORES[0]) || !(i == numExploradorSelecionado)) {
+					int x = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
+					int y = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"y");
+					g2d.drawImage((imgPecas.get(str).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), x, y, EXP_WIDTH, EXP_HEIGHT,this);
+					System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
 				}
-				
-				expCoordX = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
-				expCoordY = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"y");
-				
-				g2d.drawImage((imgPecas.get(str).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), expCoordX, expCoordY, EXP_WIDTH, EXP_HEIGHT,this);
-				
-			    System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i)); 
-			    System.out.println("exp X: " + expCoordX + ",exp Y: " + expCoordY);
 			}
+		}
+		if (exploradorSelected) {
+			g2d.drawImage((pecaSelecionada.getScaledInstance(15, 25, Image.SCALE_SMOOTH)), expCoordX, expCoordY, EXP_WIDTH, EXP_HEIGHT,this);
 		}
 		
 	
-//		//Printa coordenadas dos exploradores
-//		for (String str : exploradoresPorCoordenada.keySet()) {
-//			for (int i=0; i<6; i++) {
-//			      System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
-//			}
-//		}
+		//Printa coordenadas dos exploradores
+		for (String str : exploradoresPorCoordenada.keySet()) {
+			for (int i=0; i<6; i++) {
+			      System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
+			}
+		}
 		
 		//Imagens dos dados
         g2d.drawImage(imgDados.get(Integer.valueOf(dado1)), 730, 200, 100, 100,this);
@@ -542,14 +550,28 @@ class TabuleiroView extends JPanel implements MouseListener{
 	public void mousePressed(MouseEvent e) {
 		mouseX=e.getX();
 		mouseY=e.getY();
-		if (((mouseX>=expCoordX-EXP_WIDTH) && (mouseX<=expCoordX+EXP_WIDTH)) || ((mouseY>=expCoordY-EXP_HEIGHT) && (mouseX<=expCoordX+EXP_HEIGHT))) {
-			exploradorSelected = true;
-			System.out.println("Explorador selecionado.\n");
+		
+		//Printa coordenadas dos exploradores
+		for (String str : exploradoresPorCoordenada.keySet()) {
+			if (str == CORES[0])
+				for (int i=0; i<6; i++) {
+				      System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
+				      expCoordX = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
+				      expCoordY = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"y");
+				      if (((mouseX>=expCoordX-EXP_WIDTH) && (mouseX<=expCoordX+EXP_WIDTH)) || ((mouseY>=expCoordY-EXP_HEIGHT) && (mouseX<=expCoordX+EXP_HEIGHT))) {
+				    	  exploradorSelected = true;
+				    	  numExploradorSelecionado = i;
+				    	  System.out.println("Explorador selecionado.\n");
+				    	  break;
+				      }
+				}
 		}
-		else
-			if (exploradorSelected) {
-				newCoordenada=mouseX+","+mouseY;
-			}
+
+		if (exploradorSelected) {
+			newCoordenada=mouseX+","+mouseY;
+			exploradoresPorCoordenada.get(CORES[0]).set(numExploradorSelecionado, newCoordenada);
+		}
+		
 		atualiza();
 		System.out.println("mouseX:"+mouseX+",MouseY:"+mouseY); //polo sul: x = 189, y = 358 e polo norte: x = 521, y = 358
 	}
