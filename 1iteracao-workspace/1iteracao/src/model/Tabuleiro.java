@@ -6,7 +6,7 @@ import java.util.Collections;
 
 class Tabuleiro {
 	private final int linhas = 6, colunas = 12;
-	private ElementosTabuleiro[][] matrix = new ElementosTabuleiro[linhas][colunas];
+	private ElementosTabuleiro[][] matrizCasas = new ElementosTabuleiro[linhas][colunas];
 	private ElementosTabuleiro casaAtual = null;
 	private ArrayList<Explorador> poloInicial;
 	boolean podeMover = false;
@@ -23,9 +23,9 @@ class Tabuleiro {
 		for(int i = 0; i < linhas; i++) //casa latitude (i)
 		    for(int j = 0; j < colunas; j++)  //casas longitude (j)
 		    {
-		        matrix[i][j] = new ElementosTabuleiro(gameMode);
+		        matrizCasas[i][j] = new ElementosTabuleiro(gameMode);
 		    	if ((i == 0 & j == 1) || (i == 0 & j == 7) || (i == 1 & j == 2) || (i == 1 & j == 8) || (i == 2 & j == 4) || (i == 2 & j == 10)) 
-		    		matrix[i][j].getMeta().setMetaNoTabuleiro(true);
+		    		matrizCasas[i][j].getMeta().setMetaNoTabuleiro(true);
 		    }
 	}
 	
@@ -34,7 +34,7 @@ class Tabuleiro {
 	}
 	
 	public ElementosTabuleiro[][] getMatrix() {
-		return matrix;
+		return matrizCasas;
 	}
 
 	public boolean getPodeMover() { return podeMover; }
@@ -134,7 +134,7 @@ class Tabuleiro {
 	public void exibeTabuleiro() {
 		for(int i = 0; i < linhas; i++) {
 		    for(int j = 0; j < colunas; j++) 
-		        System.out.print(" [" + matrix[i][j].getMeta().isMetaNoTabuleiro() + " " + (matrix[i][j].getExploradores()) + "]  ");
+		        System.out.print(" [" + matrizCasas[i][j].getMeta().isMetaNoTabuleiro() + " " + (matrizCasas[i][j].getExploradores()) + "]  ");
 		    System.out.println();
 		}
 	}
