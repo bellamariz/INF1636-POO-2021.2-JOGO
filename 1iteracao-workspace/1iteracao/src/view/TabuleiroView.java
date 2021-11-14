@@ -53,6 +53,8 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private final static int EXP_WIDTH = 15;
 	private String newCoordenada = null;
 	private int numExploradorSelecionado;
+	private String corDaVez;
+	private ArrayList<String> CoresOrdenadas = new ArrayList<String>(4);
 	
 	public TabuleiroView() {
 		try {
@@ -130,6 +132,10 @@ class TabuleiroView extends JPanel implements MouseListener{
 		});
 	}
 	
+	private void ordenaCores(){
+		
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		tabuleiro.setLayout(null);
@@ -143,7 +149,7 @@ class TabuleiroView extends JPanel implements MouseListener{
         //Imagem do tabuleiro
 		g2d.drawImage(imgTabuleiro, 0, 0, this);
 		
-		//TODO: apagar
+		
 		//primeiro circulo do polo sul(mais interno)
 		g2d.setColor(Color.pink);
         rt=new Rectangle2D.Double(148, 350, 18, 18);

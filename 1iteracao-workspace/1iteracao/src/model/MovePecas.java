@@ -38,6 +38,12 @@ class MovePecas {
         inicializaTabuleiro(jogo.getJogadores());
     }
     
+    
+    
+	public ArrayList<Jogador> getJogadoresOrdenados() {
+		return jogadoresOrdenados;
+	}
+
 	//Carta escolhida retirada do topo do deck e colocada ao final
   	public CartaDinamica pegaCartaDoDeck() {
   		CartaDinamica carta = this.deckCartaDinamica.get(0);
