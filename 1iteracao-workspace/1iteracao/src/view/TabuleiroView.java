@@ -54,7 +54,8 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private String newCoordenada = null;
 	private int numExploradorSelecionado;
 	private String corDaVez;
-	private ArrayList<String> CoresOrdenadas = new ArrayList<String>(4);
+	private ArrayList<String> coresOrdenadas = new ArrayList<String>(4);
+	private int indiceCorDaVez = 0;
 	
 	public TabuleiroView() {
 		try {
@@ -71,6 +72,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 			e.printStackTrace();
 		}
 		
+		coresOrdenadas = ControllerFacade.getModel().getCoresOrdenados();
 		btLancaDado.setBounds(BUTTON_START_X, BUTTON_START_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		setColors();
 		loadImagesPecas();
