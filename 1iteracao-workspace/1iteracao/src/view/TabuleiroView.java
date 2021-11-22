@@ -57,7 +57,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private final static int EXP_HEIGHT = 30;
 	private final static int EXP_WIDTH = 15;
 	private String newCoordenada = null;
-	private int numExploradorSelecionado;
+	private int numExploradorSelecionado = 6;
 	private String corDaVez;
 	private ArrayList<String> coresOrdenadas = new ArrayList<String>(4);
 	private int indiceCorDaVez = 0;
@@ -675,7 +675,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 			initBoard=false;
 		}
 		
-		if (!initBoard)
+		else
 			for (String str : exploradoresPorCoordenada.keySet()) {
 				for (int i=0; i<6; i++) {
 					if (!str.equals(CORES[indiceCorDaVez]) || !(i == numExploradorSelecionado)) {
@@ -697,6 +697,7 @@ class TabuleiroView extends JPanel implements MouseListener{
 				indiceCorDaVez = 0;
 			System.out.println("para colocar o explorador: mouseX:"+expCoordX+",MouseY:"+expCoordY);
 			posValida = false;
+			numExploradorSelecionado = 6;
 		    
 		}	
 		
