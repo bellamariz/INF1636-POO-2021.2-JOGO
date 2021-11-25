@@ -13,11 +13,15 @@ public class ControllerFacade {
 		view = ViewFacade.getInstance();
 		model = ModelFacade.getInstance();
 		
+//		view.setListener(model);
+		
 		view.startView();
-		while (!canStartGame)
-			if (view.getCanStartGame())
+		while (!canStartGame) {
+			if (view.getCanStartGame()) {
 				model.startModel(view.getGameMode(),view.getNomeJogadores());
 				canStartGame = true;
+			}
+		}
 	}
 	
 	public static ControllerFacade getController() {
