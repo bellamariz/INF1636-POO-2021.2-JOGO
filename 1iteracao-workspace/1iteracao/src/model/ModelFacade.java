@@ -1,8 +1,13 @@
 package model;
 
-import java.util.ArrayList;
+import util.Observador;
+import util.Observavel;
+import util.Operacoes;
 
-public class ModelFacade {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ModelFacade implements Observavel {
 	private static ModelFacade model = null;
 	private MovePecas movePecas = null;
 	private Dado dado = new Dado();
@@ -21,7 +26,9 @@ public class ModelFacade {
 	}
 	
 	public int getValorDado() {
-		return dado.lanca();
+		final int valorDado = dado.lanca();
+		notificarObservadores(Operacoes.DADO_LANCADO, valorDado);
+		return valorDado;
 	}
 	
 	public String getDadoColorido(int dado1, int dado2) {
@@ -37,4 +44,27 @@ public class ModelFacade {
 		return coresOrdenadas;
 	}
 
+	protected List<Observador> observadores = new ArrayList<>();
+
+	public void adicionarObservador(Observador o) {
+		if (!observadores.contains(o)) {
+			this.observadores.add(o);
+		}
+	}
+
+	public int contarObservadores() {
+		return this.observadores.size();
+	}
+
+	public void removerObservador(Observador o) {
+		if (this.observadores.contains(o)) {
+			this.observadores.remove(o);
+		}
+	}
+
+	public void notificarObservadores(Object ...args) {
+		for (Observador o : this.observadores) {
+			o.update(this, args);
+		}
+	}
 }

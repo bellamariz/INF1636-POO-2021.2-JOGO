@@ -4,19 +4,19 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import controller.ControllerFacade;
-import model.ModelFacade;
+import util.Observavel;
+import util.Observador;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.nio.*;
 import java.awt.geom.*;
-import java.lang.Math.*;
+import java.util.List;
 
 
-class TabuleiroView extends JPanel implements MouseListener{
+class TabuleiroView extends JPanel implements MouseListener, Observador, Observavel {
 	private final int linhas = 6, colunas = 24;
 	private String[][] coordenadasCasas = new String[linhas][colunas];
 	private Image imgTabuleiro = null;
@@ -63,8 +63,8 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private int indiceCorDaVez = 0;
 	private boolean posValida = false;
 	private int expX;
-	private int expY;	
-	
+	private int expY;
+
 	public TabuleiroView() {
 		try {
 			//imgTabuleiro = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Bella
@@ -303,10 +303,13 @@ class TabuleiroView extends JPanel implements MouseListener{
 	private void lancaDados() {
 		btLancaDado.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
+				notificarObservadores(1, "Ola");
+
+
 				//TODO: implementar observable para pegar os objetos do Model
-				dado1 = ControllerFacade.getModel().getValorDado();
-				dado2 = ControllerFacade.getModel().getValorDado();
-				dadoCol = ControllerFacade.getModel().getDadoColorido(dado1, dado2);
+				dado1 = ControllerFacade.getModelFacade().getValorDado();
+				dado2 = ControllerFacade.getModelFacade().getValorDado();
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
 				atualiza();
 			}
 			
@@ -830,5 +833,58 @@ class TabuleiroView extends JPanel implements MouseListener{
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 	public void mouseDragged(MouseEvent e) {}
-	
+
+	protected List<Observador> observadores = new ArrayList<>();
+	private boolean hasChanged;
+
+	public void adicionarObservador(Observador o) {
+		if (!observadores.contains(o)) {
+			this.observadores.add(o);
+		}
+	}
+
+	public int contarObservadores() {
+		return this.observadores.size();
+	}
+
+	public void removerObservador(Observador o) {
+		if (this.observadores.contains(o)) {
+			this.observadores.remove(o);
+		}
+	}
+
+	public void notificarObservadores(Object ...args) {
+		for (Observador o : this.observadores) {
+			o.update(this, args);
+		}
+	}
+
+	public static void s(Object o) {
+		System.out.println(o);
+	}
+
+	@Override
+	public void update(Observavel o, Object... args) {
+		s("De " + o.getClass().getSimpleName() + " Para " + this.getClass().getSimpleName());
+
+		if (args == null) {
+			return;
+		}
+
+		final int operacao = (int) args[0];
+
+		String mensagem = null;
+
+		try {
+			mensagem = (String) args[1];
+		}
+		catch (ClassCastException ignored) {}
+
+		if (operacao == 1) {
+			s("Operacao 1. Msg: " + mensagem);
+		}
+		else {
+			s(o + " " + Arrays.asList(args).toString());
+		}
+	}
 }
