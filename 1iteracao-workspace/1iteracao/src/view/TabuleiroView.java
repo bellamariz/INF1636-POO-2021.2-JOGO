@@ -37,7 +37,22 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private final int BUTTON_SPACE = 60;
 	private final int BUTTON_START_X = 775;
 	private final int BUTTON_START_Y = 330;
+	private final int TEXT_WIDTH = 80;
 	private JButton btLancaDado = new JButton("Lançar Dados");
+	JLabel dado1Manualmente = new JLabel("Dado 1");
+	JLabel dado2Manualmente = new JLabel("Dado 2");
+	private JButton dado1valor1 = new JButton("1");
+	private JButton dado1valor2 = new JButton("2");
+	private JButton dado1valor3 = new JButton("3");
+	private JButton dado1valor4 = new JButton("4");
+	private JButton dado1valor5 = new JButton("5");
+	private JButton dado1valor6 = new JButton("6");
+	private JButton dado2valor1 = new JButton("1");
+	private JButton dado2valor2 = new JButton("2");
+	private JButton dado2valor3 = new JButton("3");
+	private JButton dado2valor4 = new JButton("4");
+	private JButton dado2valor5 = new JButton("5");
+	private JButton dado2valor6 = new JButton("6");
 	private int dado1 = 0;
 	private int dado2 = 0;
 	private String dadoCol = null;
@@ -81,6 +96,20 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		}
 		
 		btLancaDado.setBounds(BUTTON_START_X, BUTTON_START_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+		dado1Manualmente.setBounds(730, 370, TEXT_WIDTH, TEXT_WIDTH/2);
+		dado2Manualmente.setBounds(730, 410, TEXT_WIDTH, TEXT_WIDTH/2);
+		dado1valor1.setBounds(790, 375, 50, BUTTON_HEIGHT);
+		dado1valor2.setBounds(845, 375, 50, BUTTON_HEIGHT);
+		dado1valor3.setBounds(900, 375, 50, BUTTON_HEIGHT);
+		dado1valor4.setBounds(955, 375, 50, BUTTON_HEIGHT);
+		dado1valor5.setBounds(1010, 375, 50, BUTTON_HEIGHT);
+		dado1valor6.setBounds(1065, 375, 50, BUTTON_HEIGHT);
+		dado2valor1.setBounds(790, 415, 50, BUTTON_HEIGHT);
+		dado2valor2.setBounds(845, 415, 50, BUTTON_HEIGHT);
+		dado2valor3.setBounds(900, 415, 50, BUTTON_HEIGHT);
+		dado2valor4.setBounds(955, 415, 50, BUTTON_HEIGHT);
+		dado2valor5.setBounds(1010, 415, 50, BUTTON_HEIGHT);
+		dado2valor6.setBounds(1065, 415, 50, BUTTON_HEIGHT);
 		setColors();
 		loadImagesPecas();
 		loadImagesDados();
@@ -314,6 +343,102 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			}
 			
 		});
+		
+		dado1valor1.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado1 = 1;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}	
+		});
+		
+		dado1valor2.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado1 = 2;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}
+		});
+		
+		dado1valor3.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado1 = 3;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}	
+		});
+		
+		dado1valor4.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado1 = 4;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}
+		});
+		
+		dado1valor5.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado1 = 5;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}	
+		});
+		
+		dado1valor6.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado1 = 6;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}
+		});
+		
+		dado2valor1.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado2 = 1;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}	
+		});
+		
+		dado2valor2.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado2 = 2;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}
+		});
+		
+		dado2valor3.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado2 = 3;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}	
+		});
+		
+		dado2valor4.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado2 = 4;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}
+		});
+		
+		dado2valor5.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado2 = 5;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}	
+		});
+		
+		dado2valor6.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				dado2 = 6;
+				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				atualiza();
+			}
+		});
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -325,6 +450,20 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		
 		//Botao de lancamento dos dados
         add(btLancaDado);
+        add(dado1Manualmente);
+        add(dado2Manualmente);
+        add(dado1valor1);
+        add(dado1valor2);
+        add(dado1valor3);
+        add(dado1valor4);
+        add(dado1valor5);
+        add(dado1valor6);
+        add(dado2valor1);
+        add(dado2valor2);
+        add(dado2valor3);
+        add(dado2valor4);
+        add(dado2valor5);
+        add(dado2valor6);
 		
         //Imagem do tabuleiro
 		g2d.drawImage(imgTabuleiro, 0, 0, this);
