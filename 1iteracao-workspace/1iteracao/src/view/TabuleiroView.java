@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import controller.ControllerFacade;
 import util.Observavel;
+import util.Operacoes;
 import util.Observador;
 
 import java.awt.*;
@@ -86,6 +87,9 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private JLabel cartaManualmente = new JLabel("Carta");
 	private JButton carta1 = new JButton("1");
 	private JButton carta3 = new JButton("3");
+	protected List<Observador> observadores = new ArrayList<>();
+	private boolean hasChanged;
+	private int[] numeroJogadores = null;
 
 	public TabuleiroView() {
 		try {
@@ -102,6 +106,19 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			e.printStackTrace();
 		}
 		
+		initTabView();
+		setColors();
+		loadImagesPecas();
+		loadImagesDados();
+		loadImagesCartas();
+		lancaDados();
+		initCards();
+		montaMatrizCoordenadacasas();
+		
+		addMouseListener(this);
+	}
+	
+	public void initTabView() {
 		btLancaDado.setBounds(BUTTON_START_X, BUTTON_START_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
 		dado1Manualmente.setBounds(730, 370, TEXT_WIDTH, TEXT_WIDTH/2);
 		dado2Manualmente.setBounds(730, 410, TEXT_WIDTH, TEXT_WIDTH/2);
@@ -121,16 +138,6 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		carta1.setBounds(BUTTON_START_X, 615, BUTTON_WIDTH/2 - 5, BUTTON_HEIGHT);
 		carta3.setBounds(BUTTON_START_X + BUTTON_WIDTH/2 + 5, 615, BUTTON_WIDTH/2 - 5, BUTTON_HEIGHT);
 		salvarJogo.setBounds(BUTTON_START_X, 655, BUTTON_WIDTH, BUTTON_HEIGHT);
-		setColors();
-		loadImagesPecas();
-		loadImagesDados();
-		loadImagesCartas();
-		lancaDados();
-		initCards();
-		montaMatrizCoordenadacasas();
-		
-		
-		addMouseListener(this);
 	}
 	
 	public void setColors() {
@@ -144,6 +151,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 
 	public void setGameMode(int gameMode) {
 		this.gameMode = gameMode;
+		notificarObservadores(Operacoes.INICIALIZA_MODEL, JanelaInicialView.getGameMode(), JanelaInicialView.getNomesJogadores());
 	}
 
 	private void loadImagesPecas() {
@@ -352,7 +360,6 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private void lancaDados() {
 		btLancaDado.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				notificarObservadores(1, "Ola");
 				if (podeLancarDado) {
 					dado1 = ControllerFacade.getModelFacade().getValorDadoLancado(); //TODO: trocar pra observer
 					dado2 = ControllerFacade.getModelFacade().getValorDadoLancado();
@@ -362,8 +369,10 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 						if (indiceCorDaVez == (2*gameMode))
 							indiceCorDaVez = 0;
 					}
-					else
+					else {
+						notificarObservadores(1);
 						inicio = false;
+					}
 					atualiza();
 				}
 				podeLancarDado = false;
@@ -478,6 +487,15 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 				mostraCarta(2);
 			}
 		});
+		
+		salvarJogo.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				if (podeLancarDado) {
+					notificarObservadores(Operacoes.SALVAR_JOGO);
+				}
+			}
+			
+		});
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -511,332 +529,6 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
         //Imagem do tabuleiro
 		g2d.drawImage(imgTabuleiro, 0, 0, this);
 		
-		
-		//primeiro circulo do polo sul(mais interno)
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(148, 350, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(155, 323, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(177, 310, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(199, 310, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(222, 323, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(231, 350, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(231, 371, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(222, 392, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(199, 405, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(177, 405, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(155, 392, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(148, 371, 18, 18);
-		g2d.fill(rt);
-		
-		//segundo circulo do polo sul
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(125, 342, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(137, 303, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(170, 286, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(208, 286, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(241, 303, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(254, 342, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(254, 377, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(241, 412, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(208, 429, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(170, 429, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(138, 412, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(125, 377, 18, 18);
-		g2d.fill(rt);
-		
-		//terceiro circulo do polo sul
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(102, 334, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(120, 284, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(161, 261, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(216, 261, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(260, 284, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(277, 334, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(277, 383, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(260, 431, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(216, 456, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(161, 456, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(120, 431, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(102, 383, 18, 18);
-		g2d.fill(rt);
-		
-		//quarto circulo do polo sul
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(80, 328, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(101, 266, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(154, 236, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(223, 236, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(278, 266, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(299, 328, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(299, 385, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(278, 449, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(223, 479, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(154, 479, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(101, 449, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(80, 385, 18, 18);
-		g2d.fill(rt);
-		
-		//quinto circulo do polo sul
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(57, 320, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(84, 245, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(146, 211, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(227, 211, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(293, 245, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(321, 320, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(321, 391, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(293, 469, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(227, 507, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(146, 507, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(84, 469, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(57, 391, 18, 18);
-		g2d.fill(rt);
-		
-		//sexto circulo do polo sul
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(33, 313, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(67, 226, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(141, 185, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(232, 185, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(312, 226, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(344, 313, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(344, 393, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(312, 487, 18, 18); 
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(232, 529, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(141, 529, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(67, 487, 18, 18); 
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(33, 393, 18, 18);
-		g2d.fill(rt);
-		
-		//primeiro circulo do polo norte(mais interno)
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(148 + 332, 350, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(155 + 332, 323, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(177 + 332, 310, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(199 + 332, 310, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(222 + 332, 323, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(231 + 332, 350, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(231 + 332, 371, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(222 + 332, 392, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(199 + 332, 405, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(177 + 332, 405, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(155 + 332, 392, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(148 + 332, 371, 18, 18);
-		g2d.fill(rt);
-		
-		//segundo circulo do polo norte
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(125 + 332, 342, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(137 + 332, 303, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(170 + 332, 286, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(208 + 332, 286, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(241 + 332, 303, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(254 + 332, 342, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(254 + 332, 377, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(241 + 332, 412, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(208 + 332, 429, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(170 + 332, 429, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(138 + 332, 412, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(125 + 332, 377, 18, 18);
-		g2d.fill(rt);
-		
-		//terceiro circulo do polo norte
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(102 + 332, 334, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(120 + 332, 284, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(161 + 332, 261, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(216 + 332, 261, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(260 + 332, 284, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(277 + 332, 334, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(277 + 332, 383, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(260 + 332, 431, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(216 + 332, 456, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(161 + 332, 456, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(120 + 332, 431, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(102 + 332, 383, 18, 18);
-		g2d.fill(rt);
-		
-		//quarto circulo do polo norte
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(80 + 332, 328, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(101 + 332, 266, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(154 + 332, 236, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(223 + 332, 236, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(278 + 332, 266, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(299 + 332, 328, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(299 + 332, 385, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(278 + 332, 449, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(223 + 332, 479, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(154 + 332, 479, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(101 + 332, 449, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(80 + 332, 385, 18, 18);
-		g2d.fill(rt);
-		
-		//quinto circulo do polo norte
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(57 + 332, 320, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(84 + 332, 245, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(146 + 332, 211, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(227 + 332, 211, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(293 + 332, 245, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(321 + 332, 320, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(321 + 332, 391, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(293 + 332, 469, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(227 + 332, 507, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(146 + 332, 507, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(84 + 332, 469, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(57 + 332, 391, 18, 18);
-		g2d.fill(rt);
-		
-		//sexto circulo do polo norte
-		g2d.setColor(Color.pink);
-        rt=new Rectangle2D.Double(33 + 332, 313, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(67 + 332, 226, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(141 + 332, 185, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(232 + 332, 185, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(312 + 332, 226, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(344 + 332, 313, 18, 18);
-		g2d.fill(rt);
-		rt=new Rectangle2D.Double(344 + 332, 393, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(312 + 332, 487, 18, 18); 
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(232 + 332, 529, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(141 + 332, 529, 18, 18);
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(67 + 332, 487, 18, 18); 
-		g2d.fill(rt);
-        rt=new Rectangle2D.Double(33 + 332, 393, 18, 18);
-		g2d.fill(rt);
-
-		
 		//Desenho dos exploradores
 		if (initBoard) {
 			for (int i = 0; i < (2*gameMode); i ++) {
@@ -863,7 +555,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		else
 			for (String str : exploradoresPorCoordenada.keySet()) {
 				for (int i=0; i<6; i++) {
-					if (!str.equals(CORES[indiceCorDaVez]) || !(i == numExploradorSelecionado)) {
+					if (!str.equals(CORES[numeroJogadores[indiceCorDaVez]-1]) || !(i == numExploradorSelecionado)) {
 						int x = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
 						int y = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"y");
 						g2d.drawImage((imgPecas.get(str).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), x - EXP_WIDTH/2, y - EXP_HEIGHT/2, EXP_WIDTH, EXP_HEIGHT,this);
@@ -873,9 +565,9 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		
 		//Atualiza desenho dos exploradores
 		if (exploradorProntoParaMover) {
-			int x = montaCoordenada(exploradoresPorCoordenada.get(CORES[indiceCorDaVez]).get(numExploradorSelecionado),"x");
-			int y = montaCoordenada(exploradoresPorCoordenada.get(CORES[indiceCorDaVez]).get(numExploradorSelecionado),"y");
-			g2d.drawImage((imgPecas.get(CORES[indiceCorDaVez]).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), x-(EXP_WIDTH/2), y-(EXP_HEIGHT/2), EXP_WIDTH, EXP_HEIGHT,this);
+			int x = montaCoordenada(exploradoresPorCoordenada.get(CORES[numeroJogadores[indiceCorDaVez]-1]).get(numExploradorSelecionado),"x");
+			int y = montaCoordenada(exploradoresPorCoordenada.get(CORES[numeroJogadores[indiceCorDaVez]-1]).get(numExploradorSelecionado),"y");
+			g2d.drawImage((imgPecas.get(CORES[numeroJogadores[indiceCorDaVez]-1]).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), x-(EXP_WIDTH/2), y-(EXP_HEIGHT/2), EXP_WIDTH, EXP_HEIGHT,this);
 			exploradorProntoParaMover = false;
 			exploradorSelected = false;
 			podeLancarDado = true;
@@ -897,7 +589,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		
 		//Cor do jogador da vez
 		Rectangle2D corJogador = new Rectangle2D.Double(730, 180, 240, 140);
-		g2d.setColor(Color.getColor(CORES[indiceCorDaVez]));
+		g2d.setColor(Color.getColor(CORES[numeroJogadores[indiceCorDaVez]-1]));
 		g2d.fill(corJogador);
 		
 		//Imagens dos dados
@@ -973,7 +665,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			//Printa coordenadas dos exploradores
 			if (!exploradorSelected && !exploradorProntoParaMover)
 				for (String str : exploradoresPorCoordenada.keySet()) {
-					if (str == CORES[indiceCorDaVez])
+					if (str == CORES[numeroJogadores[indiceCorDaVez]-1])
 						for (int i=0; i<6; i++) {
 						      System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
 						      expCoordX = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
@@ -1004,7 +696,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			    		}
 			    	}
 				newCoordenada=mouseX+","+mouseY;
-				exploradoresPorCoordenada.get(CORES[indiceCorDaVez]).set(numExploradorSelecionado, newCoordenada);
+				exploradoresPorCoordenada.get(CORES[numeroJogadores[indiceCorDaVez]-1]).set(numExploradorSelecionado, newCoordenada);
 			}
 			
 			if (exploradorSelected || exploradorProntoParaMover) {
@@ -1032,9 +724,6 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 	public void mouseDragged(MouseEvent e) {}
-
-	protected List<Observador> observadores = new ArrayList<>();
-	private boolean hasChanged;
 
 	public void adicionarObservador(Observador o) {
 		if (!observadores.contains(o)) {
@@ -1072,18 +761,16 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 
 		final int operacao = (int) args[0];
 
-		String mensagem = null;
+		if (operacao == Operacoes.ORDENA_JOGADORES) {
+			s("Operacao Ordena Jogadores. Msg: " + "vai comecar");
+			numeroJogadores = new int[gameMode*2];
 
-		try {
-			mensagem = (String) args[1];
-		}
-		catch (ClassCastException ignored) {}
+			try {
+				System.arraycopy(args[1], 0, numeroJogadores, 0, gameMode*2);
+			}
+			catch (ClassCastException ignored) {}
 
-		if (operacao == 1) {
-			s("Operacao 1. Msg: " + mensagem);
-		}
-		else {
-			s(o + " " + Arrays.asList(args).toString());
+			s("Operacao Ordena Jogadores. Msg: " + numeroJogadores[0]);
 		}
 	}
 }

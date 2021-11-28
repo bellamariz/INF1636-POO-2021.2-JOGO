@@ -39,17 +39,6 @@ public class ControllerFacade implements Observador, Observavel {
 		viewFacade.startView();
 		viewFacade.addObserverToTabView(this);
 		this.adicionarObservador(viewFacade);
-
-		while (!canStartGame) {
-			if (viewFacade.getCanStartGame()) {
-				modelFacade.startModel(viewFacade.getGameMode(), viewFacade.getNomeJogadores());
-				canStartGame = true;
-			}
-		}
-
-		if ((viewFacade != null) && (modelFacade != null)) {
-			startGame();
-		}
 		modelFacade.adicionarObservador(this);
 	}
 
@@ -80,11 +69,12 @@ public class ControllerFacade implements Observador, Observavel {
 	}
 
 	public void jogo() {
+		s("Jogo inicializado. \n");
     	contaVez = 0;
     	valorDadoDaVez = 0;
     	final int posicaoUltJogador = modelFacade.getJogadoresOrdenados().size()-1;
     	
-    	while (!fimDeJogo) {
+    	 if (!fimDeJogo) {
     		//Chegou no último jogador
     		if (contaVez == posicaoUltJogador) {
     			modelFacade.setJogadorDaVez(modelFacade.getJogadoresOrdenados(),contaVez);
@@ -185,62 +175,19 @@ public class ControllerFacade implements Observador, Observavel {
 	    	//TODO: soh ao final da vez de um jogador que vai poder salvar o jogo
     	}
     	
-    	modelFacade.declaraVencedor();
+    	 else
+    		 modelFacade.declaraVencedor();
     }
-
-	// Metodos: Auxiliares//
-
-	// public void salvaJogo() {
-	// ModelFacade.codificaTabuleiro(codeTab);
-	// String s = "";
-	// s = s.concat(Integer.toString(rodada));
-	// for(int i = 0; i < 8; i++) {
-	// for(int j = 0;j < 8; j++) {
-	// s = s.concat(" " + Integer.toString(codeTab[i][j]));
-	// }
-	// }
-	//
-	// JFileChooser chooser = new JFileChooser();
-	// int retval = chooser.showSaveDialog(null);
-	// try{
-	// FileWriter fw = new FileWriter(chooser.getSelectedFile()+".txt");
-	// fw.write(s);
-	// fw.flush();
-	// fw.close();
-	// } catch(Exception IOException) {} finally {}
-	// }
-	//
-	// public void carregaJogo() {
-	//
-	// JFileChooser chooser = new JFileChooser();
-	// int retval = chooser.showOpenDialog(null);
-	// String out="";
-	// try{
-	// Scanner scan = new Scanner(chooser.getSelectedFile());
-	//
-	// while(scan.hasNextLine()) {
-	// out= out + scan.nextLine();
-	// }
-	// } catch(FileNotFoundException e) {} finally {}
-	//
-	// String[] result = out.split(" ");
-	//
-	// rodada = Integer.parseInt(result[0]) - 1;
-	//
-	// for(int i = 0; i < 8; i++) {
-	// for(int j = 0;j < 8; j++) {
-	// int index = (i*8)+j + 1;
-	//
-	// codeTab[i][j] = Integer.parseInt(result[index]);
-	// }
-	// }
-	//
-	// ModelFacade.carregaTabuleiro(codeTab);
-	// proxRodada();
-	// }
 
 	public static void s(Object o) {
 		System.out.println(o);
+	}
+	
+	public void exibeArray(int gameMode, String[] nomeJogadores) {
+		s("gameMode: " + gameMode);
+		s("Recebemos via mensagem os nomes: ");
+		for (int i = 0; i < gameMode * 2; i++)
+			s(nomeJogadores[i]);
 	}
 
 	// Metodos: Observador e Observavel //
@@ -254,21 +201,40 @@ public class ControllerFacade implements Observador, Observavel {
 		}
 
 		final int operacao = (int) args[0];
-		String mensagem = null;
+		
+		if (operacao == Operacoes.INICIALIZA_MODEL) {
+			final int gameMode = (int) args[1];
+			String[] nomeJogadores = new String[gameMode*2];
 
-		try {
-			mensagem = (String) args[1];
-		} catch (ClassCastException ignored) {
-		}
+			try {
+				System.arraycopy(args[2], 0, nomeJogadores, 0, gameMode*2);
+			}
+			catch (ClassCastException ignored) {}
+			
+			exibeArray(gameMode, nomeJogadores);
+			modelFacade.startModel(gameMode, nomeJogadores);
+			notificarObservadores(Operacoes.ORDENA_JOGADORES, modelFacade.getNumeroJogadoresOrdenados());
+		} 
+		
+		else if (operacao == Operacoes.DADO_LANCADO) {
+			String mensagem = null;
+			try {
+				mensagem = (String) args[1];
+			} 
+			catch (ClassCastException ignored) {}
 
-		if (operacao == Operacoes.OPERACAO_OLA) {
-			s("Operacao 1. Msg: " + mensagem);
-			notificarObservadores(1, "Tchau");
-		} else if (operacao == Operacoes.DADO_LANCADO) {
 			final int dado = (int) args[1];
 			final double valor2 = (double) args[2];
 			s("Recebemos via mensagem o dado " + dado);
-		} else {
+			notificarObservadores(1, "Tchau");
+		}
+		
+		else if (operacao == Operacoes.SALVAR_JOGO) {
+			s("jogo salvo");
+			//salvarJogo();
+		}
+		
+		else {
 			s(o + " " + Arrays.asList(args).toString());
 		}
 	}

@@ -28,8 +28,8 @@ class JanelaInicialView extends JFrame{
 	private final int TEXT_START_Y = 150;
 	
 	private int qtdeJogadores = 0;
-	private int gameMode = 0;
-	private String nomesJogadores[] = null;
+	private static int gameMode = 0;
+	private static String nomesJogadores[] = null;
 	private static boolean GAME_MODE_STATUS = false;
 	private boolean canStartGame = false;
 	private boolean gameModeSelected = true;
@@ -59,11 +59,11 @@ class JanelaInicialView extends JFrame{
 		return canStartGame;
 	}
 
-	public int getGameMode() {
+	public static int getGameMode() {
 		return gameMode;
 	}
 	
-	public String[] getNomesJogadores() {
+	public static String[] getNomesJogadores() {
 		return nomesJogadores;
 	}
 
@@ -246,8 +246,6 @@ class JanelaInicialView extends JFrame{
             	else
 	            	for(int i = 0; i < qtdeJogadores; i++)
 						nomesJogadores[i] = texts[i].getText();
-				
-				System.out.printf("\nJogo Iniciado\n");
 				
 				if (!gameModeSelected)
 					JOptionPane.showMessageDialog(menuInicial,"Escolha o modo de jogo antes!");

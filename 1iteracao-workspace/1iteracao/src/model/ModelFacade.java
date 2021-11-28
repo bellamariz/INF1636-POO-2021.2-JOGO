@@ -618,6 +618,14 @@ public class ModelFacade implements Observavel {
 		System.out.println();
     }
     
+    public int[] getNumeroJogadoresOrdenados() {
+    	int[] numeroDosJogadoresOrdenados = new int[4];
+    	for (int i = 0; i < jogadoresOrdenados.size(); i++) {
+    		numeroDosJogadoresOrdenados[i] = jogadoresOrdenados.get(i).getNumeroDoJogador();
+    	}
+    	return numeroDosJogadoresOrdenados;
+    }
+    
     public String getJogadorDaVezNome() {
     	return jogadorDaVez.getName();
     }
