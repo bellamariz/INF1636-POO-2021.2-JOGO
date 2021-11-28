@@ -8,7 +8,7 @@ import java.util.Set;
 class ModoJogo {
 	private static ModoJogo modoJogoInstance;
 	public static final String[] CORES = {"Preto", "Azul", "Verde", "Laranja", "Vermelho", "Branco"};
-	public static int NUM_JOGADORES;
+	public static int NUM_JOGADORES = 0;
 	private int gameMode = 0;
 	private String nomes[] = new String[4];
 	private ArrayList<CartaDinamica> deckCartaDinamica = new ArrayList<CartaDinamica>(18);

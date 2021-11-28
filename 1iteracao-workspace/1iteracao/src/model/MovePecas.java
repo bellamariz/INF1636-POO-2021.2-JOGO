@@ -8,75 +8,39 @@ import java.util.Scanner;
 import java.util.Set;
 
 class MovePecas {
+	private static MovePecas movePecas = null;
 	private int exploradorParaMover, longitudeInicial, opcaoDeMovimento; //Variaveis de input
 	private boolean fimDeJogo = false, jogadaTabuleiroPossivel = false, moverExploradorPossivel = false, casaLiberada = false, metaCumprida = false;
 	private Jogador jogadorDaVez = null, jogadorAux = null;
-	private Dado dado = null;
 	private CartaDinamica cartaEscolhida = null;
     private Tabuleiro tabuleiroPoloSul = null;
     private Tabuleiro tabuleiroPoloNorte = null;
     private Tabuleiro tabuleiroDaVez = null, tabuleiroAux = null; 
     private final int POLO_INICIAL_SUL = 1, POLO_INICIAL_NORTE = 2;
-    private ArrayList<CartaDinamica> deckCartaDinamica = null;
+    //private ArrayList<CartaDinamica> deckCartaDinamica = null;
     private ArrayList<Jogador> jogadoresOrdenados = null;
     private ArrayList<Integer> valoresDados = null;
-    private static ModoJogo jogo = null;
+	private Dado dado = new Dado();
     private Scanner s = new Scanner(System.in);
-    
-    public MovePecas(int mode, String[] nomes, Dado dado) {
-    	this.dado = dado;
-    	jogo = ModoJogo.getInstance(mode, nomes);
-    	initGame();
-    }
-    
-    private void initGame() {
-    	this.tabuleiroPoloSul = new Tabuleiro(ModoJogo.NUM_JOGADORES);
-    	this.tabuleiroPoloNorte = new Tabuleiro(ModoJogo.NUM_JOGADORES);
-    	this.deckCartaDinamica = jogo.getDeckCartas();
-    	this.jogadoresOrdenados = jogo.getJogadoresOrdenados();
-    	this.valoresDados = jogo.getDadosJogadores();
-        inicializaTabuleiro(jogo.getJogadores());
-    }
-    
-    
-    
-	public ArrayList<Jogador> getJogadoresOrdenados() {
-		return jogadoresOrdenados;
-	}
 
-	//Carta escolhida retirada do topo do deck e colocada ao final
-  	public CartaDinamica pegaCartaDoDeck() {
-  		CartaDinamica carta = this.deckCartaDinamica.get(0);
-  		this.deckCartaDinamica.remove(0);
-  		this.deckCartaDinamica.add(carta);
-  		return carta;
-  	}
+	private void MovePecas(){}
     
-    //Inicializa os tabuleiros com os elementos
-    public void inicializaTabuleiro(Jogador[] listaDeJogadores) {
-        this.tabuleiroPoloSul.montaTabuleiro();
-        this.tabuleiroPoloNorte.montaTabuleiro();
-        
-        for (int i=0; i<listaDeJogadores.length; i++) {
-        	//Jogador impar inicia no polo sul, jogador par no polo norte
-        	if (listaDeJogadores[i].getNumeroDoJogador()%2 != 0) {
-        		listaDeJogadores[i].setPoloInicial(POLO_INICIAL_SUL);
-        		tabuleiroPoloSul.montaPoloInicial(listaDeJogadores[i]);
-        	}
-        	else {
-        		listaDeJogadores[i].setPoloInicial(POLO_INICIAL_NORTE);
-        		tabuleiroPoloNorte.montaPoloInicial(listaDeJogadores[i]);
-        	}
-        	
-        	tabuleiroPoloSul.setPodeMover(false);
-        	tabuleiroPoloNorte.setPodeMover(false);
+    public static MovePecas getInstance(){
+      if(movePecas==null){
+         movePecas = new MovePecas();
         }
-        
-    	if (jogadoresOrdenados != null) {
-    		//jogo();
-    	}
-    	
+        return movePecas;
     }
+    
+    //Metodos: Movimentacao dos Exploradores//
+    
+//	//Carta escolhida retirada do topo do deck e colocada ao final
+//  	public CartaDinamica pegaCartaDoDeck(ArrayList<CartaDinamica> deckCartaDinamica) {
+//  		CartaDinamica carta = deckCartaDinamica.get(0);
+//  		this.deckCartaDinamica.remove(0);
+//  		this.deckCartaDinamica.add(carta);
+//  		return carta;
+//  	}
     
     //Seleciona qual vai ser o tabuleiro que vai ser utilizado na rodada atual
     private void selecionaTabuleiroDaVez(Explorador explorador) {
@@ -90,7 +54,6 @@ class MovePecas {
 			tabuleiroDaVez = tabuleiroPoloSul;
     }
     
-   
     //Atualiza o tabuleiro
     public void movimentaTabuleiro (Tabuleiro tabuleiro, Explorador explorador, int[] coordenadasAntigas) {
     	//Remove o explorador da posicao antiga (se ele nao estava no polo inicial antes)
@@ -584,8 +547,8 @@ class MovePecas {
 		    		metaCumprida = true;
 		    		
 		    		//Conquistou carta dinâmica
-		    		cartaEscolhida = pegaCartaDoDeck();
-		    		cartaEscolhida.exibeCartaEscolhida();
+		    		//cartaEscolhida = pegaCartaDoDeck();
+		    		//cartaEscolhida.exibeCartaEscolhida();
 		    	}
 	    	}
 	    	
@@ -654,6 +617,172 @@ class MovePecas {
     	}
     }
   
+    
+    
+    //Metodos: Getters e Setters//
+    
+    public int getExploradorParaMover() {
+		return exploradorParaMover;
+	}
+
+	public void setExploradorParaMover(int exploradorParaMover) {
+		this.exploradorParaMover = exploradorParaMover;
+	}
+
+	public int getLongitudeInicial() {
+		return longitudeInicial;
+	}
+
+	public void setLongitudeInicial(int longitudeInicial) {
+		this.longitudeInicial = longitudeInicial;
+	}
+
+	public int getOpcaoDeMovimento() {
+		return opcaoDeMovimento;
+	}
+
+	public void setOpcaoDeMovimento(int opcaoDeMovimento) {
+		this.opcaoDeMovimento = opcaoDeMovimento;
+	}
+
+	public boolean isFimDeJogo() {
+		return fimDeJogo;
+	}
+
+	public void setFimDeJogo(boolean fimDeJogo) {
+		this.fimDeJogo = fimDeJogo;
+	}
+
+	public boolean isJogadaTabuleiroPossivel() {
+		return jogadaTabuleiroPossivel;
+	}
+
+	public void setJogadaTabuleiroPossivel(boolean jogadaTabuleiroPossivel) {
+		this.jogadaTabuleiroPossivel = jogadaTabuleiroPossivel;
+	}
+
+	public boolean isMoverExploradorPossivel() {
+		return moverExploradorPossivel;
+	}
+
+	public void setMoverExploradorPossivel(boolean moverExploradorPossivel) {
+		this.moverExploradorPossivel = moverExploradorPossivel;
+	}
+
+	public boolean isCasaLiberada() {
+		return casaLiberada;
+	}
+
+	public void setCasaLiberada(boolean casaLiberada) {
+		this.casaLiberada = casaLiberada;
+	}
+
+	public boolean isMetaCumprida() {
+		return metaCumprida;
+	}
+
+	public void setMetaCumprida(boolean metaCumprida) {
+		this.metaCumprida = metaCumprida;
+	}
+
+	public Jogador getJogadorDaVez() {
+		return jogadorDaVez;
+	}
+
+	public void setJogadorDaVez(Jogador jogadorDaVez) {
+		this.jogadorDaVez = jogadorDaVez;
+	}
+
+	public Jogador getJogadorAux() {
+		return jogadorAux;
+	}
+
+	public void setJogadorAux(Jogador jogadorAux) {
+		this.jogadorAux = jogadorAux;
+	}
+
+	public CartaDinamica getCartaEscolhida() {
+		return cartaEscolhida;
+	}
+
+	public void setCartaEscolhida(CartaDinamica cartaEscolhida) {
+		this.cartaEscolhida = cartaEscolhida;
+	}
+
+	public Tabuleiro getTabuleiroPoloSul() {
+		return tabuleiroPoloSul;
+	}
+
+	public void setTabuleiroPoloSul(Tabuleiro tabuleiroPoloSul) {
+		this.tabuleiroPoloSul = tabuleiroPoloSul;
+	}
+
+	public Tabuleiro getTabuleiroPoloNorte() {
+		return tabuleiroPoloNorte;
+	}
+
+	public void setTabuleiroPoloNorte(Tabuleiro tabuleiroPoloNorte) {
+		this.tabuleiroPoloNorte = tabuleiroPoloNorte;
+	}
+
+	public Tabuleiro getTabuleiroDaVez() {
+		return tabuleiroDaVez;
+	}
+
+	public void setTabuleiroDaVez(Tabuleiro tabuleiroDaVez) {
+		this.tabuleiroDaVez = tabuleiroDaVez;
+	}
+
+	public Tabuleiro getTabuleiroAux() {
+		return tabuleiroAux;
+	}
+
+	public void setTabuleiroAux(Tabuleiro tabuleiroAux) {
+		this.tabuleiroAux = tabuleiroAux;
+	}
+
+//	public ArrayList<CartaDinamica> getDeckCartaDinamica() {
+//		return deckCartaDinamica;
+//	}
+//
+//	public void setDeckCartaDinamica(ArrayList<CartaDinamica> deckCartaDinamica) {
+//		this.deckCartaDinamica = deckCartaDinamica;
+//	}
+
+	public ArrayList<Jogador> getJogadoresOrdenados() {
+		return jogadoresOrdenados;
+	}
+
+	public void setJogadoresOrdenados(ArrayList<Jogador> jogadoresOrdenados) {
+		this.jogadoresOrdenados = jogadoresOrdenados;
+	}
+
+	public Dado getDado() {
+		return dado;
+	}
+
+	public void setDado(Dado dado) {
+		this.dado = dado;
+	}
+
+	public int getPOLO_INICIAL_SUL() {
+		return POLO_INICIAL_SUL;
+	}
+
+	public int getPOLO_INICIAL_NORTE() {
+		return POLO_INICIAL_NORTE;
+	}
+	
+	public ArrayList<Integer> getValoresDados() {
+		return valoresDados;
+	}
+
+	public void setValoresDados(ArrayList<Integer> valoresDados) {
+		this.valoresDados = valoresDados;
+	}
+
+	
+	//Metodos: Exibicao no Terminal
     
     public void exibe() {
     	System.out.println(" -- Polo Sul --");
