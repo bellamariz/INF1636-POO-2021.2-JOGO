@@ -76,7 +76,7 @@ public class ControllerFacade implements Observador, Observavel {
 
 	public void jogo() {
 		contaPartida = 0;
-		final int posicaoUltJogador = jogadoresOrdenados.size() - 1;
+		final int posicaoUltJogador = modelFacade.getMovePecas().getJogadoresOrdenados().size() - 1;
 		int valorDadoDaVez = 0;
 
 		while (!fimDeJogo) {
@@ -110,7 +110,7 @@ public class ControllerFacade implements Observador, Observavel {
 
 				jogadaTabuleiroPossivel = false;
 
-				while (!jogadaTabuleiroPossivel) { // Verifica se � poss�vel fazer essa jogada no tabuleiro
+				while (!jogadaTabuleiroPossivel) { // Verifica se eh possivel fazer essa jogada no tabuleiro
 					moverExploradorPossivel = false;
 					while (!moverExploradorPossivel) {
 						System.out.printf(jogadorDaVez.getName() + ", qual explorador voce quer mover " + valorDadoDaVez
