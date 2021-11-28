@@ -73,24 +73,21 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private final static int EXP_WIDTH = 15;
 	private String newCoordenada = null;
 	private int numExploradorSelecionado = 6;
-	private String corDaVez;
 	private ArrayList<String> coresOrdenadas = new ArrayList<String>(4);
 	private int indiceCorDaVez = 0;
 	private boolean posValida = false;
-	private int expX;
-	private int expY;
 
 	public TabuleiroView() {
 		try {
-			//imgTabuleiro = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Bella
-			imgTabuleiro = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Rachel
+			imgTabuleiro = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Bella
+			//imgTabuleiro = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Rachel
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			//pecaSelecionada = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Bella
-			pecaSelecionada = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Rachel
+			pecaSelecionada = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Bella
+			//pecaSelecionada = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Rachel
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -138,8 +135,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		
 		for(int i = 0; i < 4; i++) {
 			try {
-				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Bella
-				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Rachel
+				Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Bella
+				//Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Rachel
 				imgPecas.put(CORES[i], img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -150,8 +147,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private void loadImagesDados() {
 		for(int i = 0; i < 6; i++) {
 			try {
-				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Bella
-				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Rachel
+				Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Bella
+				//Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Rachel
 				imgDados.put(Integer.valueOf(DADINHOS[i]), img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -162,8 +159,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private void loadImagesCartas() {
 		for(int i = 0; i < 18; i++) {
 			try {
-				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Bella
-				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Rachel
+				Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Bella
+				//Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Rachel
 				imgCartas.put(Integer.valueOf(CARTINHAS[i]), img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -333,9 +330,6 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		btLancaDado.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				notificarObservadores(1, "Ola");
-
-
-				//TODO: implementar observable para pegar os objetos do Model
 				dado1 = ControllerFacade.getModelFacade().getValorDado();
 				dado2 = ControllerFacade.getModelFacade().getValorDado();
 				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
@@ -794,7 +788,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		g2d.fill(rt);
 
 		
-		//Inicializa imagens dos exploradores
+		//Desenho dos exploradores
 		if (initBoard) {
 			for (int i = 0; i < (2*gameMode); i ++) {
 				ArrayList<String> coordenadasIniciais = new ArrayList<String>();
@@ -828,6 +822,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 				}
 			}
 		
+		//Atualiza desenho dos exploradores
 		if (exploradorProntoParaMover) {
 			int x = montaCoordenada(exploradoresPorCoordenada.get(CORES[indiceCorDaVez]).get(numExploradorSelecionado),"x");
 			int y = montaCoordenada(exploradoresPorCoordenada.get(CORES[indiceCorDaVez]).get(numExploradorSelecionado),"y");
@@ -855,6 +850,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 //			}
 //		}
 		
+		//Cor do jogador da vez
 		Rectangle2D corJogador = new Rectangle2D.Double(730, 180, 240, 140);
 		g2d.setColor(Color.getColor(CORES[indiceCorDaVez]));
 		g2d.fill(corJogador);
@@ -870,11 +866,6 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			g2d.fill(dadoColorido);
 		}		
 		
-		
-//		//Elipse teste mouse
-//		Ellipse2D circ = new Ellipse2D.Double(mouseX - 10, mouseY - 10,20,20);
-//		g2d.setPaint(Color.BLUE);
-//		g2d.draw(circ);
     }
 	
 	private int montaCoordenada (String str, String tipo) {
