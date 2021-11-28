@@ -39,8 +39,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private final int BUTTON_START_Y = 330;
 	private final int TEXT_WIDTH = 80;
 	private JButton btLancaDado = new JButton("Lançar Dados");
-	JLabel dado1Manualmente = new JLabel("Dado 1");
-	JLabel dado2Manualmente = new JLabel("Dado 2");
+	private JLabel dado1Manualmente = new JLabel("Dado 1");
+	private JLabel dado2Manualmente = new JLabel("Dado 2");
 	private JButton dado1valor1 = new JButton("1");
 	private JButton dado1valor2 = new JButton("2");
 	private JButton dado1valor3 = new JButton("3");
@@ -53,6 +53,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private JButton dado2valor4 = new JButton("4");
 	private JButton dado2valor5 = new JButton("5");
 	private JButton dado2valor6 = new JButton("6");
+	private JButton salvarJogo = new JButton("Salvar Jogo");
 	private int dado1 = 0;
 	private int dado2 = 0;
 	private String dadoCol = null;
@@ -79,15 +80,15 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 
 	public TabuleiroView() {
 		try {
-			imgTabuleiro = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Bella
-			//imgTabuleiro = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Rachel
+			//imgTabuleiro = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Bella
+			imgTabuleiro = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Rachel
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			pecaSelecionada = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Bella
-			//pecaSelecionada = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Rachel
+			//pecaSelecionada = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Bella
+			pecaSelecionada = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Rachel
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -107,6 +108,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado2valor4.setBounds(955, 415, 50, BUTTON_HEIGHT);
 		dado2valor5.setBounds(1010, 415, 50, BUTTON_HEIGHT);
 		dado2valor6.setBounds(1065, 415, 50, BUTTON_HEIGHT);
+		salvarJogo.setBounds(BUTTON_START_X, 600, BUTTON_WIDTH, BUTTON_HEIGHT);
 		setColors();
 		loadImagesPecas();
 		loadImagesDados();
@@ -135,8 +137,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		
 		for(int i = 0; i < 4; i++) {
 			try {
-				Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Bella
-				//Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Rachel
+				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Bella
+				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Rachel
 				imgPecas.put(CORES[i], img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -147,8 +149,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private void loadImagesDados() {
 		for(int i = 0; i < 6; i++) {
 			try {
-				Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Bella
-				//Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Rachel
+				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Bella
+				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Rachel
 				imgDados.put(Integer.valueOf(DADINHOS[i]), img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -159,8 +161,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private void loadImagesCartas() {
 		for(int i = 0; i < 18; i++) {
 			try {
-				Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Bella
-				//Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Rachel
+				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Bella
+				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Rachel
 				imgCartas.put(Integer.valueOf(CARTINHAS[i]), img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -458,6 +460,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
         add(dado2valor4);
         add(dado2valor5);
         add(dado2valor6);
+        add(salvarJogo);
 		
         //Imagem do tabuleiro
 		g2d.drawImage(imgTabuleiro, 0, 0, this);

@@ -23,17 +23,17 @@ public class ControllerFacade implements Observador, Observavel {
 		viewFacade = ViewFacade.getInstance();
 		modelFacade = ModelFacade.getInstance();
 
+		viewFacade.startView();
 		viewFacade.addObserverToTabView(this);
 		this.adicionarObservador(viewFacade);
-		modelFacade.adicionarObservador(this);
 		
-		viewFacade.startView();
 		while (!canStartGame) {
 			if (viewFacade.getCanStartGame()) {
 				modelFacade.startModel(viewFacade.getGameMode(), viewFacade.getNomeJogadores());
 				canStartGame = true;
 			}
 		}
+		modelFacade.adicionarObservador(this);
 	}
 	
 	public static ControllerFacade getController() {
@@ -50,6 +50,56 @@ public class ControllerFacade implements Observador, Observavel {
 	public static ModelFacade getModelFacade() {
 		return modelFacade;
 	}
+	
+//	public void salvaJogo() {
+//        ModelFacade.codificaTabuleiro(codeTab);
+//        String s = "";
+//        s = s.concat(Integer.toString(rodada));
+//        for(int i = 0; i < 8; i++) {
+//            for(int j = 0;j < 8; j++) {
+//                s = s.concat(" " + Integer.toString(codeTab[i][j]));
+//            }
+//        }
+//        
+//        JFileChooser chooser  = new JFileChooser();
+//        int retval = chooser.showSaveDialog(null);
+//        try{
+//            FileWriter fw = new FileWriter(chooser.getSelectedFile()+".txt");
+//            fw.write(s);
+//            fw.flush();
+//            fw.close();
+//        } catch(Exception IOException) {} finally {}
+//    }
+//	
+//	public void carregaJogo() {
+//        
+//        JFileChooser chooser  = new JFileChooser();
+//        int retval = chooser.showOpenDialog(null);
+//        String out="";
+//                try{
+//                    Scanner scan = new Scanner(chooser.getSelectedFile());
+//                    
+//                    while(scan.hasNextLine()) {
+//                        out= out + scan.nextLine();
+//                    }
+//                } catch(FileNotFoundException e) {} finally {}
+//        
+//        String[] result = out.split(" "); 
+//        
+//        rodada = Integer.parseInt(result[0]) - 1;
+//        
+//        for(int i = 0; i < 8; i++) {
+//            for(int j = 0;j < 8; j++) {
+//            	int index = (i*8)+j + 1;
+//            	
+//            	codeTab[i][j] = Integer.parseInt(result[index]);
+//            }
+//        }
+//        
+//        ModelFacade.carregaTabuleiro(codeTab);
+//        proxRodada();
+//    }
+
 
 	public static void s(Object o) {
 		System.out.println(o);
