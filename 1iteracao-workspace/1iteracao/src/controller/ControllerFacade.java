@@ -10,28 +10,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JFileChooser;
+
 public class ControllerFacade implements Observador, Observavel {
 	private static ControllerFacade controller = null;
 	private boolean canStartGame = false;
 	private static ViewFacade viewFacade = null;
 	private static ModelFacade modelFacade = null;
+	private JFileChooser fileChooser = new JFileChooser();
 
 	private ControllerFacade() {
 		viewFacade = ViewFacade.getInstance();
 		modelFacade = ModelFacade.getInstance();
-		
-		viewFacade.startView();
 
 		viewFacade.addObserverToTabView(this);
-
 		this.adicionarObservador(viewFacade);
-
 		modelFacade.adicionarObservador(this);
-
-		while (!canStartGame)
-			if (viewFacade.getCanStartGame())
+		
+		viewFacade.startView();
+		while (!canStartGame) {
+			if (viewFacade.getCanStartGame()) {
 				modelFacade.startModel(viewFacade.getGameMode(), viewFacade.getNomeJogadores());
 				canStartGame = true;
+			}
+		}
 	}
 	
 	public static ControllerFacade getController() {

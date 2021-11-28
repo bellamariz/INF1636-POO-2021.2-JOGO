@@ -4,8 +4,12 @@ import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 
 class JanelaInicialView extends JFrame{
 	
@@ -34,6 +38,10 @@ class JanelaInicialView extends JFrame{
     private JPanel menuJogadores = new JPanel();
     private JPanel tabuleiro = new JPanel();
     private TabuleiroView tabuleiroView;
+    
+    private JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
+    private File arqJogoCarregado = null;
+    private FileReader fileReader = null;
 
     public JanelaInicialView(TabuleiroView tabuleiro) {
     	this.tabuleiroView = tabuleiro;
@@ -59,7 +67,7 @@ class JanelaInicialView extends JFrame{
 		return nomesJogadores;
 	}
 
-	// aparecendo as opcoes de novo jogo ou carregar 
+	//Aparecendo as opcoes de novo jogo ou carregar jogo
     private void novoOuCarregar () {
         JButton novoJogo = new JButton("Novo Jogo");
         JButton carregarJogo = new JButton("Carregar Jogo"); 
@@ -72,7 +80,6 @@ class JanelaInicialView extends JFrame{
         carregarJogo.setBounds(BUTTON_START_X, BUTTON_START_Y + BUTTON_SPACE, BUTTON_WIDTH, BUTTON_HEIGHT);  
         menuInicial.add(carregarJogo);
 
-        //menuInicial = f1;
         novoJogo.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){ 
         		System.out.println("novo jogo");
@@ -94,13 +101,42 @@ class JanelaInicialView extends JFrame{
         }); 
         
         carregarJogo.addActionListener(new ActionListener(){  
-            public void actionPerformed(ActionEvent e){ 
-
-                //repaint();
-        		//getContentPane().remove(f);
+            public void actionPerformed(ActionEvent event){ 
         		System.out.println("Carregar jogo");
+        		
+        		int statusCarregamento = fileChooser.showOpenDialog(null);
+        		 
+                if (statusCarregamento == JFileChooser.APPROVE_OPTION) {         	
+                    arqJogoCarregado = fileChooser.getSelectedFile();
+                    
+                    try {
+                    	fileReader = new FileReader(arqJogoCarregado.getAbsolutePath());
+                    	int c;
+                    	while ((c = fileReader.read()) != -1) {
+                    		
+                    	}
+                    }
+                    catch(IOException e) {
+                    	System.out.print("Erro na leitura do arquivo.\n");
+						e.printStackTrace();
+                    }
+                    finally {
+                    	if (fileReader != null) {
+                    		try {
+								fileReader.close();
+							} catch (IOException e) {
+								System.out.print("Erro no fechamento do leitor de arquivo.\n");
+								e.printStackTrace();
+							}
+                    	}
+                    }
+               
+                }
+                else
+                	System.out.print("Carregamento cancelado.\n");
             }  
         }); 
+        
         menuInicial.setLayout(null);
         menuInicial.setVisible(true);
         add(menuInicial);
