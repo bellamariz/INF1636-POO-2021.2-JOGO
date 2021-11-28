@@ -1,9 +1,11 @@
 package view;
 
+import java.io.Serializable;
+
 import util.Observador;
 import util.Observavel;
 
-public class ViewFacade implements Observavel, Observador {
+public class ViewFacade implements Observavel, Observador, Serializable {
 	private static ViewFacade view = null;
 	private JanelaInicialView janelaInicialView;
 	private TabuleiroView tabuleiroView;

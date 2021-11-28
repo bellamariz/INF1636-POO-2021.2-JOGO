@@ -14,4 +14,5 @@ public class Operacoes {
     public static final int CONTA_PONTOS = 11; //conta pontuacao final
     public static final int SALVAR_JOGO = 12; //salvar jogo
     public static final int MOVIMENTACAO_INVALIDA = 13; //salvar jogo
+    public static final int TERMINOU_JOGO = 14; //acabou o jogo
 }

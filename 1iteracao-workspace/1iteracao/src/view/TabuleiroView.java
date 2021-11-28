@@ -797,5 +797,13 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		else if (operacao == Operacoes.MOVIMENTACAO_INVALIDA) {
 			jogadaPossivel = false;
 		}
+		
+		else if (operacao == Operacoes.TERMINOU_JOGO) {
+			String[] pontuacao = new String[gameMode*2];
+			try {
+				System.arraycopy(args[1], 0, pontuacao, 0, gameMode*2);
+			}
+			catch (ClassCastException ignored) {}
+		}
 	}
 }

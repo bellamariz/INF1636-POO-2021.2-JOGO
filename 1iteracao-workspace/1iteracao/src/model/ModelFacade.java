@@ -4,11 +4,12 @@ import util.Observador;
 import util.Observavel;
 import util.Operacoes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ModelFacade implements Observavel {
+public class ModelFacade implements Observavel, Serializable {
 	private static ModelFacade model = null;
 	private List<Observador> observadores = new ArrayList<>();
 	private ModoJogo jogo = null;
@@ -510,13 +511,12 @@ public class ModelFacade implements Observavel {
     }
     
     	//Faz o ranking dos jogadores
-    public void declaraVencedor() {
+    public ArrayList<Jogador> declaraVencedor() {
     	final int tam = jogadoresOrdenados.size();
     	ArrayList<Jogador> ranking = new ArrayList<Jogador>(tam);
     	int vencedor = 0, vencedorTemp = 0;
     	
     	//Soma os pontos de cada jogador
-    	//TODO: Implementar Comparator na classe Jogador para fazer o sort tanto por dado quanto por pontuacao
     	for (int i=0; i<tam; i++) {
     		jogadoresOrdenados.get(i).somaPontuacao();
     		vencedorTemp = jogadoresOrdenados.get(i).getPontuacaoFinal();
@@ -529,44 +529,10 @@ public class ModelFacade implements Observavel {
     			ranking.add(jogadoresOrdenados.get(i));
     	}
     	
-    	//Modo1x1
-    	if (tam == 2) {
-    		if (ranking.get(0).getPontuacaoFinal() == ranking.get(1).getPontuacaoFinal())
-    			System.out.println("Jogadores empatados!\n");
-    		else
-    			System.out.println("PARABENS "+ ranking.get(0).getName()+ "! Você é o vencedor!\n");
-    	}
-    	
-    	//Modo2x2
-    	else if (tam == 4) {
-    		int somaPoloNorte = 0, somaPoloSul = 0;
-    		
-    		for(int j=0; j<tam; j++) {
-    			if (ranking.get(j).getPoloInicial() == POLO_INICIAL_SUL)
-    				somaPoloSul+=ranking.get(j).getPontuacaoFinal();
-    			else if (ranking.get(j).getPoloInicial() == POLO_INICIAL_NORTE)
-    				somaPoloNorte+=ranking.get(j).getPontuacaoFinal();
-    		}
-    		
-    		if (somaPoloNorte > somaPoloSul)
-    			System.out.println("PARABENS DUPLA DO POLO NORTE! Voces são os vencedores!\n");
-    		else if (somaPoloNorte < somaPoloSul)
-        		System.out.println("PARABENS DUPLA DO POLO SUL! Voces são os vencedores!\n");
-    		else
-    			System.out.println("Pontuacao das duas duplas empatadas!\n");
-    		
-    	}
-    	
-    	System.out.println("O ranking final do jogo é:\n");
-    	for(int j=0; j<tam; j++) {
-    		System.out.println("LUGAR " + j + " - " + ranking.get(j).getName() 
-    				+ " - " + ranking.get(j).getPontuacaoFinal() + " PONTOS.\n");
-    	}
+    	return ranking;
     }
     
 
-  	
-	
 	//Metodos: Observador e Observavel//
 	
 	public void adicionarObservador(Observador o) {
@@ -590,9 +556,6 @@ public class ModelFacade implements Observavel {
 			o.update(this, args);
 		}
 	}
-
-	
-	
 	
     //Metodos: Auxiliares//
 	
@@ -686,9 +649,18 @@ public class ModelFacade implements Observavel {
     	jogadorDaVez.setMeta(jogadorDaVez.getPontosMeta() + 1);
     }
     
-
-    
-    
+    public String[] montaPontuacaoFinal() {
+    	ArrayList<Jogador> ranking = declaraVencedor();
+    	String[] rankingString = new String[ranking.size()];
+    	
+    	for (int j=0; j<ranking.size(); j++) {
+    		String resultado = "LUGAR " + j + " - " + ranking.get(j).getName() + " - " + ranking.get(j).getPontuacaoFinal() + " PONTOS.\n";
+    		rankingString[j] = resultado;
+    		s(resultado);
+    	}
+    	return rankingString;
+    }
+        
 	//Metodos: Getter e Setter//
 	
 	public ModoJogo getJogo() {

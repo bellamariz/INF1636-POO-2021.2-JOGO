@@ -6,6 +6,7 @@ import util.Observador;
 import util.Operacoes;
 import view.ViewFacade;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,22 +14,15 @@ import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 
-public class ControllerFacade implements Observador, Observavel {
+public class ControllerFacade implements Observador, Observavel, Serializable {
 	private static ControllerFacade controller = null;
 	private static ViewFacade viewFacade = null;
 	private static ModelFacade modelFacade = null;
-	private int contaVez = 0;
-	private int valorDadoDaVez = 0;
-	private boolean fimDeJogo = false;
 	private boolean metaCumprida = false;
-	private int[][] carrierViewModel = new int[8][8];
 	private Scanner s = new Scanner(System.in);
 	private JFileChooser fileChooser = new JFileChooser();
 	// TODO: FileWriter e FileReader
-
 	private List<Observador> observadores = new ArrayList<>();
-
-	//Instanciando o Controller, View e Model//
 
 	private ControllerFacade() {
 		viewFacade = ViewFacade.getInstance();
@@ -55,79 +49,78 @@ public class ControllerFacade implements Observador, Observavel {
 		return modelFacade;
 	}
 	
+	
 	//Metodos: Partida
 
+	public void jogo(int jogadorDaVez, int valorDadoDaVez, int numExploradorDaVez, int iAntigo, int jAntigo, int iNovo, int jNovo) {    	
+		modelFacade.setJogadorDaVez(jogadorDaVez); 
+		modelFacade.setExploradorParaMover(numExploradorDaVez);
+		modelFacade.selecionaTabuleiroDaVez(modelFacade.getExploradorParaMover()-1);
+
+		s("---------- RODADA DO JOGADOR - " + modelFacade.getJogadorDaVezNome() +" ----------\n");
+
+		s("Jogada feita pelo jogador " + modelFacade.getJogadorDaVezNome() + ": Dado: " + valorDadoDaVez + "\n");
 
 
-	public void jogo(int jogadorDaVez, int valorDado, int numExploradorDaVez, int iAntigo, int jAntigo, int iNovo, int jNovo) {    	
-    	 if (!fimDeJogo) {
-    		modelFacade.setJogadorDaVez(jogadorDaVez);
-	    	valorDadoDaVez = valorDado;	 
-	    	modelFacade.setExploradorParaMover(numExploradorDaVez);
-	    	modelFacade.selecionaTabuleiroDaVez(modelFacade.getExploradorParaMover()-1);
-    		
-    		s("---------- RODADA DO JOGADOR - " + modelFacade.getJogadorDaVezNome() +" ----------\n");
-	    	
-	    	s("Jogada feita pelo jogador " + modelFacade.getJogadorDaVezNome() + ": Dado: " + valorDado + "\n");
+		//	    	Verificacao dado colorido
+		//	    	    		if (corDadoColorido != null) {
+		//	    	    			modelFacade.trataCasoDadoColorido(corDadoColorido);
+		//	    	    		}
 
+		//Verifica se o explorador esta na casa inicial
+		boolean estaNaCasaInicial = modelFacade.wasExpInPoloInicial(modelFacade.getExploradorParaMover()-1); 
+		if (estaNaCasaInicial) {
+			//Sai do polo inicial e entra no tabuleiro
+			modelFacade.setLongitudeInicial(jNovo);
+			modelFacade.setJogadaTabuleiroPossivel(modelFacade.verificaPossibilidadeInicial(
+					modelFacade.getExploradorParaMover()-1, valorDadoDaVez, modelFacade.getLongitudeInicial(), modelFacade.getJogadorDaVez()
+					));
+		}
 
-//	    	Verificacao dado colorido
-//	    	    		if (corDadoColorido != null) {
-//	    	    			modelFacade.trataCasoDadoColorido(corDadoColorido);
-//	    	    		}
+		else {
+			//Ja saiu da casa inicial, está se movimento no tabuleiro
+			s("Explorador anda na latitude ou longitude? (Escreva 1 para latitude e 2 para longitude) ");
+			modelFacade.setOpcaoDeMovimento(s.nextInt());
+			modelFacade.setJogadaTabuleiroPossivel(modelFacade.verificaPossibilidade(
+					modelFacade.getExploradorParaMover()-1, valorDadoDaVez, modelFacade.getOpcaoDeMovimento(), modelFacade.getJogadorDaVez()
+					));
+		}
 
-	    	//Verifica se o explorador esta na casa inicial
-	    	boolean estaNaCasaInicial = modelFacade.wasExpInPoloInicial(modelFacade.getExploradorParaMover()-1); 
-	    	if (estaNaCasaInicial) {
-	    		//Sai do polo inicial e entra no tabuleiro
-	    		modelFacade.setLongitudeInicial(jNovo);
-	    		modelFacade.setJogadaTabuleiroPossivel(modelFacade.verificaPossibilidadeInicial(
-	    				modelFacade.getExploradorParaMover()-1, valorDadoDaVez, modelFacade.getLongitudeInicial(), modelFacade.getJogadorDaVez()
-	    				));
-	    	}
+		//Verifica se a movimentacao no tabuleiro foi possivel
+		boolean jogadaTabuleiroPossivel = modelFacade.isJogadaTabuleiroPossivel();
+		if (!jogadaTabuleiroPossivel) {
+			notificarObservadores(Operacoes.MOVIMENTACAO_INVALIDA);
+			return;
+		}
 
-	    	else {
-	    		//Ja saiu da casa inicial, está se movimento no tabuleiro
-	    		s("Explorador anda na latitude ou longitude? (Escreva 1 para latitude e 2 para longitude) ");
-	    		modelFacade.setOpcaoDeMovimento(s.nextInt());
-	    		modelFacade.setJogadaTabuleiroPossivel(modelFacade.verificaPossibilidade(
-	    				modelFacade.getExploradorParaMover()-1, valorDadoDaVez, modelFacade.getOpcaoDeMovimento(), modelFacade.getJogadorDaVez()
-	    				));
-	    	}
-	    	
-	    	boolean jogadaTabuleiroPossivel = modelFacade.isJogadaTabuleiroPossivel();
-	    	if (!jogadaTabuleiroPossivel) {
-	    		notificarObservadores(Operacoes.MOVIMENTACAO_INVALIDA);
-	    		return;
-	    	}
-		    	
-	    	//Exibe status do jogo
-	    	modelFacade.exibe();
+		//Verifica se a casa tem uma meta, se o jogador pode conquista-la e se ainda ha metas sobrando
+		int posicaoI = modelFacade.getExploradorDaVezIMatriz(modelFacade.getExploradorParaMover()-1);
+		int posicaoJ = modelFacade.getExploradorDaVezJMatriz(modelFacade.getExploradorParaMover()-1);
 
-	    	//Verifica se a casa tem uma meta, se o jogador pode conquista-la e se ainda ha metas sobrando
-	    	int posicaoI = modelFacade.getExploradorDaVezIMatriz(modelFacade.getExploradorParaMover()-1);
-	    	int posicaoJ = modelFacade.getExploradorDaVezJMatriz(modelFacade.getExploradorParaMover()-1);
+		if (modelFacade.isMetaNaCasa(posicaoI, posicaoJ) && modelFacade.isMetaCapturavel(posicaoI, posicaoJ)) {
+			modelFacade.setMetaNoTabuleiro(posicaoI, posicaoJ, false);
+			modelFacade.contaPontoMetaJogador();
+			s("Jogador " + modelFacade.getJogadorDaVezNome() + " conquistou um ponto de meta! "
+					+ "Pontos totais: " + modelFacade.getJogadorPontosMeta() + "\n");
+			metaCumprida = true;
 
-	    	if (modelFacade.isMetaNaCasa(posicaoI, posicaoJ) && modelFacade.isMetaCapturavel(posicaoI, posicaoJ)) {
-	    		modelFacade.setMetaNoTabuleiro(posicaoI, posicaoJ, false);
-	    		modelFacade.contaPontoMetaJogador();
-	    		s("Jogador " + modelFacade.getJogadorDaVezNome() + " conquistou um ponto de meta! "
-	    				+ "Pontos totais: " + modelFacade.getJogadorPontosMeta() + "\n");
-	    		metaCumprida = true;
-
-	    		//Conquistou carta dinâmica
-	    		//cartaEscolhida = pegaCartaDoDeck();
-	    		//cartaEscolhida.exibeCartaEscolhida();
-	    	}
-    	 }
+			//Conquistou carta dinâmica
+			//cartaEscolhida = pegaCartaDoDeck();
+			//cartaEscolhida.exibeCartaEscolhida();
+		}
+    	 
 
     	 //Se pelo menos uma meta foi capturada + todos os exploradores na casa final
-    	 if (metaCumprida && (modelFacade.getJogadorDaVezExpCasaFinal()==6))
-    		 fimDeJogo = true;    	
-    	 else
-    		 modelFacade.declaraVencedor();
+    	 if (metaCumprida && (modelFacade.getJogadorDaVezExpCasaFinal()==6)) {
+    		 String[] pontuacaoFinal = modelFacade.montaPontuacaoFinal();
+    		 notificarObservadores(Operacoes.TERMINOU_JOGO, pontuacaoFinal);
+    		 return;
+    	 }
+    		 
+    	 //Exibe status do jogo
+    	 modelFacade.exibe();
     }
-
+	
 	public static void s(Object o) {
 		System.out.println(o);
 	}
