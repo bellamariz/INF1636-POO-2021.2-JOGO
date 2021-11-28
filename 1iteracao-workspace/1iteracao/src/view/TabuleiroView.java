@@ -354,9 +354,9 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			public void actionPerformed(ActionEvent e) {
 				notificarObservadores(1, "Ola");
 				if (podeLancarDado) {
-					dado1 = ControllerFacade.getModelFacade().getValorDado();
-					dado2 = ControllerFacade.getModelFacade().getValorDado();
-					dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+					dado1 = ControllerFacade.getModelFacade().getValorDadoLancado(); //TODO: trocar pra observer
+					dado2 = ControllerFacade.getModelFacade().getValorDadoLancado();
+					dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 					if (!inicio) {
 						indiceCorDaVez += 1;
 						if (indiceCorDaVez == (2*gameMode))
@@ -374,7 +374,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado1valor1.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado1 = 1;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}	
 		});
@@ -382,7 +382,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado1valor2.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado1 = 2;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}
 		});
@@ -390,7 +390,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado1valor3.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado1 = 3;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}	
 		});
@@ -398,7 +398,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado1valor4.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado1 = 4;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}
 		});
@@ -406,7 +406,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado1valor5.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado1 = 5;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}	
 		});
@@ -414,7 +414,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado1valor6.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado1 = 6;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}
 		});
@@ -422,7 +422,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado2valor1.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado2 = 1;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}	
 		});
@@ -430,7 +430,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado2valor2.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado2 = 2;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}
 		});
@@ -438,7 +438,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado2valor3.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado2 = 3;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}	
 		});
@@ -446,7 +446,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado2valor4.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado2 = 4;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}
 		});
@@ -454,7 +454,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado2valor5.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado2 = 5;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}	
 		});
@@ -462,7 +462,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado2valor6.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				dado2 = 6;
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+				dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
 				atualiza();
 			}
 		});

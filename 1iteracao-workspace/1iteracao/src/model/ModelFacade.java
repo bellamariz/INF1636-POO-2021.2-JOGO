@@ -14,7 +14,7 @@ public class ModelFacade implements Observavel {
 	private ModoJogo jogo = null;
 	private boolean readyToStart = false;
 	private int exploradorParaMover, longitudeInicial, opcaoDeMovimento; //Variaveis de input
-	private boolean fimDeJogo = false, jogadaTabuleiroPossivel = false, moverExploradorPossivel = false, casaLiberada = false, metaCumprida = false;
+	private boolean jogadaTabuleiroPossivel = false, moverExploradorPossivel = false, casaLiberada = false;
 	private Jogador jogadorDaVez = null, jogadorAux = null;
 	private CartaDinamica cartaEscolhida = null;
     private Tabuleiro tabuleiroPoloSul = null;
@@ -95,14 +95,14 @@ public class ModelFacade implements Observavel {
     //Metodos: Movimentacao dos Exploradores
     
     	//Seleciona qual vai ser o tabuleiro que vai ser utilizado na rodada atual
-    private void selecionaTabuleiroDaVez(Explorador explorador) {
-    	if (explorador.getNumeroDoJogador()%2 != 0 && !explorador.isInMatrizOposta())
+    public void selecionaTabuleiroDaVez(int numExp) {
+    	if (getExploradorDaVez(numExp).getNumeroDoJogador()%2 != 0 && !getExploradorDaVez(numExp).isInMatrizOposta())
 			tabuleiroDaVez = tabuleiroPoloSul;
-    	else if (explorador.getNumeroDoJogador()%2 != 0 && explorador.isInMatrizOposta())
+    	else if (getExploradorDaVez(numExp).getNumeroDoJogador()%2 != 0 && getExploradorDaVez(numExp).isInMatrizOposta())
 			tabuleiroDaVez = tabuleiroPoloNorte;
-    	else if (explorador.getNumeroDoJogador()%2 == 0 && !explorador.isInMatrizOposta())
+    	else if (getExploradorDaVez(numExp).getNumeroDoJogador()%2 == 0 && !getExploradorDaVez(numExp).isInMatrizOposta())
 			tabuleiroDaVez = tabuleiroPoloNorte;
-    	else if (explorador.getNumeroDoJogador()%2 == 0 && explorador.isInMatrizOposta())
+    	else if (getExploradorDaVez(numExp).getNumeroDoJogador()%2 == 0 && getExploradorDaVez(numExp).isInMatrizOposta())
 			tabuleiroDaVez = tabuleiroPoloSul;
     }
     
@@ -216,11 +216,11 @@ public class ModelFacade implements Observavel {
     }
     
     	//Verifica se o explorador pode sair do polo inicial
-    private boolean verificaPossibilidadeInicial(Explorador explorador, int dado, int longitude, Jogador jogador) {
-    	int[] coordenadasAntigas = {explorador.getiInicial(),explorador.getjInicial()};
+    public boolean verificaPossibilidadeInicial(int numExp, int dado, int longitude, Jogador jogador) {
+    	int[] coordenadasAntigas = {getExploradorDaVez(numExp).getiInicial(),getExploradorDaVez(numExp).getjInicial()};
     	
-    	int coordenadaI = explorador.getiInicial() - dado;
-    	int coordenadaJ = explorador.getjInicial() + longitude;
+    	int coordenadaI = getExploradorDaVez(numExp).getiInicial() - dado;
+    	int coordenadaJ = getExploradorDaVez(numExp).getjInicial() + longitude;
     	int coordenadaEsperada, start=1, end=dado;
     	
     	//Nao pode mover o tabuleiro
@@ -233,7 +233,7 @@ public class ModelFacade implements Observavel {
     	//Verifica casa fechada/cheia
     	for (int percorre = start; percorre <= end; percorre++) {
     		coordenadaEsperada = 6 - percorre;
-    		casaLiberada = tabuleiroDaVez.getMatrix()[coordenadaEsperada][longitude].casaLiberada(jogador, explorador.getNumero());
+    		casaLiberada = tabuleiroDaVez.getMatrix()[coordenadaEsperada][longitude].casaLiberada(jogador, getExploradorDaVez(numExp).getNumero());
 			
 			//Casa esta fechada ou cheia
         	if (!casaLiberada) {
@@ -245,23 +245,23 @@ public class ModelFacade implements Observavel {
     	//Casa esta liberada
     	
     	//Coloca null na posicao que o explorador ocupava no vetor polo inicial
-    	tabuleiroDaVez.setPosicaoPoloInicialAsNull(explorador.getNumero(), explorador);
+    	tabuleiroDaVez.setPosicaoPoloInicialAsNull(getExploradorDaVez(numExp).getNumero(), getExploradorDaVez(numExp));
     	
     	//Define o i e j do explorador na matriz e coloca ele na matriz
-		explorador.setIMatriz(coordenadaI);
-		explorador.setJMatriz(coordenadaJ);
-		movimentaTabuleiro(tabuleiroDaVez, explorador, coordenadasAntigas);
+    	getExploradorDaVez(numExp).setIMatriz(coordenadaI);
+    	getExploradorDaVez(numExp).setJMatriz(coordenadaJ);
+		movimentaTabuleiro(tabuleiroDaVez, getExploradorDaVez(numExp), coordenadasAntigas);
     	return true;
     }
 
     	//Verifica se o explorador fazer o movimento (nao sendo a jogada inicial)
-    private boolean verificaPossibilidade(Explorador explorador, int dado, int opcaoDeMovimento, Jogador jogador) {
+    public boolean verificaPossibilidade(int numExp, int dado, int opcaoDeMovimento, Jogador jogador) {
     	int coordenadaInicialI, coordenadaInicialJ;
     	int coordenadaEsperada;
     	int start, end;
     	
     	//Nao pode mover o tabuleiro
-    	tabuleiroDaVez.setPodeMover(tabuleiroDaVez.verificaPossibilidadeMovimento(explorador, dado, opcaoDeMovimento));
+    	tabuleiroDaVez.setPodeMover(tabuleiroDaVez.verificaPossibilidadeMovimento(getExploradorDaVez(numExp), dado, opcaoDeMovimento));
     	if (!tabuleiroDaVez.getPodeMover()) {
     		System.out.println("Nao foi possivel fazer essa jogada, tente novamente.\n");
     		return false;
@@ -269,15 +269,15 @@ public class ModelFacade implements Observavel {
     	
     	
     	//Verifica casa fechada/cheia
-    	coordenadaInicialI = explorador.getIMatriz();
-    	coordenadaInicialJ = explorador.getJMatriz();
+    	coordenadaInicialI = getExploradorDaVez(numExp).getIMatriz();
+    	coordenadaInicialJ = getExploradorDaVez(numExp).getJMatriz();
     	tabuleiroAux = tabuleiroDaVez;
     	
     	//Opcao de movimento 1 --> latitude    	
     	if (opcaoDeMovimento == 1) {
     		
     		//Se o explorador vai mudar de matriz
-    		if (explorador.isMudandoDeMatriz()) {    			
+    		if (getExploradorDaVez(numExp).isMudandoDeMatriz()) {    			
     			//Atualiza o tabuleiro sob o qual ele opera
     			if (tabuleiroDaVez == tabuleiroPoloSul)
     				tabuleiroAux = tabuleiroPoloNorte;
@@ -293,7 +293,7 @@ public class ModelFacade implements Observavel {
     		else {
     			
     			//Se ele mudou de polo
-    			if (explorador.isInMatrizOposta()) {
+    			if (getExploradorDaVez(numExp).isInMatrizOposta()) {
     				
     				//Atualiza o tabuleiro sob o qual ele opera
         			if (tabuleiroDaVez == tabuleiroPoloSul)
@@ -315,7 +315,7 @@ public class ModelFacade implements Observavel {
     		}
 	    		
     		for (int percorre = start; percorre < end; percorre++) {
-    			casaLiberada = tabuleiroAux.getMatrix()[percorre][coordenadaInicialJ].casaLiberada(jogador, explorador.getNumero());
+    			casaLiberada = tabuleiroAux.getMatrix()[percorre][coordenadaInicialJ].casaLiberada(jogador, getExploradorDaVez(numExp).getNumero());
     			
     			//Casa esta fechada ou cheia
 	        	if (!casaLiberada) {
@@ -324,14 +324,14 @@ public class ModelFacade implements Observavel {
 	        	}
 	        }
     		
-    		movimentaLatitude(explorador, dado);
+    		movimentaLatitude(getExploradorDaVez(numExp), dado);
     	}
     	
     	//Opcao de movimento 2 --> longitude
     	else if (opcaoDeMovimento == 2) {
     		coordenadaEsperada = coordenadaInicialJ + dado;
     		for (int percorre = coordenadaInicialJ; percorre < coordenadaEsperada; percorre++) {
-    			casaLiberada = tabuleiroDaVez.getMatrix()[coordenadaInicialI][percorre].casaLiberada(jogador, explorador.getNumero());
+    			casaLiberada = tabuleiroDaVez.getMatrix()[coordenadaInicialI][percorre].casaLiberada(jogador, getExploradorDaVez(numExp).getNumero());
     			
     			//Casa esta fechada ou cheia
 	        	if (!casaLiberada) {
@@ -340,7 +340,7 @@ public class ModelFacade implements Observavel {
 	        	}
         	}
 
-    		movimentaLongitude(explorador, dado);    		
+    		movimentaLongitude(getExploradorDaVez(numExp), dado);    		
     	}
 		
     	return true;
@@ -617,9 +617,70 @@ public class ModelFacade implements Observavel {
 		jogadorDaVez.exibePoloFinal();
 		System.out.println();
     }
-	
-	
-	
+    
+    public String getJogadorDaVezNome() {
+    	return jogadorDaVez.getName();
+    }
+    
+    public String getJogadorDaVezCor() {
+    	return jogadorDaVez.getCor();
+    }
+    
+    public Explorador getExploradorDaVez(int numExp) {
+    	return jogadorDaVez.getExploradores()[numExp];
+    }
+    
+    public boolean isExpCasaInicial(int numExp) {
+    	return getExploradorDaVez(numExp).getCasaFinal();
+    }
+    
+    public boolean wasExpInPoloInicial(int numExp) {
+    	return getExploradorDaVez(numExp).wasInPoloInicial();
+    }
+    
+    public int getJogadorDaVezExpCasaFinal() {
+    	return jogadorDaVez.getQtdExpCasaFinal();
+    }
+    
+    public int getJogadorPontosMeta() {
+    	return jogadorDaVez.getPontosMeta();
+    }
+    
+    public int getExploradorDaVezIMatriz(int numExp) {
+    	return getExploradorDaVez(numExp).getIMatriz();
+    }
+    
+    public int getExploradorDaVezJMatriz(int numExp) {
+    	return getExploradorDaVez(numExp).getJMatriz();
+    }
+    
+    public Meta getMetaTabuleiro(int posicaoI, int posicaoJ) {
+    	return tabuleiroDaVez.getMatrix()[posicaoI][posicaoJ].getMeta();
+    }
+    
+    public boolean isMetaNaCasa(int posicaoI, int posicaoJ) {
+    	return getMetaTabuleiro(posicaoI, posicaoJ).isMetaNoTabuleiro();
+    }
+    
+    public boolean isMetaCapturavel(int posicaoI, int posicaoJ) {
+    	return getMetaTabuleiro(posicaoI, posicaoJ).isCapturavel();
+    }
+    
+    public void setMetaNoTabuleiro(int posicaoI, int posicaoJ, boolean bool) {
+    	tabuleiroDaVez.getMatrix()[posicaoI][posicaoJ].getMeta().setMetaNoTabuleiro(bool);
+    }
+    
+    public void setMetaCapturavel(int posicaoI, int posicaoJ, boolean bool) {
+    	tabuleiroDaVez.getMatrix()[posicaoI][posicaoJ].getMeta().setCapturavel(bool);
+    }
+    
+    public void contaPontoMetaJogador() {
+    	jogadorDaVez.setMeta(jogadorDaVez.getPontosMeta() + 1);
+    }
+    
+
+    
+    
 	//Metodos: Getter e Setter//
 	
 	public ModoJogo getJogo() {
@@ -662,14 +723,6 @@ public class ModelFacade implements Observavel {
 		this.opcaoDeMovimento = opcaoDeMovimento;
 	}
 
-	public boolean isFimDeJogo() {
-		return fimDeJogo;
-	}
-
-	public void setFimDeJogo(boolean fimDeJogo) {
-		this.fimDeJogo = fimDeJogo;
-	}
-
 	public boolean isJogadaTabuleiroPossivel() {
 		return jogadaTabuleiroPossivel;
 	}
@@ -693,21 +746,13 @@ public class ModelFacade implements Observavel {
 	public void setCasaLiberada(boolean casaLiberada) {
 		this.casaLiberada = casaLiberada;
 	}
-
-	public boolean isMetaCumprida() {
-		return metaCumprida;
-	}
-
-	public void setMetaCumprida(boolean metaCumprida) {
-		this.metaCumprida = metaCumprida;
-	}
-
+	
 	public Jogador getJogadorDaVez() {
 		return jogadorDaVez;
 	}
 
-	public void setJogadorDaVez(Jogador jogadorDaVez) {
-		this.jogadorDaVez = jogadorDaVez;
+	public void setJogadorDaVez(ArrayList<Jogador> jogadores,int numeroDoJogador) {
+		this.jogadorDaVez = jogadores.get(numeroDoJogador);
 	}
 
 	public Jogador getJogadorAux() {
@@ -776,6 +821,14 @@ public class ModelFacade implements Observavel {
 
 	public Dado getDado() {
 		return dado;
+	}
+	
+	public int getValorDadoLancado() {
+		return dado.lanca();
+	}
+	
+	public String getValorDadoColorido(int dado1, int dado2) {
+		return dado.getDadoColorido(dado1, dado2);
 	}
 
 	public void setDado(Dado dado) {
