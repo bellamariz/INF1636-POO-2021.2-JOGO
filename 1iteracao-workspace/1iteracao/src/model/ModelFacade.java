@@ -638,7 +638,7 @@ public class ModelFacade implements Observavel {
     	return jogadorDaVez.getExploradores()[numExp];
     }
     
-    public boolean isExpCasaInicial(int numExp) {
+    public boolean isExpCasaFinal(int numExp) {
     	return getExploradorDaVez(numExp).getCasaFinal();
     }
     
@@ -759,8 +759,8 @@ public class ModelFacade implements Observavel {
 		return jogadorDaVez;
 	}
 
-	public void setJogadorDaVez(ArrayList<Jogador> jogadores,int numeroDoJogador) {
-		this.jogadorDaVez = jogadores.get(numeroDoJogador);
+	public void setJogadorDaVez(int numeroDoJogador) {
+		this.jogadorDaVez = jogadoresOrdenados.get(numeroDoJogador);
 	}
 
 	public Jogador getJogadorAux() {

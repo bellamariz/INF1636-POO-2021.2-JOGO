@@ -11,6 +11,7 @@ public class Operacoes {
     public static final int CAPTUROU_EXPLORADOR = 8; //o explorador capturou um explorador do jogador adversario
     public static final int DADO_COLORIDO = 9; //caso do dado colorido
     public static final int MOVIMENTO_CARTA = 10; //retirou a carta 1 ou 3 e vai fazer a movimentacao relacionada a elas
-    public static final int CONTA_PONTOS = 11; //chamada no fim do jogo
-    public static final int SALVAR_JOGO = 11; //chamada no fim do jogo
+    public static final int CONTA_PONTOS = 11; //conta pontuacao final
+    public static final int SALVAR_JOGO = 12; //salvar jogo
+    public static final int MOVIMENTACAO_INVALIDA = 13; //salvar jogo
 }

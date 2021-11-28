@@ -76,6 +76,10 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private final static int EXP_HEIGHT = 30;
 	private final static int EXP_WIDTH = 15;
 	private String newCoordenada = null;
+	private int iAntigo = 0;
+	private int jAntigo = 0;
+	private int iNovo = 0;
+	private int jNovo = 0;
 	private int numExploradorSelecionado = 6;
 	private ArrayList<String> coresOrdenadas = new ArrayList<String>(4);
 	private int indiceCorDaVez = 0;
@@ -90,6 +94,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	protected List<Observador> observadores = new ArrayList<>();
 	private boolean hasChanged;
 	private int[] numeroJogadores = null;
+	private int exploradoresMovidos = 0;
 
 	public TabuleiroView() {
 		try {
@@ -361,6 +366,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		btLancaDado.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				if (podeLancarDado) {
+					exploradoresMovidos = 0;
 					dado1 = ControllerFacade.getModelFacade().getValorDadoLancado(); //TODO: trocar pra observer
 					dado2 = ControllerFacade.getModelFacade().getValorDadoLancado();
 					dadoCol = ControllerFacade.getModelFacade().getValorDadoColorido(dado1, dado2);
@@ -564,17 +570,21 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			}
 		
 		//Atualiza desenho dos exploradores
-		if (exploradorProntoParaMover) {
+		if (exploradorProntoParaMover && jogadaPossivel) {
+			if (exploradoresMovidos == 1)
+				podeLancarDado = true;
+			else
+				exploradoresMovidos += 1;
 			int x = montaCoordenada(exploradoresPorCoordenada.get(CORES[numeroJogadores[indiceCorDaVez]-1]).get(numExploradorSelecionado),"x");
 			int y = montaCoordenada(exploradoresPorCoordenada.get(CORES[numeroJogadores[indiceCorDaVez]-1]).get(numExploradorSelecionado),"y");
 			g2d.drawImage((imgPecas.get(CORES[numeroJogadores[indiceCorDaVez]-1]).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), x-(EXP_WIDTH/2), y-(EXP_HEIGHT/2), EXP_WIDTH, EXP_HEIGHT,this);
 			exploradorProntoParaMover = false;
 			exploradorSelected = false;
-			podeLancarDado = true;
+			
 			System.out.println("para colocar o explorador: mouseX:"+expCoordX+",MouseY:"+expCoordY);
+			
 			posValida = false;
 			numExploradorSelecionado = 6;
-		    
 		}	
 		
 		else if (exploradorSelected) {
@@ -682,19 +692,30 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 				}
 	
 			if (exploradorProntoParaMover) {
+				iAntigo = -1;
+				jAntigo = -1;
+				iNovo = -1;
+				jNovo = -1;
 			    for (int i = 0; i < linhas; i++) 
 			    	for (int j = 0; j < colunas; j++) {
 			    		int xIni = montaIJ(coordenadasCasas[i][j], "xIni");
 			    		int xFim = montaIJ(coordenadasCasas[i][j], "xFim");
 			    		int yIni = montaIJ(coordenadasCasas[i][j], "yIni");
 			    		int yFim = montaIJ(coordenadasCasas[i][j], "yFim");
+			    		if ((expCoordX >= xIni && expCoordX <= xFim) && (expCoordY >= yIni && expCoordY <= yFim)) {
+			    			iAntigo = i;
+			    			jAntigo = j;
+			    		}
 			    		if ((mouseX >= xIni && mouseX <= xFim) && (mouseY >= yIni && mouseY <= yFim)) {
 			    			posValida = true;
-			    			
+			    			iNovo = i;
+			    			jNovo = j;
 			    			System.out.println("i:"+i+ ",j:"+j);
 			    			break;
 			    		}
 			    	}
+
+    			System.out.println("posicao antiga: " + iAntigo + ", " + jAntigo + ", posicao atual: " + iNovo + ", " + jNovo);
 				newCoordenada=mouseX+","+mouseY;
 				exploradoresPorCoordenada.get(CORES[numeroJogadores[indiceCorDaVez]-1]).set(numExploradorSelecionado, newCoordenada);
 			}
@@ -771,6 +792,10 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			catch (ClassCastException ignored) {}
 
 			s("Operacao Ordena Jogadores. Msg: " + numeroJogadores[0]);
+		}
+		
+		else if (operacao == Operacoes.MOVIMENTACAO_INVALIDA) {
+			jogadaPossivel = false;
 		}
 	}
 }
