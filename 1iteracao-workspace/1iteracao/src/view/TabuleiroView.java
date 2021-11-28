@@ -39,8 +39,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private final int BUTTON_START_Y = 330;
 	private final int TEXT_WIDTH = 80;
 	private JButton btLancaDado = new JButton("Lançar Dados");
-	JLabel dado1Manualmente = new JLabel("Dado 1");
-	JLabel dado2Manualmente = new JLabel("Dado 2");
+	private JLabel dado1Manualmente = new JLabel("Dado 1");
+	private JLabel dado2Manualmente = new JLabel("Dado 2");
 	private JButton dado1valor1 = new JButton("1");
 	private JButton dado1valor2 = new JButton("2");
 	private JButton dado1valor3 = new JButton("3");
@@ -53,6 +53,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private JButton dado2valor4 = new JButton("4");
 	private JButton dado2valor5 = new JButton("5");
 	private JButton dado2valor6 = new JButton("6");
+	private JButton salvarJogo = new JButton("Salvar Jogo");
 	private int dado1 = 0;
 	private int dado2 = 0;
 	private String dadoCol = null;
@@ -66,6 +67,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private boolean canStart = false;
 	private boolean exploradorSelected = false;
 	private boolean exploradorProntoParaMover = false;
+	private boolean inicio = true;
+	private boolean podeLancarDado = true;
 	private HashMap<String, ArrayList<String>> exploradoresPorCoordenada = new HashMap<String, ArrayList<String>>();
 	private final static int LINHAS = 6, COLUNAS = 12;
 	private String[][] matrizCasas = new String[LINHAS][COLUNAS];
@@ -76,18 +79,25 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private ArrayList<String> coresOrdenadas = new ArrayList<String>(4);
 	private int indiceCorDaVez = 0;
 	private boolean posValida = false;
+	private boolean canGetCarta = true;
+	private boolean showCarta = false;
+	private ArrayList<Integer> deckCartaDinamica = new ArrayList<Integer>(17);
+	private int cartaDaVez;
+	private JLabel cartaManualmente = new JLabel("Carta");
+	private JButton carta1 = new JButton("1");
+	private JButton carta3 = new JButton("3");
 
 	public TabuleiroView() {
 		try {
-			imgTabuleiro = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Bella
-			//imgTabuleiro = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Rachel
+			//imgTabuleiro = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Bella
+			imgTabuleiro = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\Latitude90-Tabuleiro2.jpg")); //Rachel
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			pecaSelecionada = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Bella
-			//pecaSelecionada = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Rachel
+			//pecaSelecionada = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Bella
+			pecaSelecionada = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\selecionado.png")); //Rachel
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -107,11 +117,16 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		dado2valor4.setBounds(955, 415, 50, BUTTON_HEIGHT);
 		dado2valor5.setBounds(1010, 415, 50, BUTTON_HEIGHT);
 		dado2valor6.setBounds(1065, 415, 50, BUTTON_HEIGHT);
+		cartaManualmente.setBounds(730, 610, TEXT_WIDTH, TEXT_WIDTH/2);
+		carta1.setBounds(BUTTON_START_X, 615, BUTTON_WIDTH/2 - 5, BUTTON_HEIGHT);
+		carta3.setBounds(BUTTON_START_X + BUTTON_WIDTH/2 + 5, 615, BUTTON_WIDTH/2 - 5, BUTTON_HEIGHT);
+		salvarJogo.setBounds(BUTTON_START_X, 655, BUTTON_WIDTH, BUTTON_HEIGHT);
 		setColors();
 		loadImagesPecas();
 		loadImagesDados();
 		loadImagesCartas();
 		lancaDados();
+		initCards();
 		montaMatrizCoordenadacasas();
 		
 		
@@ -135,8 +150,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		
 		for(int i = 0; i < 4; i++) {
 			try {
-				Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Bella
-				//Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Rachel
+				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Bella
+				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\jogador" + (i + 1) + ".png")); //Rachel
 				imgPecas.put(CORES[i], img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -147,8 +162,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private void loadImagesDados() {
 		for(int i = 0; i < 6; i++) {
 			try {
-				Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Bella
-				//Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Rachel
+				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Bella
+				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\dado" + (i + 1) + ".png")); //Rachel
 				imgDados.put(Integer.valueOf(DADINHOS[i]), img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -159,8 +174,8 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private void loadImagesCartas() {
 		for(int i = 0; i < 18; i++) {
 			try {
-				Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Bella
-				//Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Rachel
+				//Image img = ImageIO.read(new File("D:\\Eclipse Workspaces\\INF1636_Jogo_Novo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Bella
+				Image img = ImageIO.read(new File("C:\\Users\\User\\Documents\\2021.2\\poo\\INF1636-POO-2021.2-JOGO\\assets\\C" + (i + 1) + ".png")); //Rachel
 				imgCartas.put(Integer.valueOf(CARTINHAS[i]), img);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -168,8 +183,16 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		}
 	}
 	
+	//Inicializa o deck de cartas dinamicas
+	private void initCards() {
+		for (int i = 0; i < 18; i++)
+			deckCartaDinamica.add(i);
+
+		Collections.shuffle(deckCartaDinamica);
+	}
+	
 	private void montaMatrizCoordenadacasas() {
-		coordenadasCasas[0][0] = "33,51,313,331";
+		coordenadasCasas[0][0] = "33,51,313,331"; 
 		coordenadasCasas[0][1] = "67,85,233,251";
 		coordenadasCasas[0][2] = "141,159,185,203";
 		coordenadasCasas[0][3] = "232,250,185,203";
@@ -330,10 +353,20 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		btLancaDado.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				notificarObservadores(1, "Ola");
-				dado1 = ControllerFacade.getModelFacade().getValorDado();
-				dado2 = ControllerFacade.getModelFacade().getValorDado();
-				dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
-				atualiza();
+				if (podeLancarDado) {
+					dado1 = ControllerFacade.getModelFacade().getValorDado();
+					dado2 = ControllerFacade.getModelFacade().getValorDado();
+					dadoCol = ControllerFacade.getModelFacade().getDadoColorido(dado1, dado2);
+					if (!inicio) {
+						indiceCorDaVez += 1;
+						if (indiceCorDaVez == (2*gameMode))
+							indiceCorDaVez = 0;
+					}
+					else
+						inicio = false;
+					atualiza();
+				}
+				podeLancarDado = false;
 			}
 			
 		});
@@ -433,6 +466,18 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 				atualiza();
 			}
 		});
+		
+		carta1.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				mostraCarta(0);
+			}
+		});
+		
+		carta3.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				mostraCarta(2);
+			}
+		});
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -458,6 +503,10 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
         add(dado2valor4);
         add(dado2valor5);
         add(dado2valor6);
+        add(cartaManualmente);
+        add(carta1);
+        add(carta3);
+        add(salvarJogo);
 		
         //Imagem do tabuleiro
 		g2d.drawImage(imgTabuleiro, 0, 0, this);
@@ -829,9 +878,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			g2d.drawImage((imgPecas.get(CORES[indiceCorDaVez]).getScaledInstance(15, 25, Image.SCALE_SMOOTH)), x-(EXP_WIDTH/2), y-(EXP_HEIGHT/2), EXP_WIDTH, EXP_HEIGHT,this);
 			exploradorProntoParaMover = false;
 			exploradorSelected = false;
-			indiceCorDaVez += 1;
-			if (indiceCorDaVez == (2*gameMode))
-				indiceCorDaVez = 0;
+			podeLancarDado = true;
 			System.out.println("para colocar o explorador: mouseX:"+expCoordX+",MouseY:"+expCoordY);
 			posValida = false;
 			numExploradorSelecionado = 6;
@@ -842,13 +889,11 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			g2d.drawImage((pecaSelecionada.getScaledInstance(15, 25, Image.SCALE_SMOOTH)), expCoordX - EXP_WIDTH/2, expCoordY - EXP_HEIGHT/2, EXP_WIDTH, EXP_HEIGHT,this);
 			exploradorProntoParaMover = true;
 		}	
-	
-//		//Printa coordenadas dos exploradores
-//		for (String str : exploradoresPorCoordenada.keySet()) {
-//			for (int i=0; i<6; i++) {
-//			      System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
-//			}
-//		}
+		
+		if (showCarta) {
+			g2d.drawImage(imgCartas.get(cartaDaVez + 1),BUTTON_START_X, 455, BUTTON_WIDTH, BUTTON_WIDTH,this);
+			showCarta = false;
+		}
 		
 		//Cor do jogador da vez
 		Rectangle2D corJogador = new Rectangle2D.Double(730, 180, 240, 140);
@@ -898,6 +943,23 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			return 0;
 	}
 	
+	private void mostraCarta(int carta) {
+		if (carta == -1) {
+	  		cartaDaVez = this.deckCartaDinamica.get(0);
+	  		this.deckCartaDinamica.remove(0);
+	  		this.deckCartaDinamica.add(cartaDaVez);
+		}
+		else
+			cartaDaVez = carta;
+  		System.out.println("carta da vez: " +  cartaDaVez);
+  		if (cartaDaVez == 0)
+  			System.out.println("carta 1");
+  		else if (cartaDaVez == 2)
+  			System.out.println("carta 3");
+  		showCarta = true;
+		atualiza();
+	}
+	
 	private void atualiza() {
 		tabuleiro.repaint();
 	}
@@ -906,56 +968,63 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		mouseX=e.getX();
 		mouseY=e.getY();
 		
-		//Printa coordenadas dos exploradores
-		if (!exploradorSelected && !exploradorProntoParaMover)
-			for (String str : exploradoresPorCoordenada.keySet()) {
-				if (str == CORES[indiceCorDaVez])
-					for (int i=0; i<6; i++) {
-					      System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
-					      expCoordX = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
-					      expCoordY = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"y");
+		if (!podeLancarDado) {
+			
+			//Printa coordenadas dos exploradores
+			if (!exploradorSelected && !exploradorProntoParaMover)
+				for (String str : exploradoresPorCoordenada.keySet()) {
+					if (str == CORES[indiceCorDaVez])
+						for (int i=0; i<6; i++) {
+						      System.out.println("key: " + str + " value: " + exploradoresPorCoordenada.get(str).get(i));
+						      expCoordX = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"x");
+						      expCoordY = montaCoordenada(exploradoresPorCoordenada.get(str).get(i),"y");
+		
+					    	  System.out.println("ExpX:"+expCoordX+"ExpY:"+expCoordY+"\n");
+						      if (((mouseX>=expCoordX-EXP_WIDTH) && (mouseX<=expCoordX+EXP_WIDTH)) && ((mouseY>=expCoordY-EXP_HEIGHT) && (mouseY<=expCoordY+EXP_HEIGHT))) {
+						    	  exploradorSelected = true;
+						    	  numExploradorSelecionado = i;
+						    	  System.out.println("Explorador selecionado.\n");
+						    	  break;
+						      }
+						}
+				}
 	
-				    	  System.out.println("ExpX:"+expCoordX+"ExpY:"+expCoordY+"\n");
-					      if (((mouseX>=expCoordX-EXP_WIDTH) && (mouseX<=expCoordX+EXP_WIDTH)) && ((mouseY>=expCoordY-EXP_HEIGHT) && (mouseY<=expCoordY+EXP_HEIGHT))) {
-					    	  exploradorSelected = true;
-					    	  numExploradorSelecionado = i;
-					    	  System.out.println("Explorador selecionado.\n");
-					    	  break;
-					      }
-					}
+			if (exploradorProntoParaMover) {
+			    for (int i = 0; i < linhas; i++) 
+			    	for (int j = 0; j < colunas; j++) {
+			    		int xIni = montaIJ(coordenadasCasas[i][j], "xIni");
+			    		int xFim = montaIJ(coordenadasCasas[i][j], "xFim");
+			    		int yIni = montaIJ(coordenadasCasas[i][j], "yIni");
+			    		int yFim = montaIJ(coordenadasCasas[i][j], "yFim");
+			    		if ((mouseX >= xIni && mouseX <= xFim) && (mouseY >= yIni && mouseY <= yFim)) {
+			    			posValida = true;
+			    			
+			    			System.out.println("i:"+i+ ",j:"+j);
+			    			break;
+			    		}
+			    	}
+				newCoordenada=mouseX+","+mouseY;
+				exploradoresPorCoordenada.get(CORES[indiceCorDaVez]).set(numExploradorSelecionado, newCoordenada);
 			}
-
-		if (exploradorProntoParaMover) {
-		    for (int i = 0; i < linhas; i++) 
-		    	for (int j = 0; j < colunas; j++) {
-		    		int xIni = montaIJ(coordenadasCasas[i][j], "xIni");
-		    		int xFim = montaIJ(coordenadasCasas[i][j], "xFim");
-		    		int yIni = montaIJ(coordenadasCasas[i][j], "yIni");
-		    		int yFim = montaIJ(coordenadasCasas[i][j], "yFim");
-		    		if ((mouseX >= xIni && mouseX <= xFim) && (mouseY >= yIni && mouseY <= yFim)) {
-		    			posValida = true;
-		    			
-		    			System.out.println("i:"+i+ ",j:"+j);
-		    			break;
-		    		}
-		    	}
-			newCoordenada=mouseX+","+mouseY;
-			exploradoresPorCoordenada.get(CORES[indiceCorDaVez]).set(numExploradorSelecionado, newCoordenada);
+			
+			if (exploradorSelected || exploradorProntoParaMover) {
+				if (exploradorProntoParaMover && !posValida) {
+	    			System.out.println("posicao invalida");
+				}
+				else {
+	
+	    			System.out.println("exploradorProntoParaMover: " + exploradorProntoParaMover + "posValida: " + posValida);
+					atualiza();
+				}
+			}
+			
+			if (canGetCarta)
+				if ((mouseX >= 315 && mouseX <= 416) && (mouseY >= 597 && mouseY <= 684))
+					mostraCarta(-1);
+					
+			
+			System.out.println("mouseX:"+mouseX+",MouseY:"+mouseY); //polo sul: x = 189, y = 358 e polo norte: x = 521, y = 358
 		}
-		
-		if (exploradorSelected || exploradorProntoParaMover) {
-			if (exploradorProntoParaMover && !posValida) {
-    			System.out.println("posicao invalida");
-			}
-			else {
-
-    			System.out.println("exploradorProntoParaMover: " + exploradorProntoParaMover + "posValida: " + posValida);
-				atualiza();
-			}
-		}
-		
-		System.out.println("mouseX:"+mouseX+",MouseY:"+mouseY); //polo sul: x = 189, y = 358 e polo norte: x = 521, y = 358
-		
 	}
 	
 	public void mouseClicked(MouseEvent e) {}
