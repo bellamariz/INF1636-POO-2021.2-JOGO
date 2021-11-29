@@ -59,9 +59,7 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 	//Metodos: Partida
 
 	public void jogo(int jogadorDaVez, int valorDadoDaVez, int numExploradorDaVez, int iAntigo, int jAntigo, int iNovo, int jNovo) {    	
-		s(jogadorDaVez);
 		modelFacade.setJogadorDaVez(jogadorDaVez); 
-		s(modelFacade.getJogadorDaVez());
 		modelFacade.setExploradorParaMover(numExploradorDaVez);
 		modelFacade.selecionaTabuleiroDaVez(modelFacade.getExploradorParaMover()-1);
 
@@ -70,10 +68,10 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 		s("Jogada feita pelo jogador " + modelFacade.getJogadorDaVezNome() + ": Dado: " + valorDadoDaVez + "\n");
 
 
-		//	    	Verificacao dado colorido
-		//	    	    		if (corDadoColorido != null) {
-		//	    	    			modelFacade.trataCasoDadoColorido(corDadoColorido);
-		//	    	    		}
+		//TODO: Verificacao dado colorido
+		//if (corDadoColorido != null) {
+		//	  modelFacade.trataCasoDadoColorido(corDadoColorido);
+		//}
 
 		//Verifica se o explorador esta na casa inicial
 		boolean estaNaCasaInicial = modelFacade.wasExpInPoloInicial(modelFacade.getExploradorParaMover()-1); 
@@ -114,7 +112,7 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 					+ "Pontos totais: " + modelFacade.getJogadorPontosMeta() + "\n");
 			metaCumprida = true;
 
-			//Conquistou carta dinâmica
+			//TODO: Conquistou carta dinamica
 			//cartaEscolhida = pegaCartaDoDeck();
 			//cartaEscolhida.exibeCartaEscolhida();
 		}
@@ -201,6 +199,7 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 		final int operacao = (int) args[0];
 		
 		if (operacao == Operacoes.INICIALIZA_MODEL) {
+			s("Operacao Inicializa Model.\n");
 			final int gameMode = (int) args[1];
 			String[] nomeJogadores = new String[gameMode*2];
 
@@ -215,6 +214,7 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 		} 
 		
 		else if (operacao == Operacoes.DADO_LANCADO) {
+			s("Operacao Lanca Dado.\n");
 			String mensagem = null;
 			try {
 				mensagem = (String) args[1];
@@ -223,12 +223,11 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 
 			final int dado = (int) args[1];
 			final double valor2 = (double) args[2];
-			s("Recebemos via mensagem o dado " + dado);
 			notificarObservadores(1, "Tchau");
 		}
 		
 		else if (operacao == Operacoes.MOVE_EXPLORADOR) {
-			//Operacoes.MOVE_EXPLORADOR, iAntigo, jAntigo, iNovo, jNovo, dado1);
+			s("Operacao Move Explorador.\n");
 			int iAntigo = (int) args[1];
 			int jAntigo = (int) args[2];
 			int iNovo = (int) args[3];
@@ -250,10 +249,12 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 		}
 		
 		else if (operacao == Operacoes.CARREGAR_JOGO) {
+			s("Operacao Carrega Jogo.\n");
 			carregarJogo();
 		}
 		
 		else if (operacao == Operacoes.SALVAR_JOGO) {
+			s("Operacao Salva Jogo.\n");
 			salvarJogo();
 		}
 		

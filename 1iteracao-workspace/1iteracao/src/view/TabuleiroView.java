@@ -26,16 +26,11 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private Map<String, Image> imgPecas = new HashMap<String, Image>();
 	private Map<Integer, Image> imgDados = new HashMap<Integer, Image>();
 	private Map<Integer, Image> imgCartas = new HashMap<Integer, Image>();
-	private Image imgSelecionado = null;
 	private static final String[] CORES = {"Preto", "Azul", "Verde", "Laranja", "Vermelho", "Branco"};
 	private static final int[] DADINHOS = {1, 2, 3, 4, 5, 6};
 	private static final int[] CARTINHAS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
-	private int xOffSet = 677;
-	private int yOffSet = 680;
-	private int xIni = 0, yIni = 0, imgHeight = yOffSet, imgWidth = xOffSet;
 	private final int BUTTON_WIDTH = 150;
 	private final int BUTTON_HEIGHT = 30;
-	private final int BUTTON_SPACE = 60;
 	private final int BUTTON_START_X = 775;
 	private final int BUTTON_START_Y = 330;
 	private final int TEXT_WIDTH = 80;
@@ -58,21 +53,17 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private int dado1 = 0;
 	private int dado2 = 0;
 	private String dadoCol = null;
-	private Color corDado = null;
 	private int mouseX = 0;
 	private int mouseY = 0;
 	private int expCoordX = 0;
 	private int expCoordY = 0;
 	private int gameMode = 0;
 	private boolean initBoard = true;
-	private boolean canStart = false;
 	private boolean exploradorSelected = false;
 	private boolean exploradorProntoParaMover = false;
 	private boolean inicio = true;
 	private boolean podeLancarDado = true;
 	private HashMap<String, ArrayList<String>> exploradoresPorCoordenada = new HashMap<String, ArrayList<String>>();
-	private final static int LINHAS = 6, COLUNAS = 12;
-	private String[][] matrizCasas = new String[LINHAS][COLUNAS];
 	private final static int EXP_HEIGHT = 30;
 	private final static int EXP_WIDTH = 15;
 	private String newCoordenada = null;
@@ -81,7 +72,6 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private int iNovo = 0;
 	private int jNovo = 0;
 	private int numExploradorSelecionado = 6;
-	private ArrayList<String> coresOrdenadas = new ArrayList<String>(4);
 	private int indiceCorDaVez = 0;
 	private boolean posValida = false;
 	private boolean canGetCarta = true;
@@ -92,7 +82,6 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private JButton carta1 = new JButton("1");
 	private JButton carta3 = new JButton("3");
 	protected List<Observador> observadores = new ArrayList<>();
-	private boolean hasChanged;
 	private int[] numeroJogadores = null;
 	private int exploradoresMovidos = 0;
 	private boolean jogadaPossivel = true;
@@ -801,26 +790,25 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		final int operacao = (int) args[0];
 
 		if (operacao == Operacoes.ORDENA_JOGADORES) {
-			s("Operacao Ordena Jogadores. Msg: " + "vai comecar");
+			s("Operacao Ordena Jogadores.\n");
 			numeroJogadores = new int[gameMode*2];
 
 			try {
 				System.arraycopy(args[1], 0, numeroJogadores, 0, gameMode*2);
 			}
 			catch (ClassCastException ignored) {}
-
-			s("Operacao Ordena Jogadores. Msg: " + numeroJogadores[0]);
 		}
 		
 		else if (operacao == Operacoes.VALIDADE_MOVIMENTACAO) {
+			s("Operacao Valida Movimentacao.\n");
 			if ((int) args[1] == 0)
 				jogadaPossivel = false;
 			else
 				jogadaPossivel = true;
-			s("nvuorhvwuh" + (int) args[1]);
 		}
 		
 		else if (operacao == Operacoes.TERMINOU_JOGO) {
+			s("Operacao Terminou Jogo.\n");
 			String[] pontuacao = new String[gameMode*2];
 			try {
 				System.arraycopy(args[1], 0, pontuacao, 0, gameMode*2);
@@ -829,6 +817,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 		}
 		
 		else if (operacao == Operacoes.EXIT) {
+			s("Operacao Encerrar Aplicacao.\n");
 			exit();
 		}
 	}
