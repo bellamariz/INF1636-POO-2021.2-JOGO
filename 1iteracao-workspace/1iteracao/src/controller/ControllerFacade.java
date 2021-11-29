@@ -59,7 +59,9 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 	//Metodos: Partida
 
 	public void jogo(int jogadorDaVez, int valorDadoDaVez, int numExploradorDaVez, int iAntigo, int jAntigo, int iNovo, int jNovo) {    	
+		s(jogadorDaVez);
 		modelFacade.setJogadorDaVez(jogadorDaVez); 
+		s(modelFacade.getJogadorDaVez());
 		modelFacade.setExploradorParaMover(numExploradorDaVez);
 		modelFacade.selecionaTabuleiroDaVez(modelFacade.getExploradorParaMover()-1);
 
@@ -85,19 +87,21 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 
 		else {
 			//Ja saiu da casa inicial, está se movimento no tabuleiro
-			s("Explorador anda na latitude ou longitude? (Escreva 1 para latitude e 2 para longitude) ");
-			modelFacade.setOpcaoDeMovimento(s.nextInt());
 			modelFacade.setJogadaTabuleiroPossivel(modelFacade.verificaPossibilidade(
-					modelFacade.getExploradorParaMover()-1, valorDadoDaVez, modelFacade.getOpcaoDeMovimento(), modelFacade.getJogadorDaVez()
+					modelFacade.getExploradorParaMover()-1, valorDadoDaVez, iAntigo, iNovo, jAntigo, jNovo, modelFacade.getJogadorDaVez()
 					));
 		}
 
 		//Verifica se a movimentacao no tabuleiro foi possivel
 		boolean jogadaTabuleiroPossivel = modelFacade.isJogadaTabuleiroPossivel();
+		s("jogada possivel: "+jogadaTabuleiroPossivel);
 		if (!jogadaTabuleiroPossivel) {
-			notificarObservadores(Operacoes.MOVIMENTACAO_INVALIDA);
+			notificarObservadores(Operacoes.VALIDADE_MOVIMENTACAO, 0);
 			return;
 		}
+		
+		else
+			notificarObservadores(Operacoes.VALIDADE_MOVIMENTACAO, 1);
 
 		//Verifica se a casa tem uma meta, se o jogador pode conquista-la e se ainda ha metas sobrando
 		int posicaoI = modelFacade.getExploradorDaVezIMatriz(modelFacade.getExploradorParaMover()-1);
@@ -232,6 +236,11 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 			int dado = (int) args[5];
 			int jogadorDaVez = (int) args[6];
 			int exploradorDaVez = (int) args[7];
+			
+			if (jAntigo >= 12)
+				jAntigo -= 12;
+			if (jNovo >= 12)
+				jNovo -= 12;
 
 			if (iAntigo == -1 && jAntigo == -1) {
 				s("casa inicial");

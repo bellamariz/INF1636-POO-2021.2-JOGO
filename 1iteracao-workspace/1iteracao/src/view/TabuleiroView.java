@@ -95,6 +95,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private boolean hasChanged;
 	private int[] numeroJogadores = null;
 	private int exploradoresMovidos = 0;
+	private boolean jogadaPossivel = true;
 
 	public TabuleiroView() {
 		try {
@@ -568,7 +569,15 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 					}
 				}
 			}
+
+		if (exploradorProntoParaMover) {
+			if (exploradoresMovidos == 0)
+				notificarObservadores(Operacoes.MOVE_EXPLORADOR, iAntigo, jAntigo, iNovo, jNovo, dado1, indiceCorDaVez, numExploradorSelecionado+1);
+			else if (exploradoresMovidos == 1)
+				notificarObservadores(Operacoes.MOVE_EXPLORADOR, iAntigo, jAntigo, iNovo, jNovo, dado2, indiceCorDaVez, numExploradorSelecionado+1);
+		}
 		
+		s("jogada possivel" + jogadaPossivel);
 		//Atualiza desenho dos exploradores
 		if (exploradorProntoParaMover && jogadaPossivel) {
 			if (exploradoresMovidos == 1)
@@ -587,7 +596,7 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			numExploradorSelecionado = 6;
 		}	
 		
-		else if (exploradorSelected) {
+		else if (exploradorSelected || !jogadaPossivel) {
 			g2d.drawImage((pecaSelecionada.getScaledInstance(15, 25, Image.SCALE_SMOOTH)), expCoordX - EXP_WIDTH/2, expCoordY - EXP_HEIGHT/2, EXP_WIDTH, EXP_HEIGHT,this);
 			exploradorProntoParaMover = true;
 		}	
@@ -719,13 +728,13 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			    			break;
 			    		}
 			    	}
-
+			   
     			System.out.println("posicao antiga: " + iAntigo + ", " + jAntigo + ", posicao atual: " + iNovo + ", " + jNovo);
 				newCoordenada=mouseX+","+mouseY;
 				exploradoresPorCoordenada.get(CORES[numeroJogadores[indiceCorDaVez]-1]).set(numExploradorSelecionado, newCoordenada);
 			}
 			
-			if (exploradorSelected || exploradorProntoParaMover) {
+			if (exploradorSelected || exploradorProntoParaMover || jogadaPossivel) {
 				if (exploradorProntoParaMover && !posValida) {
 	    			System.out.println("posicao invalida");
 				}
@@ -803,8 +812,12 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 			s("Operacao Ordena Jogadores. Msg: " + numeroJogadores[0]);
 		}
 		
-		else if (operacao == Operacoes.MOVIMENTACAO_INVALIDA) {
-			jogadaPossivel = false;
+		else if (operacao == Operacoes.VALIDADE_MOVIMENTACAO) {
+			if ((int) args[1] == 0)
+				jogadaPossivel = false;
+			else
+				jogadaPossivel = true;
+			s("nvuorhvwuh" + (int) args[1]);
 		}
 		
 		else if (operacao == Operacoes.TERMINOU_JOGO) {

@@ -13,7 +13,7 @@ public class Operacoes {
     public static final int MOVIMENTO_CARTA = 10; //retirou a carta 1 ou 3 e vai fazer a movimentacao relacionada a elas
     public static final int CONTA_PONTOS = 11; //conta pontuacao final
     public static final int SALVAR_JOGO = 12; //salvar jogo
-    public static final int MOVIMENTACAO_INVALIDA = 13; //salvar jogo
+    public static final int VALIDADE_MOVIMENTACAO = 13; //salvar jogo
     public static final int TERMINOU_JOGO = 14; //acabou o jogo
     public static final int CARREGAR_JOGO = 15;
     public static final int EXIT = 100;

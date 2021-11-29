@@ -89,15 +89,22 @@ class Tabuleiro {
 	//Verifica possibilidade de movimento na latitude (i)
 	public boolean verificaPossibilidadeMovimentoLatitude (Explorador explorador, int dado) {
 		// o jogador não pode trocar de polo longitudinalmente
-		if ((!explorador.isInMatrizOposta() && (explorador.getIMatriz() - dado) > 0))
+		if ((!explorador.isInMatrizOposta() && (explorador.getIMatriz() - dado) > 0)) {
+
+			System.out.println("caso 1");
 			return true;
+		}
 		
 		//explorador esta no polo oposto, mas não chegou no final do polo
-		else if (explorador.isInMatrizOposta() && (explorador.getIMatriz() + dado) <= 6)
+		else if (explorador.isInMatrizOposta() && (explorador.getIMatriz() + dado) <= 6) {
+
+			System.out.println("caso 2");
 			return true;
+		}
 		
 		//explorador troca de polo nas longitudes (j) 0,5,6,11
 		else {
+			System.out.println("caso 3");
 			if (!explorador.isInMatrizOposta() && (explorador.getJMatriz() == 0 || explorador.getJMatriz() == 5 || 
 					explorador.getJMatriz() == 6 || explorador.getJMatriz() == 11)) {
 				explorador.setMatrizOposta(true);
@@ -112,6 +119,8 @@ class Tabuleiro {
 	//Verifica movimento no tabuleiro
 	public boolean verificaPossibilidadeMovimento (Explorador explorador, int dado, int movimento) {
 		// movimento na latitude, input = 1, max de casas = 6
+
+		System.out.println("movimento: "+movimento);
 		if (movimento == 1) 
 			return verificaPossibilidadeMovimentoLatitude (explorador, dado);
 		
