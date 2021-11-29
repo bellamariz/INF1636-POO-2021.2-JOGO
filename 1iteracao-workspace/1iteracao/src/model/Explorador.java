@@ -15,7 +15,7 @@ class Explorador {
 		this.numeroDoJogador = numeroDoJogador;
 		this.casaFinal = false;
 		this.matrizOposta = false;
-		this.mudandoDeMatriz = false; 
+		this.mudandoDeMatriz = true; 
 		this.iInicial = 6;
 		this.iMatriz = 6;
 		this.iFinal = 6;

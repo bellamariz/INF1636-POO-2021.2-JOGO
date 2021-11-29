@@ -110,6 +110,12 @@ public class ModelFacade implements Observavel, Serializable {
     	//Atualiza o tabuleiro
     public void movimentaTabuleiro (Tabuleiro tabuleiro, Explorador explorador, int[] coordenadasAntigas) {
     	//Remove o explorador da posicao antiga (se ele nao estava no polo inicial antes)
+    	if (explorador.isInMatrizOposta() && explorador.isMudandoDeMatriz()) {
+    		tabuleiroDaVez.getMatrix()[coordenadasAntigas[0]][coordenadasAntigas[1]].removeExploradorDaCasa(explorador);
+    		explorador.setMudandoDeMatriz(false);
+    	}
+    		
+    		
     	if (!explorador.wasInPoloInicial(coordenadasAntigas[0]))
     		tabuleiro.getMatrix()[coordenadasAntigas[0]][coordenadasAntigas[1]].removeExploradorDaCasa(explorador);
     	
@@ -146,6 +152,7 @@ public class ModelFacade implements Observavel, Serializable {
     	
     	//Verifica se o explorador vai trocar de polo
 		if (explorador.isInMatrizOposta()) {
+			System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaa");
 			
 			//Atualiza o tabuleiro sob o qual ele opera
 			if (tabuleiroDaVez == tabuleiroPoloSul)
@@ -155,6 +162,7 @@ public class ModelFacade implements Observavel, Serializable {
 			
 			//Se ele esta trocando de polo, atualiza as posicoes que ele consegue atravessar de tabuleiro
 			if (explorador.isMudandoDeMatriz()) {
+				s("mudou de matriz");
 				int novoI = dado - explorador.getIMatriz() - 1;
 				explorador.setIMatriz(novoI);
 				if (explorador.getJMatriz() == 0)
@@ -168,7 +176,7 @@ public class ModelFacade implements Observavel, Serializable {
 
 				System.out.println(explorador.getJMatriz() + " " + explorador.getIMatriz());
 				movimentaTabuleiro(tabuleiroAux, explorador, coordenadasAntigas);
-				explorador.setMudandoDeMatriz(false);
+				//explorador.setMudandoDeMatriz(false);
 			}
 			
 			//Se ele ja trocou de polo
@@ -256,12 +264,22 @@ public class ModelFacade implements Observavel, Serializable {
     }
 
     	//Verifica se o explorador fazer o movimento (nao sendo a jogada inicial)
-    public boolean verificaPossibilidade(int numExp, int dado, int opcaoDeMovimento, Jogador jogador) {
+    public boolean verificaPossibilidade(int numExp, int dado, int iAntigo, int iNovo, int jAntigo, int jNovo, Jogador jogador) {
     	int coordenadaInicialI, coordenadaInicialJ;
     	int coordenadaEsperada;
     	int start, end;
     	
+    	if (iAntigo != iNovo && jAntigo != jNovo && jogador.getExploradores()[numExp].isInMatrizOposta())
+    		return false;
+    	else if (iAntigo != iNovo)
+			opcaoDeMovimento = 1;
+		else if (jAntigo != jNovo)
+			opcaoDeMovimento = 2;
+
+    	
     	//Nao pode mover o tabuleiro
+
+		System.out.println("vai verificar");
     	tabuleiroDaVez.setPodeMover(tabuleiroDaVez.verificaPossibilidadeMovimento(getExploradorDaVez(numExp), dado, opcaoDeMovimento));
     	if (!tabuleiroDaVez.getPodeMover()) {
     		System.out.println("Nao foi possivel fazer essa jogada, tente novamente.\n");
