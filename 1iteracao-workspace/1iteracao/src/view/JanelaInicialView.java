@@ -4,14 +4,21 @@ import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 
-class JanelaInicialView extends JFrame{
+import util.Observador;
+import util.Observavel;
+import util.Operacoes;
+
+class JanelaInicialView extends JFrame implements Observavel{
 	
     private JanelaInicialView janelaInicialView = this;
 	private static final int TWO_PLAYERS = 2;
@@ -42,6 +49,7 @@ class JanelaInicialView extends JFrame{
     private JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
     private File arqJogoCarregado = null;
     private FileReader fileReader = null;
+    private List<Observador> observadores = new ArrayList<>();
 
     public JanelaInicialView(TabuleiroView tabuleiro) {
     	this.tabuleiroView = tabuleiro;
@@ -102,38 +110,7 @@ class JanelaInicialView extends JFrame{
         
         carregarJogo.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent event){ 
-        		System.out.println("Carregar jogo");
-        		
-        		int statusCarregamento = fileChooser.showOpenDialog(null);
-        		 
-                if (statusCarregamento == JFileChooser.APPROVE_OPTION) {         	
-                    arqJogoCarregado = fileChooser.getSelectedFile();
-                    
-                    try {
-                    	fileReader = new FileReader(arqJogoCarregado.getAbsolutePath());
-                    	int c;
-                    	while ((c = fileReader.read()) != -1) {
-                    		
-                    	}
-                    }
-                    catch(IOException e) {
-                    	System.out.print("Erro na leitura do arquivo.\n");
-						e.printStackTrace();
-                    }
-                    finally {
-                    	if (fileReader != null) {
-                    		try {
-								fileReader.close();
-							} catch (IOException e) {
-								System.out.print("Erro no fechamento do leitor de arquivo.\n");
-								e.printStackTrace();
-							}
-                    	}
-                    }
-               
-                }
-                else
-                	System.out.print("Carregamento cancelado.\n");
+        		notificarObservadores(Operacoes.CARREGAR_JOGO);
             }  
         }); 
         
@@ -259,5 +236,29 @@ class JanelaInicialView extends JFrame{
 				}
             }  
         }); 
-    } 
+    }
+
+  //Metodos: Observer e Observavel
+
+  	public void adicionarObservador(Observador o) {
+  		if (!observadores.contains(o)) {
+  			this.observadores.add(o);
+  		}
+  	}
+
+  	public int contarObservadores() {
+  		return this.observadores.size();
+  	}
+
+  	public void removerObservador(Observador o) {
+  		if (this.observadores.contains(o)) {
+  			this.observadores.remove(o);
+  		}
+  	}
+
+  	public void notificarObservadores(Object ...args) {
+  		for (Observador o : this.observadores) {
+  			o.update(this, args);
+  		}
+  	}
 }

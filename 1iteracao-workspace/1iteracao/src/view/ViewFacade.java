@@ -33,6 +33,10 @@ public class ViewFacade implements Observavel, Observador, Serializable {
 	public void addObserverToTabView(Observador o) {
 		this.tabuleiroView.adicionarObservador(o);
 	}
+	
+	public void addObserverToJanelaView(Observador o) {
+		this.janelaInicialView.adicionarObservador(o);
+	}
 
 	public String[] getNomeJogadores() {
 		return janelaInicialView.getNomesJogadores();

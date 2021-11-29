@@ -15,4 +15,6 @@ public class Operacoes {
     public static final int SALVAR_JOGO = 12; //salvar jogo
     public static final int MOVIMENTACAO_INVALIDA = 13; //salvar jogo
     public static final int TERMINOU_JOGO = 14; //acabou o jogo
+    public static final int CARREGAR_JOGO = 15;
+    public static final int EXIT = 100;
 }

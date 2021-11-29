@@ -665,6 +665,11 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	private void atualiza() {
 		tabuleiro.repaint();
 	}
+	
+	private void exit() {
+		JOptionPane.showMessageDialog(this,"Jogo encerrado!");
+		System.exit(0);
+	}
 
 	public void mousePressed(MouseEvent e) {
 		mouseX=e.getX();
@@ -745,6 +750,10 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 	public void mouseDragged(MouseEvent e) {}
+	
+	
+	
+	//Metodos: Observer e Observavel
 
 	public void adicionarObservador(Observador o) {
 		if (!observadores.contains(o)) {
@@ -804,6 +813,10 @@ class TabuleiroView extends JPanel implements MouseListener, Observador, Observa
 				System.arraycopy(args[1], 0, pontuacao, 0, gameMode*2);
 			}
 			catch (ClassCastException ignored) {}
+		}
+		
+		else if (operacao == Operacoes.EXIT) {
+			exit();
 		}
 	}
 }

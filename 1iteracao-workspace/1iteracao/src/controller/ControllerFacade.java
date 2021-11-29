@@ -6,6 +6,13 @@ import util.Observador;
 import util.Operacoes;
 import view.ViewFacade;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +27,6 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 	private static ModelFacade modelFacade = null;
 	private boolean metaCumprida = false;
 	private Scanner s = new Scanner(System.in);
-	private JFileChooser fileChooser = new JFileChooser();
-	// TODO: FileWriter e FileReader
 	private List<Observador> observadores = new ArrayList<>();
 
 	private ControllerFacade() {
@@ -30,6 +35,7 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 
 		viewFacade.startView();
 		viewFacade.addObserverToTabView(this);
+		viewFacade.addObserverToJanelaView(this);
 		this.adicionarObservador(viewFacade);
 		modelFacade.adicionarObservador(this);
 	}
@@ -121,6 +127,50 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
     	 modelFacade.exibe();
     }
 	
+	public void salvarJogo() {
+		JFileChooser fileChooser  = new JFileChooser();
+        fileChooser.showSaveDialog(null);
+        try{
+        	FileOutputStream fileOutput = new FileOutputStream(fileChooser.getSelectedFile()+".txt");
+        	ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+        	objectOutput.writeObject(this);
+        	objectOutput.close();
+        	fileOutput.close();
+            notificarObservadores(Operacoes.EXIT);
+        } 
+        catch(Exception e) {
+        	s("Erro na gravacao do arquivo.\n");
+        	e.printStackTrace();
+        }
+	}
+	
+	public void carregarJogo() {
+		JFileChooser fileChooser  = new JFileChooser();
+        fileChooser.showSaveDialog(null);
+        try{
+        	FileInputStream fileInput = new FileInputStream(fileChooser.getSelectedFile()+".txt");
+        	ObjectInputStream objectInput = new ObjectInputStream(fileInput);
+			controller = (ControllerFacade) objectInput.readObject();
+			objectInput.close();
+			fileInput.close();
+        } 
+        catch(FileNotFoundException e) {
+        	s("Erro na leitura do arquivo.\n");
+        	e.printStackTrace();
+        }
+        catch(ClassNotFoundException e1) {
+        	s("Carregar Jogo - Classe ControllerFacade nao encontrada.\n");
+        	e1.printStackTrace();
+        }
+        catch(IOException e2) {
+        	s("Erro no carregamento do jogo.\n");
+        	e2.printStackTrace();
+        }
+	}
+	
+	
+	//Metodos: Auxiliares
+	
 	public static void s(Object o) {
 		System.out.println(o);
 	}
@@ -131,6 +181,8 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 		for (int i = 0; i < gameMode * 2; i++)
 			s(nomeJogadores[i]);
 	}
+	
+	
 
 	// Metodos: Observador e Observavel //
 
@@ -188,9 +240,12 @@ public class ControllerFacade implements Observador, Observavel, Serializable {
 			notificarObservadores(1, "Tchau");
 		}
 		
+		else if (operacao == Operacoes.CARREGAR_JOGO) {
+			carregarJogo();
+		}
+		
 		else if (operacao == Operacoes.SALVAR_JOGO) {
-			s("jogo salvo");
-			//salvarJogo();
+			salvarJogo();
 		}
 		
 		else {
